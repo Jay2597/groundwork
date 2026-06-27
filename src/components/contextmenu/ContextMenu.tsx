@@ -142,6 +142,7 @@ function buildItems(
       { label: "Frame selection", shortcut: "Ctrl+Alt+G", onClick: run(s.frameSelection) },
       { label: "Create component", onClick: run(s.createComponentFromSelection) },
       booleanSub,
+      { label: "Flatten", shortcut: "Ctrl+E", onClick: run(s.flattenSelected) },
       alignSub,
       SEP,
       { label: "Delete", shortcut: "Del", onClick: run(s.deleteSelected), danger: true },
@@ -164,6 +165,9 @@ function buildItems(
     { label: "Create component", onClick: run(s.createComponentFromSelection) },
   );
   if (container) items.push({ label: "Ungroup", shortcut: "Ctrl+Shift+G", onClick: run(s.ungroupSelected) });
+  if (node && (node.type === "boolean" || node.type === "group")) {
+    items.push({ label: "Flatten", shortcut: "Ctrl+E", onClick: run(s.flattenSelected) });
+  }
   items.push(SEP, { label: "Delete", shortcut: "Del", onClick: run(s.deleteSelected), danger: true });
   return items;
 }

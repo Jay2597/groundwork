@@ -25,6 +25,7 @@ import {
   groupNodes,
   instanceFromComponent,
 } from "@/lib/nodeFactory";
+import { flattenNodes } from "@/lib/flatten";
 import {
   appendChild,
   countNodes,
@@ -75,6 +76,7 @@ interface EditorState {
   ungroupSelected: () => void;
   frameSelection: () => void;
   booleanSelected: (op: BooleanOp) => void;
+  flattenSelected: () => void;
   reorderSelected: (direction: "front" | "back" | "forward" | "backward") => void;
   alignSelected: (mode: AlignMode) => void;
   distributeSelected: (axis: "h" | "v") => void;
@@ -363,6 +365,18 @@ export const useEditorStore = create<EditorState>((set, get) => {
         const node = booleanNodes(picked, op, countNodes(nodes) + 1);
         const rest = nodes.filter((n) => !sel.has(n.id));
         return { ...commitNodes(state, [...rest, node]), selectedIds: [node.id] };
+      }),
+
+    flattenSelected: () =>
+      set((state) => {
+        const sel = new Set(state.selectedIds);
+        const nodes = currentNodes(state);
+        const picked = nodes.filter((n) => sel.has(n.id));
+        if (picked.length === 0) return {};
+        const path = flattenNodes(picked, countNodes(nodes) + 1);
+        if (!path) return {};
+        const rest = nodes.filter((n) => !sel.has(n.id));
+        return { ...commitNodes(state, [...rest, path]), selectedIds: [path.id] };
       }),
 
     reorderSelected: (direction) =>

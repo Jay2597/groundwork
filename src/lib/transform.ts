@@ -7,8 +7,13 @@ export function scaleNodeTree(node: SceneNode, sx: number, sy: number): SceneNod
     return { ...node, ...box, fontSize: node.fontSize * ((sx + sy) / 2) };
   }
   if (node.type === "path") {
-    const points = node.points.map((p, i) => (i % 2 === 0 ? p * sx : p * sy));
-    return { ...node, ...box, points };
+    const scalePts = (pts: number[]) => pts.map((p, i) => (i % 2 === 0 ? p * sx : p * sy));
+    return {
+      ...node,
+      ...box,
+      points: scalePts(node.points),
+      subpaths: node.subpaths?.map((sp) => ({ ...sp, points: scalePts(sp.points) })),
+    };
   }
   if (isContainer(node)) {
     return { ...node, ...box, children: node.children.map((c) => scaleNodeTree(c, sx, sy)) };

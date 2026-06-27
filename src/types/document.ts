@@ -143,12 +143,21 @@ export interface TextNode extends BaseNode {
   textStyleId?: string;
 }
 
-/** A free-form vector path drawn with the pen tool. Points are local to (x, y). */
-export interface PathNode extends BaseNode {
-  type: "path";
+/** One contour of a (possibly compound) path. */
+export interface SubPath {
   /** Flattened [x0, y0, x1, y1, …] in the node's local space. */
   points: number[];
   closed: boolean;
+}
+
+/** A free-form vector path drawn with the pen tool. Points are local to (x, y). */
+export interface PathNode extends BaseNode {
+  type: "path";
+  /** Flattened [x0, y0, x1, y1, …] in the node's local space (first contour). */
+  points: number[];
+  closed: boolean;
+  /** When present, the path is a compound shape rendered with the even-odd rule. */
+  subpaths?: SubPath[];
 }
 
 /** A frame / artboard — a container whose children are positioned relative to it. */

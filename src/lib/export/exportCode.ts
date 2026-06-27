@@ -142,6 +142,18 @@ function pathInner(node: PathNode): string {
   const stroke = node.stroke
     ? ` stroke="${node.stroke.color}" stroke-width="${round(node.stroke.width)}"`
     : "";
+  if (node.subpaths && node.subpaths.length > 1) {
+    const d = node.subpaths
+      .map((sp) => {
+        const p = sp.points;
+        if (p.length < 2) return "";
+        let seg = `M${round(p[0])},${round(p[1])}`;
+        for (let i = 2; i < p.length; i += 2) seg += ` L${round(p[i])},${round(p[i + 1])}`;
+        return sp.closed ? `${seg} Z` : seg;
+      })
+      .join(" ");
+    return `${defsBlock}<path d="${d}" fill="${fill}" fill-rule="evenodd"${stroke} />`;
+  }
   return `${defsBlock}<${tag} points="${pts.join(" ")}" fill="${fill}"${stroke} />`;
 }
 

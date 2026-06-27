@@ -1,7 +1,8 @@
-import { Ellipse, Group, Image as KonvaImage, Line, Rect, Text } from "react-konva";
+import { Ellipse, Group, Image as KonvaImage, Line, Rect, Shape, Text } from "react-konva";
 import type Konva from "konva";
+import type { Context as KonvaContext } from "konva/lib/Context";
 import type { KonvaEventObject } from "konva/lib/Node";
-import type { ImageNode, RectNode, SceneNode } from "@/types/document";
+import type { ImageNode, PathNode, RectNode, SceneNode } from "@/types/document";
 import { useImage } from "@/hooks/useImage";
 import { fillsFor, paintToKonva, strokeToKonva } from "@/lib/paint";
 import { useUiStore } from "@/store/uiStore";
@@ -123,6 +124,9 @@ function Child({ node }: { node: SceneNode }) {
     case "image":
       return <ImageShape node={node} fx={{ ...stroke, ...shadow }} />;
     case "path": {
+      if (node.subpaths && node.subpaths.length > 1) {
+        return <CompoundPath node={node} stroke={stroke} shadow={shadow} />;
+      }
       const top = fillsFor(node)[fillsFor(node).length - 1];
       return (
         <Line
@@ -158,6 +162,39 @@ function Child({ node }: { node: SceneNode }) {
 }
 
 type Fx = Record<string, unknown>;
+
+/** Compound path rendered with the even-odd fill rule (holes work). */
+function CompoundPath({ node, stroke, shadow }: { node: PathNode; stroke: Fx; shadow: Fx }) {
+  const subs = node.subpaths ?? [];
+  const trace = (ctx: KonvaContext) => {
+    ctx.beginPath();
+    for (const sp of subs) {
+      const p = sp.points;
+      if (p.length < 2) continue;
+      ctx.moveTo(p[0], p[1]);
+      for (let i = 2; i < p.length; i += 2) ctx.lineTo(p[i], p[i + 1]);
+      if (sp.closed) ctx.closePath();
+    }
+  };
+  return (
+    <Shape
+      {...stroke}
+      {...shadow}
+      fill={node.fill}
+      sceneFunc={(ctx, shape) => {
+        trace(ctx);
+        const raw = (ctx as unknown as { _context: CanvasRenderingContext2D })._context;
+        raw.fillStyle = node.fill;
+        raw.fill("evenodd");
+        ctx.strokeShape(shape);
+      }}
+      hitFunc={(ctx, shape) => {
+        trace(ctx);
+        ctx.fillStrokeShape(shape);
+      }}
+    />
+  );
+}
 
 function ImageShape({ node, fx }: { node: ImageNode; fx: Fx }) {
   const img = useImage(node.image.src);

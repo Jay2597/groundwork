@@ -116,6 +116,11 @@ export function useKeyboardShortcuts(): void {
         else store.groupSelected();
         return;
       }
+      if (mod && key === "e") {
+        e.preventDefault();
+        store.flattenSelected();
+        return;
+      }
 
       // Z-order
       if (!mod && key === "]") {

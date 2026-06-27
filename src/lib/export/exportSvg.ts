@@ -102,13 +102,27 @@ function pathToSvg(
   transform: string,
   defs: string[],
 ): string {
+  const fill = node.closed ? fillRef(node, defs) : "none";
+  if (node.subpaths && node.subpaths.length > 1) {
+    const d = node.subpaths
+      .map((sp) => subpathToD(node.x, node.y, sp.points, sp.closed))
+      .join(" ");
+    return `<path d="${d}" fill="${fill}" fill-rule="evenodd"${stroke}${opacity}${transform} />`;
+  }
   const pts: string[] = [];
   for (let i = 0; i < node.points.length; i += 2) {
     pts.push(`${node.x + node.points[i]},${node.y + node.points[i + 1]}`);
   }
   const tag = node.closed ? "polygon" : "polyline";
-  const fill = node.closed ? fillRef(node, defs) : "none";
   return `<${tag} points="${pts.join(" ")}" fill="${fill}"${stroke}${opacity}${transform} />`;
+}
+
+/** SVG path "d" for one contour, offset to (ox, oy). */
+function subpathToD(ox: number, oy: number, points: number[], closed: boolean): string {
+  if (points.length < 2) return "";
+  let d = `M${ox + points[0]},${oy + points[1]}`;
+  for (let i = 2; i < points.length; i += 2) d += ` L${ox + points[i]},${oy + points[i + 1]}`;
+  return closed ? `${d} Z` : d;
 }
 
 function frameToSvg(frame: FrameNode, defs: string[]): string {

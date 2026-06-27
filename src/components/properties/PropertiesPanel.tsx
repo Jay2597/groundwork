@@ -55,6 +55,7 @@ export function PropertiesPanel() {
   const groupSelected = useEditorStore((s) => s.groupSelected);
   const ungroupSelected = useEditorStore((s) => s.ungroupSelected);
   const frameSelection = useEditorStore((s) => s.frameSelection);
+  const flattenSelected = useEditorStore((s) => s.flattenSelected);
   const booleanSelected = useEditorStore((s) => s.booleanSelected);
   const alignSelected = useEditorStore((s) => s.alignSelected);
   const distributeSelected = useEditorStore((s) => s.distributeSelected);
@@ -90,6 +91,7 @@ export function PropertiesPanel() {
             <button className="prop-btn" onClick={groupSelected}>Group</button>
             <button className="prop-btn" onClick={frameSelection}>Frame</button>
             <button className="prop-btn" onClick={createComponentFromSelection}>Component</button>
+            <button className="prop-btn" onClick={flattenSelected}>Flatten</button>
             <button className="prop-btn" onClick={duplicateSelected}>Duplicate</button>
           </div>
         </section>
@@ -345,14 +347,32 @@ function ImageSection({ node, set }: SectionProps) {
   );
 }
 
+const FONTS: { label: string; value: string }[] = [
+  { label: "IBM Plex Sans", value: '"IBM Plex Sans", system-ui, sans-serif' },
+  { label: "IBM Plex Mono", value: '"IBM Plex Mono", ui-monospace, monospace' },
+  { label: "System UI", value: "system-ui, sans-serif" },
+  { label: "Serif", value: 'Georgia, "Times New Roman", serif' },
+  { label: "Monospace", value: 'ui-monospace, "Courier New", monospace' },
+];
+
 function TypographySection({ node, set }: SectionProps) {
   if (node.type !== "text") return null;
   const aligns = ["left", "center", "right"] as const;
   const styles = ["normal", "bold", "italic"] as const;
+  const knownFont = FONTS.some((f) => f.value === node.fontFamily);
   return (
     <section className="group">
       <div className="ghead">TYPOGRAPHY</div>
       <TextField label="Aa" value={node.text} onChange={(text) => set({ text })} />
+      <label className="field" style={{ marginTop: 8 }} title="Font family">
+        <span>Font</span>
+        <select value={node.fontFamily} onChange={(e) => set({ fontFamily: e.target.value })}>
+          {!knownFont && <option value={node.fontFamily}>Current</option>}
+          {FONTS.map((f) => (
+            <option key={f.label} value={f.value}>{f.label}</option>
+          ))}
+        </select>
+      </label>
       <div className="grid2" style={{ marginTop: 8 }}>
         <NumberField label="Sz" value={node.fontSize} min={1} onChange={(fontSize) => set({ fontSize })} />
         <NumberField label="LH" value={node.lineHeight ?? 1} min={0.5} step={0.1} onChange={(lineHeight) => set({ lineHeight })} />
