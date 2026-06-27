@@ -17,6 +17,7 @@ import { PanelResizer } from "@/components/editor/PanelResizer";
 import { useUiStore } from "@/store/uiStore";
 import { usePrefsStore } from "@/store/prefsStore";
 import { zoomToFit } from "@/lib/zoom";
+import { getStage } from "@/lib/stageRegistry";
 
 const RAIL = 40;
 import { useAutosave } from "@/hooks/useAutosave";
@@ -52,8 +53,18 @@ export function EditorScreen() {
       loadDocument(doc);
       setCurrentFile(fileId);
       setReady(true);
-      // Fit the content into view once the canvas has mounted/sized.
-      requestAnimationFrame(() => requestAnimationFrame(() => zoomToFit()));
+      // Fit content once the canvas has actually been measured (retry until sized).
+      let tries = 0;
+      const fitWhenSized = () => {
+        if (!active) return;
+        const stage = getStage();
+        if (stage && stage.width() > 1 && stage.height() > 1) {
+          zoomToFit();
+        } else if (tries++ < 60) {
+          requestAnimationFrame(fitWhenSized);
+        }
+      };
+      requestAnimationFrame(fitWhenSized);
     });
     return () => {
       active = false;

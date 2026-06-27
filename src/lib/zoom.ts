@@ -12,7 +12,10 @@ function clamp(v: number): number {
 
 function stageSize(): { w: number; h: number } {
   const stage = getStage();
-  return stage ? { w: stage.width(), h: stage.height() } : { w: 1200, h: 800 };
+  const w = stage?.width() ?? 0;
+  const h = stage?.height() ?? 0;
+  // Fall back to a sane default when the canvas hasn't been measured yet.
+  return { w: w > 1 ? w : 1200, h: h > 1 ? h : 800 };
 }
 
 /** Set absolute zoom, keeping the stage center fixed. */
