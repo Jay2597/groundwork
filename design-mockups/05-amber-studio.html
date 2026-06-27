@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Amber Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d0d0f;
+        --panel: #151517;
+        --panel-2: #1b1b1e;
+        --raised: #222226;
+        --raised-2: #2b2b30;
+        --border: #2b2b30;
+        --border-2: #3a3a3e;
+        --text: #e9e9ec;
+        --text-2: #c8c8ce;
+        --muted: #9a9aa2;
+        --faint: #62626a;
+        --amber: #f2a33c;
+        --amber-dim: rgba(242, 163, 60, 0.16);
+        --blue: #4c8dff;
+        --green: #5ec98b;
+        --art: #fbfbfb;
+        --cream: #f4ecdd;
+        --sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+        --mono: "IBM Plex Mono", ui-monospace, monospace;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        height: 100vh;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+        font-size: 13px;
+      }
+      .app { display: grid; grid-template-rows: 46px 1fr 26px; height: 100vh; }
+
+      /* ===== menu bar ===== */
+      .menubar {
+        display: flex; align-items: center; gap: 4px;
+        padding: 0 12px; background: var(--panel);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        width: 24px; height: 24px; border-radius: 6px;
+        background: var(--amber); color: #1a1206; font-weight: 700;
+        display: grid; place-items: center; font-size: 14px; margin-right: 8px;
+        box-shadow: 0 0 0 1px rgba(242,163,60,0.3), 0 2px 8px rgba(242,163,60,0.25);
+      }
+      .wordmark { font-weight: 600; font-size: 14px; letter-spacing: -0.01em; margin-right: 14px; }
+      .menus { display: flex; gap: 2px; }
+      .menu { padding: 5px 10px; border-radius: 5px; color: var(--text-2); font-size: 12.5px; cursor: pointer; }
+      .menu:hover { background: var(--raised); }
+
+      .tools { display: flex; gap: 2px; margin: 0 auto; padding: 3px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 9px; }
+      .tool { width: 32px; height: 30px; border-radius: 6px; display: grid; place-items: center; color: var(--muted); cursor: pointer; }
+      .tool:hover { background: var(--raised); color: var(--text); }
+      .tool.active { background: var(--amber); color: #1a1206; }
+      .tool svg { width: 16px; height: 16px; }
+
+      .bar-right { display: flex; align-items: center; gap: 8px; }
+      .chip-status {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-family: var(--mono); font-size: 11px; color: var(--green);
+        background: rgba(94,201,139,0.1); border: 1px solid rgba(94,201,139,0.25);
+        padding: 4px 9px; border-radius: 999px;
+      }
+      .chip-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); }
+      .btn { padding: 6px 12px; border-radius: 7px; font-size: 12.5px; font-weight: 500; color: var(--text-2); background: var(--raised); border: 1px solid var(--border); cursor: pointer; }
+      .btn:hover { background: var(--raised-2); color: var(--text); }
+      .btn.amber { background: var(--amber); color: #1a1206; border-color: transparent; font-weight: 600; }
+      .btn.amber:hover { background: #ffb24d; }
+
+      /* ===== body ===== */
+      .body { display: grid; grid-template-columns: 244px 1fr 268px; min-height: 0; }
+
+      .panel { background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+      .panel.left { border-right: 1px solid var(--border); }
+      .panel.right { border-left: 1px solid var(--border); }
+
+      .tabs { display: flex; padding: 6px 8px 0; gap: 2px; border-bottom: 1px solid var(--border); }
+      .tab { padding: 8px 12px; font-size: 12.5px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+      .tab:hover { color: var(--text-2); }
+      .tab.active { color: var(--text); border-bottom-color: var(--amber); }
+
+      .sec-label { padding: 14px 14px 6px; font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--faint); }
+      .scroll { overflow-y: auto; flex: 1; }
+
+      .page-item, .layer { display: flex; align-items: center; gap: 9px; padding: 7px 12px; color: var(--muted); cursor: pointer; font-size: 12.5px; }
+      .page-item:hover, .layer:hover { background: var(--panel-2); }
+      .page-item.active { background: var(--amber-dim); color: var(--text); }
+      .page-item .dot { width: 7px; height: 7px; border-radius: 2px; background: var(--amber); }
+      .layer.active { background: var(--amber-dim); color: var(--text); }
+      .layer .ico { width: 14px; color: var(--faint); display: grid; place-items: center; }
+      .layer .ico svg { width: 13px; height: 13px; }
+      .layer .nm { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .layer.indent { padding-left: 30px; }
+      .layer.indent2 { padding-left: 46px; }
+      .layer .badge-mini { font-family: var(--mono); font-size: 9px; color: var(--green); border: 1px solid rgba(94,201,139,0.3); border-radius: 4px; padding: 1px 5px; }
+      .caret { color: var(--faint); width: 10px; font-size: 9px; }
+
+      .panel-foot { border-top: 1px solid var(--border); padding: 10px 14px; display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+      .panel-foot svg { width: 13px; height: 13px; color: var(--amber); }
+
+      /* ===== canvas ===== */
+      .stage {
+        position: relative; overflow: hidden;
+        background:
+          radial-gradient(circle at 1px 1px, #1a1a1d 1px, transparent 0) 0 0 / 24px 24px,
+          var(--bg);
+      }
+      .art-name { position: absolute; font-family: var(--mono); font-size: 11px; color: var(--amber); }
+
+      /* desktop artboard */
+      .desktop {
+        position: absolute; left: 80px; top: 96px; width: 560px; height: 420px;
+        background: var(--art); border-radius: 6px; overflow: hidden; color: #18181c;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.25);
+      }
+      .d-nav { display: flex; align-items: center; gap: 14px; padding: 14px 22px; border-bottom: 1px solid #ececec; }
+      .d-nav .b { width: 22px; height: 22px; border-radius: 6px; background: #18181c; }
+      .d-nav .t { font-weight: 700; font-size: 13px; }
+      .d-nav .links { display: flex; gap: 14px; margin-left: 8px; font-size: 11px; color: #6b6b72; }
+      .d-nav .cta { margin-left: auto; background: var(--amber); color: #1a1206; font-weight: 600; font-size: 11px; padding: 6px 12px; border-radius: 6px; }
+      .d-hero { padding: 30px 22px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; align-items: center; }
+      .d-hero .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); font-weight: 600; }
+      .d-hero h1 { font-size: 30px; line-height: 1.04; font-weight: 700; letter-spacing: -0.025em; margin-top: 10px; }
+      .d-hero p { font-size: 11.5px; color: #5d5d65; margin-top: 10px; line-height: 1.45; max-width: 240px; }
+      .d-hero .row { display: flex; gap: 8px; margin-top: 16px; }
+      .d-hero .pri { background: #18181c; color: #fff; font-size: 11px; font-weight: 600; padding: 8px 14px; border-radius: 7px; }
+      .d-hero .sec { background: #fff; border: 1px solid #dcdcdc; color: #18181c; font-size: 11px; font-weight: 500; padding: 8px 14px; border-radius: 7px; }
+      .d-shot { height: 150px; border-radius: 10px; background: linear-gradient(150deg, var(--cream), #fff); border: 1px solid #ececec; position: relative; overflow: hidden; }
+      .d-shot::after { content: ""; position: absolute; left: 18px; right: 18px; top: 18px; height: 40px; border-radius: 6px; background: #18181c; opacity: 0.92; }
+      .d-shot .blip { position: absolute; left: 18px; bottom: 18px; width: 60%; height: 8px; border-radius: 4px; background: #e3dccb; }
+      .d-feat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 22px 18px; }
+      .d-card { background: #f6f6f6; border-radius: 9px; padding: 12px; }
+      .d-card .i { width: 24px; height: 24px; border-radius: 7px; background: var(--amber-dim); display: grid; place-items: center; color: var(--amber); font-size: 12px; }
+      .d-card b { display: block; font-size: 11px; margin-top: 8px; }
+      .d-card span { font-size: 9.5px; color: #82828a; }
+
+      /* mobile artboard */
+      .mobile {
+        position: absolute; left: 680px; top: 130px; width: 200px; height: 380px;
+        background: var(--art); border-radius: 18px; overflow: hidden; color: #18181c;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.25);
+      }
+      .m-hero { background: #18181c; color: #fff; padding: 22px 16px 26px; }
+      .m-hero .eyebrow { font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; color: var(--amber); text-transform: uppercase; }
+      .m-hero h2 { font-size: 19px; line-height: 1.05; font-weight: 700; margin-top: 8px; letter-spacing: -0.02em; }
+      .m-body { padding: 16px; }
+      .m-cta { background: var(--amber); color: #1a1206; text-align: center; font-weight: 600; font-size: 11px; padding: 10px; border-radius: 8px; }
+      .m-line { height: 7px; border-radius: 4px; background: #ececec; margin-top: 10px; }
+      .m-line.s { width: 55%; }
+
+      /* selection */
+      .sel { position: absolute; outline: 1.5px solid var(--amber); pointer-events: none; }
+      .sel .h { position: absolute; width: 8px; height: 8px; background: var(--bg); border: 1.5px solid var(--amber); border-radius: 2px; }
+      .sel .h.tl{left:-4px;top:-4px}.sel .h.tr{right:-4px;top:-4px}.sel .h.bl{left:-4px;bottom:-4px}.sel .h.br{right:-4px;bottom:-4px}
+      .sel .dim { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); background: var(--amber); color: #1a1206; font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+
+      .privacy { position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; gap: 9px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; }
+      .privacy .lock { width: 26px; height: 26px; border-radius: 7px; background: var(--amber-dim); display: grid; place-items: center; color: var(--amber); }
+      .privacy b { font-size: 11.5px; display: block; } .privacy span { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+      .zoom { position: absolute; right: 16px; bottom: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 6px 11px; font-family: var(--mono); font-size: 11px; color: var(--text-2); display: flex; gap: 10px; align-items: center; }
+
+      /* ===== inspector ===== */
+      .insp-head { display: flex; align-items: center; gap: 9px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+      .insp-head .ico { color: var(--amber); display: grid; place-items: center; }
+      .insp-head .ico svg { width: 15px; height: 15px; }
+      .insp-head .nm { font-weight: 600; font-size: 13px; flex: 1; }
+      .insp-head .tag { font-family: var(--mono); font-size: 9px; color: var(--green); border: 1px solid rgba(94,201,139,0.3); border-radius: 5px; padding: 2px 6px; }
+
+      .group { padding: 13px 14px; border-bottom: 1px solid var(--border); }
+      .ghead { display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--faint); margin-bottom: 10px; }
+      .ghead .plus { color: var(--muted); cursor: pointer; }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+      .field { display: flex; align-items: center; gap: 7px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 6px 9px; }
+      .field span { color: var(--faint); font-family: var(--mono); font-size: 10px; }
+      .field input { background: none; border: none; width: 100%; color: var(--text); font-family: var(--mono); font-size: 11.5px; outline: none; }
+      .row { display: flex; align-items: center; gap: 8px; }
+      .row + .row { margin-top: 8px; }
+      .swatch { width: 20px; height: 20px; border-radius: 6px; border: 1px solid var(--border-2); flex-shrink: 0; }
+      .seg { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 2px; }
+      .seg div { flex: 1; text-align: center; font-size: 11px; padding: 5px; border-radius: 6px; color: var(--muted); cursor: pointer; }
+      .seg div.on { background: var(--raised-2); color: var(--text); }
+      .eff-row { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; font-size: 11.5px; color: var(--text-2); }
+      .eff-row .sw { width: 14px; height: 14px; border-radius: 4px; background: #000; border: 1px solid var(--border-2); }
+      .eff-row .x { margin-left: auto; color: var(--faint); }
+      .export-row { display: flex; align-items: center; gap: 8px; }
+      .export-row .fmt { font-family: var(--mono); font-size: 11px; }
+
+      /* status bar */
+      .statusbar { display: flex; align-items: center; gap: 16px; padding: 0 14px; background: var(--panel); border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+      .statusbar .amber { color: var(--amber); }
+      .statusbar .right { margin-left: auto; display: flex; gap: 16px; }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- ===== menu bar ===== -->
+      <header class="menubar">
+        <div class="logo">G</div>
+        <div class="wordmark">Groundwork</div>
+        <nav class="menus">
+          <div class="menu">File</div><div class="menu">Edit</div>
+          <div class="menu">View</div><div class="menu">Object</div>
+          <div class="menu">Export</div>
+        </nav>
+        <div class="tools">
+          <div class="tool active" title="Move (V)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3l7 17 2-7 7-2z"/></svg></div>
+          <div class="tool" title="Frame (F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>
+          <div class="tool" title="Rectangle (R)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></div>
+          <div class="tool" title="Ellipse (O)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg></div>
+          <div class="tool" title="Pen (P)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7-4-4-7 7zM5 21l3-1"/></svg></div>
+          <div class="tool" title="Text (T)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M12 6v13"/></svg></div>
+          <div class="tool" title="Comment (C)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/></svg></div>
+        </div>
+        <div class="bar-right">
+          <span class="chip-status">Offline-ready</span>
+          <button class="btn">Preview</button>
+          <button class="btn amber">Export</button>
+        </div>
+      </header>
+
+      <div class="body">
+        <!-- ===== left panel ===== -->
+        <aside class="panel left">
+          <div class="tabs">
+            <div class="tab active">Layers</div>
+            <div class="tab">Assets</div>
+            <div class="tab">Pages</div>
+          </div>
+
+          <div class="sec-label">PAGES</div>
+          <div class="page-item active"><span class="dot"></span>Desktop / Landing</div>
+          <div class="page-item"><span class="dot" style="background:var(--faint)"></span>Mobile / Landing</div>
+
+          <div class="sec-label">LAYERS</div>
+          <div class="scroll">
+            <div class="layer"><span class="caret">▾</span><span class="ico">▦</span><span class="nm">Nav bar</span></div>
+            <div class="layer active"><span class="caret">▾</span><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></span><span class="nm">Hero</span><span class="badge-mini">auto</span></div>
+            <div class="layer active indent"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M12 6v13"/></svg></span><span class="nm">Headline</span></div>
+            <div class="layer indent"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="10" rx="3"/></svg></span><span class="nm">CTA Button</span></div>
+            <div class="layer indent"><span class="ico">▣</span><span class="nm">Hero image</span></div>
+            <div class="layer"><span class="caret">▸</span><span class="ico">▦</span><span class="nm">Feature grid</span></div>
+            <div class="layer"><span class="caret"></span><span class="ico">▭</span><span class="nm">Footer</span></div>
+          </div>
+
+          <div class="panel-foot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 2M21 12a9 9 0 1 1-9-9"/></svg>
+            Local history · 42 versions
+          </div>
+        </aside>
+
+        <!-- ===== canvas ===== -->
+        <main class="stage">
+          <div class="art-name" style="left:80px; top:78px;">Desktop / Landing · 560 × 420</div>
+          <div class="desktop">
+            <div class="d-nav">
+              <div class="b"></div><div class="t">Groundwork</div>
+              <div class="links"><span>Features</span><span>Pricing</span><span>Docs</span></div>
+              <div class="cta">Download</div>
+            </div>
+            <div class="d-hero">
+              <div>
+                <div class="eyebrow">Local-first design</div>
+                <h1>Design that never leaves home.</h1>
+                <p>Everything you make lives on your machine. No cloud, no account, no upload — ever.</p>
+                <div class="row"><div class="pri">Get Groundwork</div><div class="sec">See how it works</div></div>
+              </div>
+              <div class="d-shot"><div class="blip"></div></div>
+            </div>
+            <div class="d-feat">
+              <div class="d-card"><div class="i">🔒</div><b>Private</b><span>On-device only</span></div>
+              <div class="d-card"><div class="i">✦</div><b>Offline</b><span>Works anywhere</span></div>
+              <div class="d-card"><div class="i">↺</div><b>History</b><span>Local versions</span></div>
+            </div>
+          </div>
+
+          <!-- selection on the Hero block -->
+          <div class="sel" style="left:80px; top:154px; width:560px; height:196px;">
+            <div class="h tl"></div><div class="h tr"></div><div class="h bl"></div><div class="h br"></div>
+            <div class="dim">Hero · 560 × 196 · auto-layout</div>
+          </div>
+
+          <div class="art-name" style="left:680px; top:112px;">Mobile / Landing · 200 × 380</div>
+          <div class="mobile">
+            <div class="m-hero">
+              <div class="eyebrow">Local-first</div>
+              <h2>Your design stays yours.</h2>
+            </div>
+            <div class="m-body">
+              <div class="m-cta">Download</div>
+              <div class="m-line"></div><div class="m-line s"></div>
+              <div class="m-line"></div><div class="m-line s"></div>
+            </div>
+          </div>
+
+          <div class="privacy">
+            <div class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+            <div><b>0 bytes uploaded</b><span>this whole session is on-device</span></div>
+          </div>
+          <div class="zoom"><span>100%</span><span style="color:var(--faint)">|</span><span>Fit</span></div>
+        </main>
+
+        <!-- ===== inspector ===== -->
+        <aside class="panel right">
+          <div class="insp-head">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></span>
+            <span class="nm">Hero</span>
+            <span class="tag">local</span>
+          </div>
+
+          <div class="group">
+            <div class="ghead">TRANSFORM</div>
+            <div class="grid2" style="margin-bottom:8px">
+              <div class="field"><span>X</span><input value="0" /></div>
+              <div class="field"><span>Y</span><input value="18" /></div>
+              <div class="field"><span>W</span><input value="560" /></div>
+              <div class="field"><span>H</span><input value="196" /></div>
+            </div>
+            <div class="grid2">
+              <div class="field"><span>∠</span><input value="0°" /></div>
+              <div class="field"><span>R</span><input value="0" /></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="ghead">AUTO LAYOUT <span class="plus">⇄</span></div>
+            <div class="seg" style="margin-bottom:8px"><div>↓ Vert</div><div class="on">→ Horz</div><div>⊞ Wrap</div></div>
+            <div class="grid3">
+              <div class="field"><span>Gap</span><input value="20" /></div>
+              <div class="field"><span>Px</span><input value="22" /></div>
+              <div class="field"><span>Py</span><input value="30" /></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="ghead">FILL <span class="plus">+</span></div>
+            <div class="row">
+              <div class="swatch" style="background:#fbfbfb"></div>
+              <div class="field" style="flex:1"><span>#</span><input value="FBFBFB" /></div>
+              <div class="field" style="width:74px"><span></span><input value="100%" /></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="ghead">STROKE <span class="plus">+</span></div>
+            <div class="row">
+              <div class="swatch" style="background:#ececec"></div>
+              <div class="field" style="flex:1"><span>#</span><input value="ECECEC" /></div>
+              <div class="field" style="width:74px"><span>W</span><input value="1" /></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="ghead">EFFECTS <span class="plus">+</span></div>
+            <div class="eff-row"><span class="sw"></span>Drop shadow<span class="x">⋯</span></div>
+          </div>
+
+          <div class="group">
+            <div class="ghead">TYPOGRAPHY</div>
+            <div class="row" style="margin-bottom:8px">
+              <div class="field" style="flex:1"><span>Aa</span><input value="IBM Plex Sans" /></div>
+            </div>
+            <div class="grid3">
+              <div class="field"><span>W</span><input value="Bold" /></div>
+              <div class="field"><span>Sz</span><input value="30" /></div>
+              <div class="field"><span>Lh</span><input value="104%" /></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="ghead">EXPORT <span class="plus">+</span></div>
+            <div class="export-row">
+              <div class="seg" style="flex:1"><div class="on">PNG</div><div>SVG</div><div>PDF</div></div>
+              <span class="fmt" style="color:var(--muted)">2×</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- ===== status bar ===== -->
+      <footer class="statusbar">
+        <span class="amber">● Saved locally</span>
+        <span>~/Documents/Groundwork/landing.gwork</span>
+        <div class="right">
+          <span>no upload</span>
+          <span>2 frames · 13 layers</span>
+          <span>IBM Plex</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

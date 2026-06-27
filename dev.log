@@ -1,0 +1,551 @@
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m535[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5180[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m1:01:31 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/properties.css[22m
+[2m1:01:47 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m1:01:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m1:02:52 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/FramePresets.tsx[22m
+[2m1:06:05 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:06:10 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:06:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:06:33 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:06:39 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:19:58 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/HomeScreen.tsx[22m
+[2m1:20:06 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/HomeScreen.tsx[22m
+[2m1:23:01 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m1:26:23 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:26:33 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:27:04 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:27:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:29:26 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:29:32 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:29:40 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:29:59 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:30:07 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:30:23 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:30:31 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:35:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/editor/EditorScreen.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:35:59 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/editor/EditorScreen.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:36:17 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:36:26 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:36:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:36:44 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:36:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:37:02 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:37:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:37:24 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:37:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:39:01 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:39:11 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:39:21 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m1:39:27 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m1:39:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m1:39:52 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m1:40:02 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m1:40:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m1:40:17 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m1:40:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/GroupView.tsx[22m
+[2m1:41:00 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m1:41:10 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m1:41:20 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m1:46:08 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m1:46:19 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m1:46:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/canvas.css[22m
+[2m1:46:37 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/welcome.css[22m
+[2m1:46:58 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m1:47:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m1:47:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m1:47:23 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/HomeScreen.tsx[22m
+[2m1:47:30 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/HomeScreen.tsx[22m
+[2m1:47:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx[22m
+[2m1:47:42 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx[22m
+[2m1:47:56 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/theme/ThemeToggle.tsx[22m
+[2m1:48:10 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx[22m
+[2m1:48:37 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:48:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m1:48:57 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:49:10 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:54:29 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:54:29 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:57:15 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:57:39 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/SelectionTransformer.tsx[22m
+[2m1:58:00 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/SelectionTransformer.tsx[22m
+[2m1:58:08 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/SelectionTransformer.tsx[22m
+[2m1:58:08 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/SelectionTransformer.tsx[22m
+[2m1:58:19 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:58:19 p.m.[22m [31m[1m[vite][22m[39m [31mInternal server error: Duplicate declaration "SNAP_PX"
+[0m [90m 29 |[31m [36mconst[31m [33mDEFAULT_SIZE[31m [33m=[31m [35m120[31m[33m;[31m
+ [90m 30 |[31m [36mconst[31m [33mFRAME_DEFAULT[31m [33m=[31m { width[33m:[31m [35m400[31m[33m,[31m height[33m:[31m [35m300[31m }[33m;[31m
+[31m[1m>[22m[31m[90m 31 |[31m [36mconst[31m [33mSNAP_PX[31m [33m=[31m [35m6[31m[33m;[31m
+ [90m    |[31m       [31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m
+ [90m 32 |[31m
+ [90m 33 |[31m [36minterface[31m [33mBox[31m {
+ [90m 34 |[31m   x[33m:[31m number[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Jay Apps/Pigma/src/components/canvas/CanvasStage.tsx[39m
+      at File.buildCodeFrameError (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transformation\file\file.js:189:12)
+      at Scope.checkBlockScopedCollisions (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:433:27)
+      at Scope.registerBinding (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:530:16)
+      at Scope.registerDeclaration (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:482:14)
+      at Object.BlockScoped (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:276:12)
+      at Object.newFn (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\visitors.js:203:17)
+      at NodePath._call (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:50:20)
+      at NodePath.call (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:40:18)
+      at NodePath.visit (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:87:31)
+      at TraversalContext.visitQueue (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\context.js:96:16)
+      at TraversalContext.visitMultiple (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\context.js:68:17)
+      at TraversalContext.visit (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\context.js:117:19)
+      at traverseNode (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\traverse-node.js:130:17)
+      at traverse (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\index.js:53:34)
+      at NodePath.traverse (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\index.js:120:24)
+      at Scope.crawl (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:695:10)
+      at Scope.init (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:661:12)
+      at NodePath.setScope (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:139:55)
+      at NodePath.setContext (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:151:12)
+      at new File (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transformation\file\file.js:80:8)
+      at normalizeFile (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transformation\normalize-file.js:82:10)
+      at normalizeFile.next (<anonymous>)
+      at run (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transformation\index.js:22:50)
+      at run.next (<anonymous>)
+      at transform (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transform.js:22:33)
+      at transform.next (<anonymous>)
+      at step (C:\Jay Apps\Pigma\node_modules\gensync\index.js:261:32)
+      at C:\Jay Apps\Pigma\node_modules\gensync\index.js:273:13
+      at async.call.result.err.err (C:\Jay Apps\Pigma\node_modules\gensync\index.js:223:11)
+      at C:\Jay Apps\Pigma\node_modules\gensync\index.js:189:28
+      at C:\Jay Apps\Pigma\node_modules\@babel\core\lib\gensync-utils\async.js:67:7
+      at C:\Jay Apps\Pigma\node_modules\gensync\index.js:113:33
+      at step (C:\Jay Apps\Pigma\node_modules\gensync\index.js:287:14)
+      at C:\Jay Apps\Pigma\node_modules\gensync\index.js:273:13
+      at async.call.result.err.err (C:\Jay Apps\Pigma\node_modules\gensync\index.js:223:11)
+[2m1:58:19 p.m.[22m [31m[1m[vite][22m[39m [31mInternal server error: Duplicate declaration "SNAP_PX"
+[0m [90m 29 |[31m [36mconst[31m [33mDEFAULT_SIZE[31m [33m=[31m [35m120[31m[33m;[31m
+ [90m 30 |[31m [36mconst[31m [33mFRAME_DEFAULT[31m [33m=[31m { width[33m:[31m [35m400[31m[33m,[31m height[33m:[31m [35m300[31m }[33m;[31m
+[31m[1m>[22m[31m[90m 31 |[31m [36mconst[31m [33mSNAP_PX[31m [33m=[31m [35m6[31m[33m;[31m
+ [90m    |[31m       [31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m[31m[1m^[22m[31m
+ [90m 32 |[31m
+ [90m 33 |[31m [36minterface[31m [33mBox[31m {
+ [90m 34 |[31m   x[33m:[31m number[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Jay Apps/Pigma/src/components/canvas/CanvasStage.tsx[39m
+      at File.buildCodeFrameError (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transformation\file\file.js:189:12)
+      at Scope.checkBlockScopedCollisions (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:433:27)
+      at Scope.registerBinding (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:530:16)
+      at Scope.registerDeclaration (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:482:14)
+      at Object.BlockScoped (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:276:12)
+      at Object.newFn (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\visitors.js:203:17)
+      at NodePath._call (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:50:20)
+      at NodePath.call (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:40:18)
+      at NodePath.visit (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:87:31)
+      at TraversalContext.visitQueue (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\context.js:96:16)
+      at TraversalContext.visitMultiple (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\context.js:68:17)
+      at TraversalContext.visit (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\context.js:117:19)
+      at traverseNode (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\traverse-node.js:130:17)
+      at traverse (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\index.js:53:34)
+      at NodePath.traverse (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\index.js:120:24)
+      at Scope.crawl (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:695:10)
+      at Scope.init (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\scope\index.js:661:12)
+      at NodePath.setScope (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:139:55)
+      at NodePath.setContext (C:\Jay Apps\Pigma\node_modules\@babel\traverse\lib\path\context.js:151:12)
+      at new File (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transformation\file\file.js:80:8)
+      at normalizeFile (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transformation\normalize-file.js:82:10)
+      at normalizeFile.next (<anonymous>)
+      at run (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transformation\index.js:22:50)
+      at run.next (<anonymous>)
+      at transform (C:\Jay Apps\Pigma\node_modules\@babel\core\lib\transform.js:22:33)
+      at transform.next (<anonymous>)
+      at step (C:\Jay Apps\Pigma\node_modules\gensync\index.js:261:32)
+      at C:\Jay Apps\Pigma\node_modules\gensync\index.js:273:13
+      at async.call.result.err.err (C:\Jay Apps\Pigma\node_modules\gensync\index.js:223:11)
+      at C:\Jay Apps\Pigma\node_modules\gensync\index.js:189:28
+      at C:\Jay Apps\Pigma\node_modules\@babel\core\lib\gensync-utils\async.js:67:7
+      at C:\Jay Apps\Pigma\node_modules\gensync\index.js:113:33
+      at step (C:\Jay Apps\Pigma\node_modules\gensync\index.js:287:14)
+      at C:\Jay Apps\Pigma\node_modules\gensync\index.js:273:13
+      at async.call.result.err.err (C:\Jay Apps\Pigma\node_modules\gensync\index.js:223:11)
+[2m1:58:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:58:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:58:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:59:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:59:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:59:24 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:59:24 p.m.[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
+C:/Jay Apps/Pigma/src/components/canvas/CanvasStage.tsx:390:68: ERROR: The character "}" is not valid inside a JSX element[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Jay Apps/Pigma/src/components/canvas/CanvasStage.tsx[39m:371:68
+[33m  
+  [33mThe character "}" is not valid inside a JSX element[33m
+  388|            {draft && <DraftPreview draft={draft} />}
+  389|            {marquee && <MarqueeBox box={marquee} scale={viewport.scale} />}
+  390|            <SpacingGuides markers={spacing} scale={viewport.scale} />}
+     |                                                                      ^
+  391|  
+  392|            {guides.map((g, i) =>
+  [39m
+      at failureErrorWithLog (C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:1472:15)
+      at C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:755:50
+      at responseCallbacks.<computed> (C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:622:9)
+      at handleIncomingPacket (C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:677:12)
+      at Socket.readFromStdout (C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:600:7)
+      at Socket.emit (node:events:509:28)
+      at addChunk (node:internal/streams/readable:563:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+      at Readable.push (node:internal/streams/readable:394:5)
+      at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+[2m1:59:24 p.m.[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
+C:/Jay Apps/Pigma/src/components/canvas/CanvasStage.tsx:390:68: ERROR: The character "}" is not valid inside a JSX element[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Jay Apps/Pigma/src/components/canvas/CanvasStage.tsx[39m:371:68
+[33m  
+  [33mThe character "}" is not valid inside a JSX element[33m
+  388|            {draft && <DraftPreview draft={draft} />}
+  389|            {marquee && <MarqueeBox box={marquee} scale={viewport.scale} />}
+  390|            <SpacingGuides markers={spacing} scale={viewport.scale} />}
+     |                                                                      ^
+  391|  
+  392|            {guides.map((g, i) =>
+  [39m
+      at failureErrorWithLog (C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:1472:15)
+      at C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:755:50
+      at responseCallbacks.<computed> (C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:622:9)
+      at handleIncomingPacket (C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:677:12)
+      at Socket.readFromStdout (C:\Jay Apps\Pigma\node_modules\esbuild\lib\main.js:600:7)
+      at Socket.emit (node:events:509:28)
+      at addChunk (node:internal/streams/readable:563:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+      at Readable.push (node:internal/streams/readable:394:5)
+      at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+[2m1:59:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:59:47 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m1:59:57 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:12:34 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/editor/EditorScreen.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/GroupView.tsx[22m
+[2m2:13:37 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m2:13:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m2:14:06 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m2:15:02 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/ShapeNode.tsx[22m
+[2m2:15:46 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/GroupView.tsx[22m
+[2m2:15:51 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/GroupView.tsx[22m
+[2m2:16:03 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/GroupView.tsx[22m
+[2m2:16:20 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:16:25 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:16:29 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:16:36 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:16:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:16:58 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:17:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m2:17:22 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m2:17:36 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:17:56 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:18:02 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:18:10 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx[22m
+[2m2:18:30 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx[22m
+[2m2:18:36 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx[22m
+[2m2:18:40 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx[22m
+[2m2:18:47 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m2:18:52 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m2:19:00 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m2:19:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m2:20:27 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/FramePresets.tsx[22m
+[2m2:20:32 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/FramePresets.tsx[22m
+[2m2:20:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/statusbar/StatusBar.tsx[22m
+[2m2:20:43 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m2:20:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/editor/EditorScreen.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/BooleanView.tsx, /src/components/canvas/FrameView.tsx[22m
+[2m2:20:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/BooleanView.tsx[22m
+[2m2:21:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m2:22:37 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:22:44 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:22:49 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:22:57 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:23:02 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:23:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/toolbar/Toolbar.tsx[22m
+[2m2:23:21 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/toolbar/Toolbar.tsx[22m
+[2m2:24:44 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:24:50 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:24:55 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:25:08 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:25:17 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m2:25:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m2:25:33 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m2:25:47 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m2:26:03 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m2:26:08 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m2:26:50 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:26:59 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:27:08 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m2:27:45 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/HomeScreen.tsx[22m
+[2m2:28:04 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/home.css[22m
+[2m2:28:11 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/home.css[22m
+[2m2:30:20 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:30:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:30:33 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:30:40 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:30:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:30:55 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/SelectionTransformer.tsx[22m
+[2m2:31:01 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/SelectionTransformer.tsx[22m
+[2m2:31:23 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:31:32 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx, /src/components/editor/EditorScreen.tsx[22m
+[2m2:32:43 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m2:32:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m2:32:55 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:33:02 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:33:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:34:17 p.m.[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/main.tsx[22m
+[2m2:35:34 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m2:35:42 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m2:36:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m2:36:24 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m2:37:00 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m2:37:21 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/layers.css[22m
+[2m2:37:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m2:37:45 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m2:37:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m2:38:05 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m2:38:21 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m2:38:49 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/properties.css[22m
+[2m2:39:41 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:39:47 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:40:00 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:40:05 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:40:13 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:40:21 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:40:30 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:40:41 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:40:50 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:40:59 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/toolbar/Toolbar.tsx[22m
+[2m2:41:06 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/canvas.css[22m
+[2m2:41:45 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/editor/EditorScreen.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/palette/CommandPalette.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/export/ExportPanel.tsx, /src/components/present/PresentMode.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/BooleanView.tsx, /src/components/canvas/FrameView.tsx[22m
+[2m2:41:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/editor/EditorScreen.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/palette/CommandPalette.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/export/ExportPanel.tsx, /src/components/present/PresentMode.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/BooleanView.tsx, /src/components/canvas/FrameView.tsx[22m
+[2m2:42:01 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/editor/EditorScreen.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/palette/CommandPalette.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/export/ExportPanel.tsx, /src/components/present/PresentMode.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/BooleanView.tsx, /src/components/canvas/FrameView.tsx[22m
+[2m2:42:12 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/palette/CommandPalette.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/export/ExportPanel.tsx, /src/components/present/PresentMode.tsx[22m
+[2m2:42:24 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/palette/CommandPalette.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/export/ExportPanel.tsx, /src/components/present/PresentMode.tsx[22m
+[2m2:42:32 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/palette/CommandPalette.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/export/ExportPanel.tsx, /src/components/present/PresentMode.tsx[22m
+[2m2:42:41 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/layers/LayersPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/properties/FramePresets.tsx, /src/components/palette/CommandPalette.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/export/ExportPanel.tsx, /src/components/present/PresentMode.tsx[22m
+[2m2:42:52 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/palette/CommandPalette.tsx, /src/components/export/ExportPanel.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/topbar/TopBar.tsx[22m
+[2m2:43:01 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/palette/CommandPalette.tsx, /src/components/export/ExportPanel.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/topbar/TopBar.tsx[22m
+[2m2:43:37 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:43:44 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:43:50 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:44:03 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m2:44:10 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:44:19 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m2:49:17 p.m.[22m [36m[1m[vite][22m[39m [32mvite.config.js changed, restarting server...[39m
+Re-optimizing dependencies because lockfile has changed
+[2m2:49:17 p.m.[22m [36m[1m[vite][22m[39m server restarted.
+[2m2:52:13 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m3:04:29 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:04:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m3:04:59 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx[22m
+[2m3:05:08 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:05:17 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:05:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:05:43 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:06:15 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:06:22 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:06:34 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:06:46 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:06:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:07:03 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:07:11 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:07:25 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:07:41 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:07:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertyInputs.tsx[22m
+[2m3:07:54 p.m.[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/properties/PropertyInputs.tsx[22m Could not Fast Refresh (new export)
+[2m3:07:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:08:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/properties.css[22m
+[2m3:09:26 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m3:09:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/topbar.css[22m
+[2m3:10:49 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m3:10:56 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/palette/palette.css[22m
+[2m3:11:03 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/settings/settings.css[22m
+[2m3:11:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/contextmenu/contextmenu.css[22m
+[2m3:11:19 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/present/present.css[22m
+[2m3:11:32 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/comments/comments.css[22m
+[2m3:11:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/comments/comments.css[22m
+[2m3:11:49 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:16:33 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m3:16:57 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertyInputs.tsx[22m
+[2m3:16:57 p.m.[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/properties/PropertyInputs.tsx[22m Could not Fast Refresh (new export)
+[2m3:16:57 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:17:03 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:17:10 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:17:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m3:17:25 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m3:17:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertyInputs.tsx[22m
+[2m3:17:35 p.m.[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/properties/PropertyInputs.tsx[22m Could not Fast Refresh ("makeScrub" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m3:17:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:17:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertyInputs.tsx[22m
+[2m3:17:54 p.m.[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/properties/PropertyInputs.tsx[22m Could not Fast Refresh ("makeScrub" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m3:17:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:19:07 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ui/Icons.tsx[22m
+[2m3:19:07 p.m.[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/ui/Icons.tsx[22m Could not Fast Refresh (new export)
+[2m3:19:07 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:19:14 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m3:19:25 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m3:19:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m3:19:45 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/layers.css[22m
+[2m3:19:55 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m3:20:01 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m3:20:23 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx[22m
+[2m3:20:29 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx[22m
+[2m3:20:36 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx[22m
+[2m3:20:36 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx[22m
+[2m3:20:43 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx[22m
+[2m3:20:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m3:21:03 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m3:21:03 p.m.[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "@/components/editor/PanelRail" from "src/components/editor/EditorScreen.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mC:/Jay Apps/Pigma/src/components/editor/EditorScreen.tsx[39m:13:26
+[33m  28 |  import { ExportPanel } from "@/components/export/ExportPanel";
+  29 |  import { PresentMode } from "@/components/present/PresentMode";
+  30 |  import { PanelRail } from "@/components/editor/PanelRail";
+     |                             ^
+  31 |  import { useUiStore } from "@/store/uiStore";
+  32 |  import { useAutosave } from "@/hooks/useAutosave";[39m
+      at TransformPluginContext._formatError (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 15)
+      at async TransformPluginContext.transform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+      at async viteTransformMiddleware (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62106:24)
+[2m3:21:13 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m3:21:13 p.m.[22m [31m[1m[vite][22m[39m Pre-transform error: Failed to resolve import "@/components/editor/PanelRail" from "src/components/editor/EditorScreen.tsx". Does the file exist?
+[2m3:21:13 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m3:21:13 p.m.[22m [31m[1m[vite][22m[39m Pre-transform error: Failed to resolve import "./panelrail.css" from "src/components/editor/PanelRail.tsx". Does the file exist?
+[2m3:21:13 p.m.[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "./panelrail.css" from "src/components/editor/PanelRail.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mC:/Jay Apps/Pigma/src/components/editor/PanelRail.tsx[39m:2:7
+[33m  16 |  }
+  17 |  import { IcChevronLeft, IcChevronRight, IcLayersGlyph, IcSliders } from "@/components/ui/Icons";
+  18 |  import "./panelrail.css";
+     |          ^
+  19 |  export function PanelRail({ side, onExpand }) {
+  20 |    return /* @__PURE__ */ jsxDEV("div", { className: `panel-rail ${side}`, children: [[39m
+      at TransformPluginContext._formatError (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+      at async viteTransformMiddleware (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62106:24)
+[2m3:21:20 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m3:21:20 p.m.[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "./panelrail.css" from "src/components/editor/PanelRail.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mC:/Jay Apps/Pigma/src/components/editor/PanelRail.tsx[39m:2:7
+[33m  16 |  }
+  17 |  import { IcChevronLeft, IcChevronRight, IcLayersGlyph, IcSliders } from "@/components/ui/Icons";
+  18 |  import "./panelrail.css";
+     |          ^
+  19 |  export function PanelRail({ side, onExpand }) {
+  20 |    return /* @__PURE__ */ jsxDEV("div", { className: `panel-rail ${side}`, children: [[39m
+      at TransformPluginContext._formatError (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///C:/Jay%20Apps/Pigma/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+[2m3:21:20 p.m.[22m [31m[1m[vite][22m[39m Pre-transform error: Failed to resolve import "./panelrail.css" from "src/components/editor/PanelRail.tsx". Does the file exist?
+[2m3:21:20 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m3:21:43 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m3:21:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:22:06 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:22:13 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:22:20 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:22:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:22:36 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/FramePresets.tsx[22m
+[2m3:22:45 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/FramePresets.tsx[22m
+[2m3:22:52 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/FramePresets.tsx[22m
+[2m3:23:03 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m3:24:18 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:24:25 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:24:31 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:24:37 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:24:45 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:24:57 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:25:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:25:20 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:26:39 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m3:26:46 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m3:26:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m3:27:02 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m3:28:32 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m3:28:40 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m3:28:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m3:32:55 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/settings/SettingsDialog.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/topbar/TopBar.tsx[22m
+[2m3:33:19 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/settings/SettingsDialog.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/topbar/TopBar.tsx[22m
+[2m3:34:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m3:34:56 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m3:35:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m3:36:19 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:36:26 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:36:33 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:36:40 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/settings/SettingsDialog.tsx, /src/components/present/PresentMode.tsx, /src/components/editor/EditorScreen.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/properties/FramePresets.tsx[22m
+[2m3:37:10 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m3:37:17 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m3:37:25 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m3:37:33 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m3:37:46 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/topbar/TopBar.tsx[22m
+[2m3:37:58 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/palette/CommandPalette.tsx[22m
+[2m3:38:05 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/palette/CommandPalette.tsx[22m
+[2m3:38:13 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/palette/CommandPalette.tsx[22m
+[2m3:42:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m3:42:49 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m3:42:57 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m3:43:05 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/code.css[22m
+[2m3:50:53 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:51:02 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:51:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:51:24 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx, /src/components/editor/EditorScreen.tsx, /src/components/present/PresentMode.tsx, /src/components/screens/WelcomeScreen.tsx, /src/components/screens/HomeScreen.tsx, /src/components/topbar/TopBar.tsx, /src/components/export/ExportPanel.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx, /src/components/canvas/FrameView.tsx, /src/components/canvas/GroupView.tsx, /src/components/canvas/SelectionTransformer.tsx, /src/components/canvas/BooleanView.tsx[22m
+[2m3:52:55 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/ShapeNode.tsx[22m
+[2m3:53:07 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m3:53:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/FrameView.tsx[22m
+[2m3:54:42 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:55:15 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:55:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:55:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:56:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/PropertiesPanel.tsx[22m
+[2m3:56:29 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/properties/properties.css[22m
+[2m3:57:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx[22m
+[2m3:58:14 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m3:58:23 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m3:58:39 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m3:58:51 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m3:59:15 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m3:59:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/code/CodePanel.tsx[22m
+[2m4:00:36 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/statusbar/StatusBar.tsx[22m
+[2m4:00:59 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/statusbar/statusbar.css[22m
+[2m4:01:08 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m4:01:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx[22m
+[2m4:01:37 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx, /src/components/palette/CommandPalette.tsx, /src/components/toolbar/Toolbar.tsx[22m
+[2m4:01:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx, /src/components/palette/CommandPalette.tsx, /src/components/toolbar/Toolbar.tsx[22m
+[2m4:01:58 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx, /src/components/palette/CommandPalette.tsx, /src/components/toolbar/Toolbar.tsx[22m
+[2m4:02:05 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/toolbar/Toolbar.tsx[22m
+[2m4:02:16 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/canvas/CanvasStage.tsx[22m
+[2m4:03:13 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/statusbar/StatusBar.tsx, /src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx[22m
+[2m4:03:20 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx[22m
+[2m4:03:33 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx[22m
+[2m4:03:45 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx[22m
+[2m4:04:17 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m4:04:28 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m4:04:38 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m4:04:48 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m4:04:54 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m4:05:01 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/LayersPanel.tsx[22m
+[2m4:05:09 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layers/layers.css[22m
+[2m4:05:35 p.m.[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/editor/EditorScreen.tsx, /src/components/layers/LayersPanel.tsx, /src/components/contextmenu/ContextMenu.tsx, /src/components/present/PresentMode.tsx, /src/components/export/ExportPanel.tsx, /src/components/topbar/TopBar.tsx, /src/components/statusbar/StatusBar.tsx, /src/components/palette/CommandPalette.tsx, /src/components/canvas/CanvasStage.tsx, /src/components/properties/PropertiesPanel.tsx, /src/components/toolbar/Toolbar.tsx, /src/components/comments/CommentsLayer.tsx, /src/components/properties/FramePresets.tsx, /src/components/canvas/Rulers.tsx, /src/components/code/CodePanel.tsx[22m
+[2m4:22:16 p.m.[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/main.tsx[22m
+[2m4:22:48 p.m.[22m [36m[1m[vite][22m[39m [32mvite.config.js changed, restarting server...[39m
+[2m4:22:49 p.m.[22m [36m[1m[vite][22m[39m server restarted.
+[2m4:32:18 p.m.[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m4:32:26 p.m.[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mindex.html[22m

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Hearth Warm</title>
+    <style>
+      :root {
+        --bg: #f7f2ea;
+        --panel: #fffdf9;
+        --panel-2: #f0e9dd;
+        --border: #e4dac9;
+        --ink: #2c2620;
+        --muted: #8a7d6b;
+        --faint: #b3a591;
+        --accent: #d8633b; /* terracotta */
+        --accent-2: #c99a3a; /* amber */
+        --green: #5b8a5a;
+        --canvas: #efe7d8;
+        --radius: 12px;
+        --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        --serif: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        --mono: ui-monospace, "SF Mono", Menlo, monospace;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--font); background: var(--bg); color: var(--ink); height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased; font-size: 13px; }
+      .app { display: grid; grid-template-rows: 54px 1fr; height: 100vh; }
+
+      .topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 16px; background: var(--panel); border-bottom: 1px solid var(--border); }
+      .brand { display: flex; align-items: center; gap: 11px; }
+      .logo { width: 30px; height: 30px; border-radius: 10px; background: radial-gradient(circle at 30% 25%, #f0a36e, var(--accent)); display: grid; place-items: center; color: #fff; font-weight: 800; font-family: var(--serif); box-shadow: 0 3px 10px rgba(216,99,59,0.35); }
+      .brand h1 { font-family: var(--serif); font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+      .badge { font-size: 11px; color: var(--green); background: rgba(91,138,90,0.12); border-radius: 999px; padding: 3px 10px; display: inline-flex; align-items: center; gap: 6px; }
+      .badge::before { content: "🔒"; font-size: 10px; }
+      .docname { justify-self: center; font-family: var(--serif); font-size: 15px; color: var(--muted); }
+      .actions { justify-self: end; display: flex; gap: 6px; align-items: center; }
+      .btn { padding: 7px 13px; border-radius: 9px; font-size: 12.5px; color: var(--muted); background: none; border: none; cursor: pointer; }
+      .btn:hover { background: var(--panel-2); color: var(--ink); }
+      .btn.primary { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(216,99,59,0.3); }
+      .btn.primary:hover { background: #c9572f; }
+
+      .body { display: grid; grid-template-columns: 60px 252px 1fr 270px; min-height: 0; }
+      .rail { background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 10px 0; gap: 5px; }
+      .tool { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: var(--muted); cursor: pointer; }
+      .tool:hover { background: var(--panel-2); color: var(--ink); }
+      .tool.active { background: var(--accent); color: #fff; box-shadow: 0 3px 10px rgba(216,99,59,0.35); }
+      .tool svg { width: 18px; height: 18px; }
+      .rail-sep { width: 24px; height: 1px; background: var(--border); margin: 6px 0; }
+
+      .panel { background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+      .panel.left { border-right: 1px solid var(--border); }
+      .panel.right { border-left: 1px solid var(--border); }
+      .phead { padding: 14px 16px 8px; font-family: var(--serif); font-size: 14px; font-weight: 700; }
+      .psub { padding: 0 16px 12px; font-size: 11px; color: var(--faint); }
+      .layers { padding: 4px 8px; }
+      .layer { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; color: var(--muted); cursor: pointer; }
+      .layer:hover { background: var(--panel-2); }
+      .layer.active { background: rgba(216,99,59,0.13); color: var(--ink); }
+      .layer.child { padding-left: 26px; }
+      .layer .ico { width: 14px; color: var(--faint); }
+      .layer .nm { flex: 1; font-size: 12.5px; }
+      .layer .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+      .stage { position: relative; overflow: hidden; background:
+        radial-gradient(circle at 1.5px 1.5px, #e0d6c4 1.4px, transparent 0) 0 0 / 24px 24px, var(--canvas); }
+      .frame { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 380px; height: 440px; background: #fffdf8; border-radius: 22px; box-shadow: 0 24px 60px rgba(70,50,30,0.22); overflow: hidden; }
+      .frame-label { position: absolute; left: 50%; top: calc(50% - 244px); transform: translateX(-50%); font-size: 11px; color: var(--accent); font-weight: 600; }
+      .card-hero { padding: 26px 24px 20px; background: linear-gradient(160deg, #fbe9d8, #fffdf8); }
+      .card-hero .eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; }
+      .card-hero h2 { font-family: var(--serif); font-size: 30px; line-height: 1.05; margin-top: 12px; }
+      .card-hero p { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.45; }
+      .card-body { padding: 4px 24px 24px; }
+      .feat { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f0e6d6; }
+      .feat .ic { width: 34px; height: 34px; border-radius: 10px; background: rgba(216,99,59,0.12); display: grid; place-items: center; color: var(--accent); font-size: 15px; }
+      .feat b { font-size: 13px; display: block; } .feat span { font-size: 10.5px; color: var(--muted); }
+      .btn-cta { margin-top: 18px; background: var(--ink); color: #fff; text-align: center; padding: 13px; border-radius: 12px; font-size: 13px; font-weight: 600; }
+
+      .sel { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 380px; height: 152px; margin-top: -144px; outline: 2px solid var(--accent); border-radius: 4px; }
+      .handle { position: absolute; width: 10px; height: 10px; background: #fff; border: 2px solid var(--accent); border-radius: 50%; }
+      .handle.tl{left:-5px;top:-5px}.handle.tr{right:-5px;top:-5px}.handle.bl{left:-5px;bottom:-5px}.handle.br{right:-5px;bottom:-5px}
+      .dim { position: absolute; bottom: -26px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 6px; }
+
+      .privacy-pill { position: absolute; left: 16px; bottom: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 14px rgba(70,50,30,0.1); max-width: 240px; }
+      .privacy-pill .ic { font-size: 18px; }
+      .privacy-pill b { font-size: 12px; display: block; } .privacy-pill span { font-size: 10.5px; color: var(--muted); }
+      .zoom { position: absolute; right: 16px; bottom: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 7px 12px; font-size: 11.5px; color: var(--muted); display: flex; gap: 9px; }
+
+      .group { padding: 14px 16px; border-top: 1px solid var(--border); }
+      .group:first-of-type { border-top: none; }
+      .glabel { font-size: 11px; font-weight: 600; color: var(--faint); margin-bottom: 10px; }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .field { display: flex; align-items: center; gap: 7px; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 7px 10px; }
+      .field span { color: var(--faint); font-size: 11px; }
+      .field input { background: none; border: none; width: 100%; font-size: 12px; color: var(--ink); outline: none; }
+      .row { display: flex; gap: 8px; align-items: center; }
+      .swatch { width: 22px; height: 22px; border-radius: 7px; border: 1px solid var(--border); }
+      .seg { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 3px; }
+      .seg div { flex: 1; text-align: center; font-size: 11px; padding: 6px; border-radius: 7px; color: var(--muted); cursor: pointer; }
+      .seg div.on { background: var(--panel); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo">G</div>
+          <h1>Groundwork</h1>
+          <span class="badge">Stays on your machine</span>
+        </div>
+        <div class="docname">Welcome Card</div>
+        <div class="actions">
+          <button class="btn">Undo</button><button class="btn">Redo</button>
+          <button class="btn">Open</button><button class="btn primary">Save</button>
+          <button class="btn">Export ▾</button>
+        </div>
+      </header>
+      <div class="body">
+        <nav class="rail">
+          <div class="tool active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3l7 17 2-7 7-2z"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 13V5a1.5 1.5 0 013 0v6m0-1a1.5 1.5 0 013 0v2m0-1a1.5 1.5 0 013 0v4a6 6 0 01-6 6h-1a6 6 0 01-5-3l-2-3a1.5 1.5 0 012-2l1 1"/></svg></div>
+          <div class="rail-sep"></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="3"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7-4-4-7 7zM5 21l3-1"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M12 6v13"/></svg></div>
+        </nav>
+        <aside class="panel left">
+          <div class="phead">Layers</div>
+          <div class="psub">Welcome Card · 6 elements</div>
+          <div class="layers">
+            <div class="layer"><span class="ico">▦</span><span class="nm">Card Frame</span><span class="dot" style="background:var(--accent)"></span></div>
+            <div class="layer active child"><span class="ico">▭</span><span class="nm">Hero Block</span><span class="dot" style="background:var(--accent-2)"></span></div>
+            <div class="layer child"><span class="ico">T</span><span class="nm">Title — “Make yourself…”</span></div>
+            <div class="layer child"><span class="ico">▱</span><span class="nm">Feature · Private</span></div>
+            <div class="layer child"><span class="ico">▱</span><span class="nm">Feature · Offline</span></div>
+            <div class="layer child"><span class="ico">▭</span><span class="nm">Button</span></div>
+          </div>
+        </aside>
+        <main class="stage">
+          <div class="frame-label">Welcome Card · 380 × 440</div>
+          <div class="frame">
+            <div class="card-hero">
+              <div class="eyebrow">Welcome to Groundwork</div>
+              <h2>Make yourself at home.</h2>
+              <p>Your designs live here, with you. Nothing is uploaded, nothing is tracked.</p>
+            </div>
+            <div class="card-body">
+              <div class="feat"><div class="ic">🔒</div><div><b>Private by design</b><span>Files never leave your device</span></div></div>
+              <div class="feat"><div class="ic">✈️</div><div><b>Works offline</b><span>On a plane, off the grid, anywhere</span></div></div>
+              <div class="btn-cta">Create your first file</div>
+            </div>
+          </div>
+          <div class="sel">
+            <div class="handle tl"></div><div class="handle tr"></div><div class="handle bl"></div><div class="handle br"></div>
+            <div class="dim">380 × 152</div>
+          </div>
+          <div class="privacy-pill"><span class="ic">🏠</span><div><b>0 bytes sent</b><span>This whole session is on-device</span></div></div>
+          <div class="zoom"><span>100%</span><span style="color:var(--faint)">·</span><span>Fit</span></div>
+        </main>
+        <aside class="panel right">
+          <div class="phead">Hero Block</div>
+          <div class="group">
+            <div class="glabel">Position &amp; size</div>
+            <div class="grid2">
+              <div class="field"><span>X</span><input value="0"></div>
+              <div class="field"><span>Y</span><input value="0"></div>
+              <div class="field"><span>W</span><input value="380"></div>
+              <div class="field"><span>H</span><input value="152"></div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="glabel">Fill</div>
+            <div class="row" style="margin-bottom:8px"><div class="swatch" style="background:linear-gradient(160deg,#fbe9d8,#fffdf8)"></div><div class="field" style="flex:1"><span>Gradient</span><input value="160°"></div></div>
+            <div class="seg"><div>Solid</div><div class="on">Linear</div><div>Radial</div></div>
+          </div>
+          <div class="group">
+            <div class="glabel">Corner radius</div>
+            <div class="grid2">
+              <div class="field"><span>R</span><input value="22"></div>
+              <div class="field"><span>Opacity</span><input value="100%"></div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="glabel">Export</div>
+            <div class="seg"><div class="on">PNG 2×</div><div>SVG</div><div>PDF</div></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+.canvas-host {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 1px 1px, var(--canvas-dot) 1px, transparent 0) 0 0 / 24px 24px,
+    var(--canvas-bg);
+}
+
+.canvas-host[data-tool="hand"] {
+  cursor: grab;
+}
+
+.canvas-host[data-tool="rect"],
+.canvas-host[data-tool="ellipse"],
+.canvas-host[data-tool="text"],
+.canvas-host[data-tool="pen"] {
+  cursor: crosshair;
+}

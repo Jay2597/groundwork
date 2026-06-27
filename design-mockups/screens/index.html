@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Screen Set</title>
+    <link rel="stylesheet" href="assets/groundwork.css" />
+    <style>
+      body { overflow-y: auto; }
+      .wrap { max-width: 1240px; margin: 0 auto; padding: 56px 28px 90px; }
+      header.top { margin-bottom: 14px; }
+      .kicker { display: inline-flex; align-items: center; gap: 10px; color: var(--amber); font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; }
+      h1.title { font-size: clamp(30px, 4.5vw, 46px); font-weight: 700; letter-spacing: -0.03em; margin-top: 14px; line-height: 1.03; }
+      .lede { color: var(--muted); font-size: 16px; margin-top: 14px; max-width: 640px; line-height: 1.55; }
+
+      .flowstrip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 28px 0 8px; padding: 14px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--r-lg); }
+      .flowstrip .step { font-family: var(--mono); font-size: 11.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); padding: 5px 10px; border-radius: 7px; }
+      .flowstrip .step.amber { color: var(--amber); border-color: rgba(242,163,60,0.4); }
+      .flowstrip .arr { color: var(--faint); }
+
+      .group-h { display: flex; align-items: baseline; gap: 12px; margin: 46px 0 18px; }
+      .group-h h2 { font-size: 17px; font-weight: 600; }
+      .group-h span { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+      @media (max-width: 920px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+      .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; text-decoration: none; color: inherit; transition: transform var(--fast) var(--ease), border-color var(--fast) var(--ease); display: flex; flex-direction: column; }
+      .card:hover { transform: translateY(-4px); border-color: var(--amber); }
+      .thumb { height: 232px; overflow: hidden; position: relative; border-bottom: 1px solid var(--border); background: var(--bg); }
+      .thumb iframe { width: 1280px; height: 800px; border: 0; transform: scale(0.3); transform-origin: top left; pointer-events: none; }
+      .thumb .badge { position: absolute; top: 10px; left: 10px; font-family: var(--mono); font-size: 10px; color: var(--amber-ink); background: var(--amber); padding: 2px 7px; border-radius: 5px; font-weight: 600; }
+      .meta { padding: 15px 17px 18px; }
+      .meta h3 { font-size: 15px; font-weight: 600; }
+      .meta p { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin-top: 6px; }
+      .open { margin-top: 12px; font-size: 12.5px; color: var(--amber); font-weight: 500; }
+
+      footer.bot { margin-top: 56px; border-top: 1px solid var(--border); padding-top: 26px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+      footer.bot b { color: var(--text); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <div class="kicker"><span class="gw-logo" style="width:20px;height:20px;font-size:12px">G</span> GROUNDWORK · SCREEN SET · AMBER STUDIO</div>
+        <h1 class="title">Every screen in the product,<br />designed before a line of app code.</h1>
+        <p class="lede">Eleven high-fidelity screens on one shared design system (<span class="mono amber-tx">groundwork.css</span>). Near-black + amber, IBM Plex, and the local-first story woven through every surface. Click any screen to open it full-size.</p>
+      </header>
+
+      <div class="flowstrip">
+        <span class="step amber">Welcome</span><span class="arr">→</span>
+        <span class="step">Home</span><span class="arr">→</span>
+        <span class="step">New file</span><span class="arr">→</span>
+        <span class="step amber">Editor</span><span class="arr">→</span>
+        <span class="step">Prototype</span><span class="arr">→</span>
+        <span class="step amber">Present</span>
+        <span class="arr" style="margin:0 6px">·</span>
+        <span class="step">⌘K palette</span><span class="step">Export</span><span class="step">Settings</span>
+      </div>
+
+      <!-- Entry & files -->
+      <div class="group-h"><h2>Entry &amp; files</h2><span>before you're in the editor</span></div>
+      <div class="grid">
+        <a class="card" href="01-welcome.html"><div class="thumb"><span class="badge">01</span><iframe src="01-welcome.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Welcome / first-run</h3><p>Privacy-forward intro, pick where files live on disk. Sets the "never phones home" promise.</p><div class="open">Open →</div></div></a>
+        <a class="card" href="02-home.html"><div class="thumb"><span class="badge">02</span><iframe src="02-home.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Home / file browser</h3><p>Recent + all local files, search, storage meter, New button. Everything on this device.</p><div class="open">Open →</div></div></a>
+        <a class="card" href="03-new-file.html"><div class="thumb"><span class="badge">03</span><iframe src="03-new-file.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>New file / templates</h3><p>Blank canvas + device/preset templates with dimensions. Created straight into your folder.</p><div class="open">Open →</div></div></a>
+      </div>
+
+      <!-- Editor -->
+      <div class="group-h"><h2>The editor</h2><span>the core product surfaces</span></div>
+      <div class="grid">
+        <a class="card" href="04-editor-design.html"><div class="thumb"><span class="badge">04</span><iframe src="04-editor-design.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Editor — Design</h3><p>The hero. Menu bar, layer tree, full inspector (Transform → Auto-layout → Fill → Stroke → Effects → Export).</p><div class="open">Open →</div></div></a>
+        <a class="card" href="05-editor-empty.html"><div class="thumb"><span class="badge">05</span><iframe src="05-editor-empty.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Editor — empty state</h3><p>Fresh file. Quick-start actions, ghost frame, "nothing to upload" reassurance.</p><div class="open">Open →</div></div></a>
+        <a class="card" href="06-editor-assets.html"><div class="thumb"><span class="badge">06</span><iframe src="06-editor-assets.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Editor — Assets</h3><p>Local component library: buttons, cards, inputs, color styles. Publish stays on disk.</p><div class="open">Open →</div></div></a>
+        <a class="card" href="07-editor-prototype.html"><div class="thumb"><span class="badge">07</span><iframe src="07-editor-prototype.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Editor — Prototype</h3><p>Flow connections between frames, interaction inspector. Preview runs locally.</p><div class="open">Open →</div></div></a>
+      </div>
+
+      <!-- Overlays & system -->
+      <div class="group-h"><h2>Overlays &amp; system</h2><span>modes, dialogs, preferences</span></div>
+      <div class="grid">
+        <a class="card" href="08-present.html"><div class="thumb"><span class="badge">08</span><iframe src="08-present.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Present / preview</h3><p>Full-screen prototype playback in a device. "Nothing streamed or recorded."</p><div class="open">Open →</div></div></a>
+        <a class="card" href="09-export.html"><div class="thumb"><span class="badge">09</span><iframe src="09-export.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Export panel</h3><p>Per-item format + scale, destination folder. Written straight to disk, never uploaded.</p><div class="open">Open →</div></div></a>
+        <a class="card" href="10-command-palette.html"><div class="thumb"><span class="badge">10</span><iframe src="10-command-palette.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Command palette ⌘K</h3><p>Search-driven actions, navigation, tools — with shortcuts. Everything runs locally.</p><div class="open">Open →</div></div></a>
+        <a class="card" href="11-settings.html"><div class="thumb"><span class="badge">11</span><iframe src="11-settings.html" scrolling="no" loading="lazy"></iframe></div><div class="meta"><h3>Settings / preferences</h3><p>Storage location, autosave, local history, and the "telemetry: off — no switch" promise.</p><div class="open">Open →</div></div></a>
+      </div>
+
+      <footer class="bot">
+        <b>One system, eleven screens.</b> Everything is built on <span class="mono">assets/groundwork.css</span> — the same tokens and components will map directly to the React app's design tokens when we code.<br />
+        Next step: turn this into the real app's visual language, or refine any individual screen first.
+      </footer>
+    </div>
+  </body>
+</html>

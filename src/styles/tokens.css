@@ -1,0 +1,103 @@
+/* ============================================================
+   Groundwork — Amber Studio design tokens (locked).
+   Single source of truth for color, type, spacing, motion.
+   Mirrors design-mockups/screens/assets/groundwork.css.
+   Fonts are self-hosted (see main.tsx) — no network dependency.
+   ============================================================ */
+:root {
+  /* surfaces */
+  --bg: #0d0d0f;
+  --panel: #151517;
+  --panel-2: #1b1b1e;
+  --raised: #222226;
+  --raised-2: #2b2b30;
+  --border: #2b2b30;
+  --border-2: #3a3a3e;
+
+  /* text */
+  --text: #e9e9ec;
+  --text-2: #c8c8ce;
+  --muted: #9a9aa2;
+  --faint: #62626a;
+
+  /* accents */
+  --amber: #f2a33c;
+  --accent: #f2a33c; /* alias of --amber, used by editor overlays */
+  --amber-2: #ffb24d;
+  --amber-ink: #1a1206;
+  --amber-dim: rgba(242, 163, 60, 0.16);
+  --amber-glow: rgba(242, 163, 60, 0.28);
+  --blue: #4c8dff;
+  --green: #5ec98b;
+  --green-dim: rgba(94, 201, 139, 0.12);
+  --red: #ff6b6b;
+
+  /* artwork */
+  --art: #fbfbfb;
+  --cream: #f4ecdd;
+
+  /* canvas surface (editor working area) */
+  --canvas-bg: #0d0d0f;
+  --canvas-dot: #1a1a1d;
+
+  /* type */
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-lg: 15px;
+
+  /* radius */
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 18px;
+
+  /* spacing */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+
+  /* motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fast: 130ms;
+
+  /* shadow */
+  --shadow-art: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.25);
+  --shadow-pop: 0 16px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--border);
+
+  /* layout */
+  --menubar-h: 46px;
+  --statusbar-h: 26px;
+  --panel-l: 244px;
+  --panel-r: 268px;
+}
+
+/* ---------- Light theme ---------- */
+/* Surfaces + text flip; amber accent and artboards stay the same. */
+:root[data-theme="light"] {
+  --bg: #f5f3ee;
+  --panel: #ffffff;
+  --panel-2: #f1eee7;
+  --raised: #ece9e1;
+  --raised-2: #e1ddd3;
+  --border: #e5e0d5;
+  --border-2: #cfc9bb;
+
+  --text: #1a1712;
+  --text-2: #464034;
+  --muted: #6f6757;
+  --faint: #9a9282;
+
+  --amber-dim: rgba(242, 163, 60, 0.18);
+  --green-dim: rgba(60, 150, 95, 0.14);
+
+  --canvas-bg: #ece9e1;
+  --canvas-dot: #d8d3c7;
+
+  --shadow-art: 0 18px 48px rgba(60, 50, 30, 0.18), 0 0 0 1px rgba(60, 50, 30, 0.08);
+  --shadow-pop: 0 16px 50px rgba(60, 50, 30, 0.18), 0 0 0 1px var(--border);
+}

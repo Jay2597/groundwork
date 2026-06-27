@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Editor · Empty</title>
+    <link rel="stylesheet" href="assets/groundwork.css" />
+    <style>
+      .app { display: grid; grid-template-rows: 46px 1fr 26px; height: 100vh; }
+      .body { display: grid; grid-template-columns: 244px 1fr 268px; min-height: 0; }
+      .wm { margin-right: 12px; font-size: 14px; }
+      .bar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+      .empty-layers { flex: 1; display: grid; place-items: center; padding: 24px; text-align: center; }
+      .empty-layers .ill { width: 48px; height: 48px; border-radius: 12px; border: 1.5px dashed var(--border-2); display: grid; place-items: center; color: var(--faint); margin: 0 auto 12px; }
+      .empty-layers p { font-size: 12.5px; color: var(--muted); } .empty-layers span { font-size: 11px; color: var(--faint); display: block; margin-top: 4px; }
+
+      .stage { position: relative; overflow: hidden; display: grid; place-items: center; }
+      .ghost-frame { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 520px; height: 380px; border: 1.5px dashed var(--border-2); border-radius: 8px; }
+      .starter { position: relative; z-index: 2; width: 380px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 24px; box-shadow: var(--shadow-pop); text-align: center; }
+      .starter .badge { display: inline-flex; }
+      .starter h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; margin: 14px 0 6px; }
+      .starter p { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+      .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+      .qa { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md); padding: 11px 12px; cursor: pointer; text-align: left; }
+      .qa:hover { border-color: var(--amber); }
+      .qa .qi { width: 30px; height: 30px; border-radius: 8px; background: var(--amber-dim); display: grid; place-items: center; color: var(--amber); }
+      .qa .qi svg { width: 16px; height: 16px; }
+      .qa b { font-size: 12px; display: block; } .qa .kbd { margin-left: auto; }
+      .drop-note { margin-top: 16px; font-family: var(--mono); font-size: 11px; color: var(--faint); }
+
+      .insp-empty { padding: 14px; }
+      .insp-empty .tip { background: var(--amber-dim); border: 1px solid rgba(242,163,60,0.25); border-radius: var(--r-md); padding: 12px; margin-top: 12px; }
+      .insp-empty .tip b { color: var(--amber); font-size: 11.5px; } .insp-empty .tip p { font-size: 11.5px; color: var(--text-2); margin-top: 5px; line-height: 1.45; }
+      .statusbar { display: flex; align-items: center; gap: 16px; padding: 0 14px; background: var(--panel); border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+      .page-item { display: flex; align-items: center; gap: 9px; padding: 7px 12px; color: var(--text); font-size: 12.5px; background: var(--amber-dim); }
+      .page-item .dot { width: 7px; height: 7px; border-radius: 2px; background: var(--amber); }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="menubar">
+        <div class="gw-logo">G</div><div class="gw-word wm">Groundwork</div>
+        <nav class="menus"><div class="menu">File</div><div class="menu">Edit</div><div class="menu">View</div><div class="menu">Object</div><div class="menu">Export</div></nav>
+        <div class="tools" style="margin:0 auto">
+          <div class="tool active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3l7 17 2-7 7-2z"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M12 6v13"/></svg></div>
+        </div>
+        <div class="bar-right"><span class="chip green">Offline-ready</span><button class="btn amber">Export</button></div>
+      </header>
+
+      <div class="body">
+        <aside class="panel l">
+          <div class="tabs"><div class="tab active">Layers</div><div class="tab">Assets</div><div class="tab">Pages</div></div>
+          <div class="sec-label">PAGES</div>
+          <div class="page-item"><span class="dot"></span>Page 1</div>
+          <div class="sec-label">LAYERS</div>
+          <div class="empty-layers">
+            <div>
+              <div class="ill"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></div>
+              <p>No layers yet</p><span>Draw something to get started</span>
+            </div>
+          </div>
+        </aside>
+
+        <main class="stage canvas-dots">
+          <div class="ghost-frame"></div>
+          <section class="starter">
+            <span class="chip amber badge">Untitled.gwork</span>
+            <h2>Start designing</h2>
+            <p>Pick a tool, or just start drawing. Everything saves to your folder automatically.</p>
+            <div class="quick">
+              <button class="qa"><span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></span><b>Frame</b><span class="kbd">F</span></button>
+              <button class="qa"><span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></span><b>Rectangle</b><span class="kbd">R</span></button>
+              <button class="qa"><span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M12 6v13"/></svg></span><b>Text</b><span class="kbd">T</span></button>
+              <button class="qa"><span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 13l3-3 5 5M14 11l2-2 2 2"/></svg></span><b>Place image</b><span class="kbd">⇧I</span></button>
+            </div>
+            <p class="drop-note">…or drop an image / SVG anywhere on the canvas</p>
+          </section>
+        </main>
+
+        <aside class="panel r">
+          <div class="insp-empty">
+            <div class="ghead" style="margin-bottom:10px">CANVAS</div>
+            <div class="grid2" style="margin-bottom:8px"><div class="field"><span>W</span><input value="1440"/></div><div class="field"><span>H</span><input value="1024"/></div></div>
+            <div class="row"><div class="swatch" style="background:#ffffff"></div><div class="field" style="flex:1"><span>#</span><input value="FFFFFF"/></div></div>
+            <div class="tip"><b>Tip · Nothing to upload</b><p>This file already exists on your disk. Autosave writes changes locally every few seconds — no internet required.</p></div>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="statusbar"><span class="amber-tx">● New file</span><span>~/Documents/Groundwork/Untitled.gwork</span><div class="spacer"></div><span>autosave on</span><span>0 layers</span></footer>
+    </div>
+  </body>
+</html>

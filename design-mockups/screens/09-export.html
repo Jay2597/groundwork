@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Export</title>
+    <link rel="stylesheet" href="assets/groundwork.css" />
+    <style>
+      body { display: grid; place-items: center; }
+      .backdrop { position: fixed; inset: 0; background: rgba(8,8,10,0.74); backdrop-filter: blur(3px); }
+      .modal { position: relative; width: 600px; max-width: 94vw; max-height: 90vh; background: var(--panel); border: 1px solid var(--border-2); border-radius: var(--r-xl); box-shadow: var(--shadow-pop); display: grid; grid-template-rows: auto auto 1fr auto; overflow: hidden; }
+      .m-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--border); }
+      .m-head h1 { font-size: 15px; font-weight: 600; } .m-head .close { margin-left: auto; width: 30px; height: 30px; border-radius: var(--r-sm); display: grid; place-items: center; color: var(--muted); } .m-head .close:hover { background: var(--raised); color: var(--text); }
+      .dest { display: flex; align-items: center; gap: 11px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+      .dest .fic { width: 32px; height: 32px; border-radius: 8px; background: var(--amber-dim); display: grid; place-items: center; color: var(--amber); }
+      .dest .p { flex: 1; } .dest .p b { font-size: 12px; display: block; } .dest .p span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+      .list { padding: 10px 12px; overflow-y: auto; }
+      .ex-row { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: var(--r-md); }
+      .ex-row:hover { background: var(--panel-2); }
+      .ex-row .tb { width: 46px; height: 46px; border-radius: 7px; overflow: hidden; flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,0,0,0.4); }
+      .ex-row .info { flex: 1; min-width: 0; } .ex-row .info b { font-size: 12.5px; } .ex-row .info span { font-family: var(--mono); font-size: 10.5px; color: var(--faint); display: block; margin-top: 3px; }
+      .ex-controls { display: flex; gap: 8px; }
+      .mini-seg { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 2px; }
+      .mini-seg div { font-size: 10.5px; padding: 4px 8px; border-radius: 4px; color: var(--muted); cursor: pointer; } .mini-seg div.on { background: var(--raised-2); color: var(--text); }
+      .mini-field { width: 56px; }
+
+      .m-foot { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-top: 1px solid var(--border); }
+      .m-foot .note { font-family: var(--mono); font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 7px; }
+      .m-foot .note .d { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    </style>
+  </head>
+  <body>
+    <div class="backdrop"></div>
+    <section class="modal">
+      <header class="m-head">
+        <span class="amber-tx"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span>
+        <h1>Export · 4 items</h1>
+        <button class="close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </header>
+
+      <div class="dest">
+        <div class="fic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+        <div class="p"><b>Export to</b><span>~/Documents/Groundwork/exports</span></div>
+        <button class="btn">Change…</button>
+      </div>
+
+      <div class="list scroll">
+        <div class="ex-row">
+          <div class="tb" style="background:#fbfbfb"><div style="height:42%;background:linear-gradient(150deg,#f4ecdd,#fff)"></div></div>
+          <div class="info"><b>Hero</b><span>hero@2x.png · 1120 × 392</span></div>
+          <div class="ex-controls"><div class="mini-seg"><div class="on">PNG</div><div>SVG</div><div>PDF</div></div><div class="mini-seg"><div>1×</div><div class="on">2×</div><div>3×</div></div></div>
+        </div>
+        <div class="ex-row">
+          <div class="tb" style="background:#18181c"><div style="height:44%;background:#f2a33c"></div></div>
+          <div class="info"><b>Mobile / Landing</b><span>mobile@2x.png · 400 × 760</span></div>
+          <div class="ex-controls"><div class="mini-seg"><div class="on">PNG</div><div>SVG</div><div>PDF</div></div><div class="mini-seg"><div>1×</div><div class="on">2×</div><div>3×</div></div></div>
+        </div>
+        <div class="ex-row">
+          <div class="tb" style="background:#fbfbfb;display:grid;grid-template-columns:1.3fr 1fr"><div></div><div style="background:#f2a33c"></div></div>
+          <div class="info"><b>Logo mark</b><span>logo.svg · vector</span></div>
+          <div class="ex-controls"><div class="mini-seg"><div>PNG</div><div class="on">SVG</div><div>PDF</div></div><div class="mini-seg" style="opacity:.4"><div class="on">1×</div></div></div>
+        </div>
+        <div class="ex-row">
+          <div class="tb" style="background:#131316"></div>
+          <div class="info"><b>Full page</b><span>landing.pdf · 1440 × 2400</span></div>
+          <div class="ex-controls"><div class="mini-seg"><div>PNG</div><div>SVG</div><div class="on">PDF</div></div><div class="mini-seg" style="opacity:.4"><div class="on">1×</div></div></div>
+        </div>
+      </div>
+
+      <footer class="m-foot">
+        <div class="note"><span class="d"></span>Written straight to your folder — never uploaded</div>
+        <div class="spacer"></div>
+        <button class="btn">Cancel</button>
+        <button class="btn amber lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Export 4 items</button>
+      </footer>
+    </section>
+  </body>
+</html>

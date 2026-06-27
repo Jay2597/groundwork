@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Settings</title>
+    <link rel="stylesheet" href="assets/groundwork.css" />
+    <style>
+      .app { display: grid; grid-template-rows: 56px 1fr; height: 100vh; }
+      .head { display: flex; align-items: center; gap: 12px; padding: 0 20px; border-bottom: 1px solid var(--border); background: var(--panel); }
+      .head h1 { font-size: 15px; font-weight: 600; } .head .close { margin-left: auto; }
+      .body { display: grid; grid-template-columns: 220px 1fr; min-height: 0; }
+      .nav { border-right: 1px solid var(--border); padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; background: var(--panel); }
+      .nav-item { display: flex; align-items: center; gap: 11px; padding: 9px 12px; border-radius: var(--r-md); color: var(--muted); font-size: 13px; cursor: pointer; }
+      .nav-item:hover { background: var(--panel-2); color: var(--text); } .nav-item.active { background: var(--amber-dim); color: var(--text); }
+      .nav-item svg { width: 16px; height: 16px; }
+
+      .pane { overflow-y: auto; padding: 30px 40px; }
+      .pane-h { margin-bottom: 6px; } .pane-h h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; } .pane-h p { color: var(--muted); font-size: 13px; margin-top: 5px; }
+      .block { max-width: 620px; margin-top: 26px; }
+      .block-t { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--faint); margin-bottom: 12px; }
+      .setting { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+      .setting .meta { flex: 1; } .setting .meta b { font-size: 13.5px; display: block; } .setting .meta span { font-size: 12px; color: var(--muted); margin-top: 3px; display: block; line-height: 1.45; }
+      .folder-box { display: flex; align-items: center; gap: 11px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md); padding: 11px 13px; }
+      .folder-box .fic { width: 30px; height: 30px; border-radius: 8px; background: var(--amber-dim); display: grid; place-items: center; color: var(--amber); }
+      .folder-box .p { flex: 1; } .folder-box .p b { font-size: 12px; display: block; } .folder-box .p span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+      .seg.sm { width: 200px; } .field.sm { width: 110px; }
+      .privacy-card { background: linear-gradient(180deg, var(--amber-dim), transparent); border: 1px solid rgba(242,163,60,0.3); border-radius: var(--r-lg); padding: 18px; display: flex; gap: 14px; align-items: flex-start; }
+      .privacy-card .pi { width: 36px; height: 36px; border-radius: 10px; background: var(--amber); color: var(--amber-ink); display: grid; place-items: center; flex-shrink: 0; }
+      .privacy-card b { font-size: 13.5px; } .privacy-card p { font-size: 12.5px; color: var(--text-2); margin-top: 5px; line-height: 1.5; }
+      .privacy-card .off { font-family: var(--mono); font-size: 11px; color: var(--green); border: 1px solid rgba(94,201,139,0.3); border-radius: 6px; padding: 4px 9px; margin-top: 10px; display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="head">
+        <div class="gw-logo">G</div><h1>Settings</h1>
+        <button class="btn close">Done</button>
+      </header>
+      <div class="body">
+        <nav class="nav">
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg> General</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16"/></svg> Canvas</div>
+          <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Storage &amp; files</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/></svg> Shortcuts</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z"/></svg> Appearance</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> About</div>
+        </nav>
+
+        <div class="pane scroll">
+          <div class="pane-h"><h2>Storage &amp; files</h2><p>Where Groundwork keeps your work. All of it stays on this device.</p></div>
+
+          <div class="block">
+            <div class="block-t">FILE LOCATION</div>
+            <div class="folder-box">
+              <div class="fic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+              <div class="p"><b>Groundwork folder</b><span>~/Documents/Groundwork</span></div>
+              <button class="btn">Change…</button>
+            </div>
+          </div>
+
+          <div class="block">
+            <div class="block-t">AUTOSAVE &amp; HISTORY</div>
+            <div class="setting"><div class="meta"><b>Autosave</b><span>Write changes to disk automatically</span></div><div class="toggle on"></div></div>
+            <div class="setting"><div class="meta"><b>Autosave interval</b><span>How often changes are flushed to the file</span></div><div class="seg sm"><div>2s</div><div class="on">5s</div><div>15s</div></div></div>
+            <div class="setting"><div class="meta"><b>Keep local history</b><span>Snapshots stored next to the file, on your disk</span></div><div class="toggle on"></div></div>
+            <div class="setting"><div class="meta"><b>History depth</b><span>Maximum versions to retain per file</span></div><div class="field sm"><span>v</span><input value="50"/></div></div>
+          </div>
+
+          <div class="block">
+            <div class="block-t">YOUR DATA</div>
+            <div class="setting"><div class="meta"><b>Export all my data</b><span>Bundle every file + library into a single archive on disk</span></div><button class="btn">Export archive…</button></div>
+            <div class="setting"><div class="meta"><b>Open files folder</b><span>Reveal the Groundwork folder in your file manager</span></div><button class="btn">Reveal</button></div>
+          </div>
+
+          <div class="block">
+            <div class="block-t">PRIVACY</div>
+            <div class="privacy-card">
+              <div class="pi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+              <div>
+                <b>Nothing leaves this device</b>
+                <p>Groundwork has no servers, no account system, and no analytics. There is no cloud sync to enable and no telemetry to send — by design.</p>
+                <span class="off">● Telemetry: Off — and there's no switch to turn it on</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

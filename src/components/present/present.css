@@ -1,0 +1,53 @@
+.present {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  background: #0a0a0c;
+  display: grid;
+  place-items: center;
+  animation: gw-fade 200ms var(--ease);
+}
+
+.present-stage { position: relative; box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6); animation: gw-scale-in 220ms var(--ease); }
+.present-svg { position: absolute; top: 0; left: 0; transform-origin: top left; }
+
+.present-hotspot {
+  position: absolute;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.present-hotspot:hover { background: rgba(242, 163, 60, 0.18); outline: 2px solid var(--accent); }
+
+.present-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  background: rgba(20, 20, 24, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: #fff;
+}
+.present-nav { background: none; border: none; color: #fff; font-size: 22px; line-height: 1; cursor: pointer; padding: 0 6px; }
+.present-nav:disabled { opacity: 0.3; cursor: default; }
+.present-count { font-size: 12px; font-family: var(--mono); }
+
+.present-exit {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 8px 14px;
+  background: rgba(20, 20, 24, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.present-empty { color: #9a9aa2; font-size: 14px; }

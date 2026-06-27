@@ -1,0 +1,38 @@
+.ctx-menu {
+  position: fixed;
+  z-index: 1000;
+  min-width: 200px;
+  padding: 6px;
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md, 8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  font-size: 13px;
+  animation: gw-pop 130ms var(--ease);
+  transform-origin: top left;
+}
+
+.ctx-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  background: none;
+  color: var(--text);
+  text-align: left;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ctx-item:hover { background: var(--accent); color: #0d0d0f; }
+.ctx-item.danger { color: #ff6b6b; }
+.ctx-item.danger:hover { background: #ff6b6b; color: #fff; }
+
+.ctx-shortcut {
+  font-family: var(--mono);
+  font-size: 11px;
+  opacity: 0.6;
+  margin-left: 24px;
+}

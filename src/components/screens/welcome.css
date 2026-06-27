@@ -1,0 +1,29 @@
+.welcome { height: 100%; display: grid; place-items: center; overflow: auto; }
+.welcome-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(242, 163, 60, 0.1), transparent 70%),
+    radial-gradient(circle at 1px 1px, var(--canvas-dot) 1px, transparent 0) 0 0 / 26px 26px,
+    var(--bg);
+}
+.welcome-wrap { position: relative; z-index: 1; width: 560px; max-width: 92vw; padding: 48px 0; }
+.welcome-head { text-align: center; }
+.brandline { display: inline-flex; align-items: center; gap: 12px; }
+.ver { font-family: var(--mono); font-size: 10px; color: var(--faint); border: 1px solid var(--border); border-radius: 999px; padding: 2px 8px; }
+.welcome-head h1 { font-size: 38px; line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; margin-top: 28px; }
+.welcome-head .lede { color: var(--muted); font-size: 15px; line-height: 1.5; margin: 14px auto 0; max-width: 440px; }
+
+.welcome-card { margin-top: 32px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 22px; box-shadow: var(--shadow-pop); }
+.feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.feat { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md); padding: 14px; }
+.feat .fi { width: 28px; height: 28px; border-radius: 8px; background: var(--amber-dim); display: grid; place-items: center; color: var(--amber); margin-bottom: 9px; }
+.feat .fi svg { width: 16px; height: 16px; }
+.feat b { font-size: 12.5px; display: block; }
+.feat span { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+.welcome-actions { display: flex; gap: 10px; margin-top: 20px; }
+.welcome-actions .btn { flex: 1; justify-content: center; }
+.btn.lg { padding: 11px 18px; font-size: 13.5px; border-radius: var(--r-md); }
+.welcome-error { color: var(--red); font-size: 12px; margin-top: 12px; text-align: center; }
+
+.footnote { text-align: center; margin-top: 22px; font-family: var(--mono); font-size: 11px; color: var(--faint); }

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Editor · Assets</title>
+    <link rel="stylesheet" href="assets/groundwork.css" />
+    <style>
+      .app { display: grid; grid-template-rows: 46px 1fr 26px; height: 100vh; }
+      .body { display: grid; grid-template-columns: 244px 1fr 268px; min-height: 0; }
+      .wm { margin-right: 12px; font-size: 14px; } .bar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+      .lib-search { padding: 10px 12px; }
+      .lib-search .search { padding: 7px 10px; }
+      .comp-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; color: var(--text-2); cursor: pointer; font-size: 12.5px; }
+      .comp-row:hover { background: var(--panel-2); } .comp-row.active { background: var(--amber-dim); color: var(--text); }
+      .comp-row .pv { width: 30px; height: 22px; border-radius: 5px; display: grid; place-items: center; font-size: 8px; flex-shrink: 0; }
+      .comp-row .nm { flex: 1; } .comp-row .ct { font-family: var(--mono); font-size: 9px; color: var(--faint); }
+
+      /* canvas library board */
+      .stage { position: relative; overflow: auto; }
+      .board { position: absolute; left: 60px; top: 80px; width: 720px; background: #fbfbfb; border-radius: 10px; padding: 26px; color: #18181c; box-shadow: var(--shadow-art); }
+      .board-h { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+      .board-h h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+      .board-h .tag { font-family: var(--mono); font-size: 10px; color: #b1772a; background: #f6ecd9; padding: 2px 7px; border-radius: 999px; }
+      .board-sub { font-size: 11px; color: #6b6b72; margin-bottom: 20px; }
+      .grp-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: #9a9aa2; margin: 18px 0 10px; }
+      .btns { display: flex; gap: 12px; flex-wrap: wrap; }
+      .ui-btn { padding: 9px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; }
+      .ui-btn.primary { background: var(--amber); color: var(--amber-ink); }
+      .ui-btn.secondary { background: #18181c; color: #fff; }
+      .ui-btn.ghost { background: transparent; border: 1px solid #d4d4d8; color: #18181c; }
+      .ui-btn.icon { width: 38px; height: 38px; padding: 0; display: grid; place-items: center; background: #f0f0f2; border-radius: 8px; }
+      .selo { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 8px; position: relative; }
+      .selo::after { content: "Primary"; position: absolute; top: -22px; left: 0; background: var(--amber); color: var(--amber-ink); font-family: var(--mono); font-size: 9px; padding: 1px 6px; border-radius: 4px; }
+      .cards { display: flex; gap: 14px; }
+      .ui-card { width: 150px; background: #fff; border: 1px solid #ececec; border-radius: 10px; overflow: hidden; }
+      .ui-card .ch { height: 56px; background: linear-gradient(150deg, var(--cream), #fff); border-bottom: 1px solid #f0f0f2; }
+      .ui-card .cb { padding: 10px; } .ui-card .cb b { font-size: 11px; } .ui-card .cb i { display: block; height: 5px; background: #ededed; border-radius: 3px; margin-top: 6px; width: 80%; }
+      .inputs { display: flex; gap: 12px; }
+      .ui-input { width: 160px; height: 36px; border: 1px solid #d4d4d8; border-radius: 8px; display: flex; align-items: center; padding: 0 12px; font-size: 11px; color: #9a9aa2; }
+      .ui-input.focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(242,163,60,0.18); }
+      .colors { display: flex; gap: 10px; }
+      .col-style { text-align: center; } .col-style .sw { width: 44px; height: 44px; border-radius: 10px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); } .col-style span { font-family: var(--mono); font-size: 9px; color: #6b6b72; display: block; margin-top: 5px; }
+
+      .insp-head { display: flex; align-items: center; gap: 9px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+      .insp-head .ico { color: var(--amber); } .insp-head .ico svg { width:15px; height:15px; } .insp-head .nm { font-weight: 600; font-size: 13px; flex: 1; }
+      .prop-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; font-size: 12px; }
+      .prop-row .k { color: var(--muted); } .prop-row .v { font-family: var(--mono); font-size: 11px; }
+      .publish { margin: 4px 14px 14px; }
+      .statusbar { display: flex; align-items: center; gap: 16px; padding: 0 14px; background: var(--panel); border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="menubar">
+        <div class="gw-logo">G</div><div class="gw-word wm">Groundwork</div>
+        <nav class="menus"><div class="menu">File</div><div class="menu">Edit</div><div class="menu">View</div><div class="menu">Object</div><div class="menu">Export</div></nav>
+        <div class="tools" style="margin:0 auto">
+          <div class="tool active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3l7 17 2-7 7-2z"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M12 6v13"/></svg></div>
+        </div>
+        <div class="bar-right"><span class="chip green">Offline-ready</span><button class="btn amber">Export</button></div>
+      </header>
+
+      <div class="body">
+        <aside class="panel l">
+          <div class="tabs"><div class="tab">Layers</div><div class="tab active">Assets</div><div class="tab">Pages</div></div>
+          <div class="lib-search"><div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Search components…"/></div></div>
+          <div class="sec-label">ASSET LIBRARY · LOCAL</div>
+          <div class="scroll" style="flex:1; overflow-y:auto">
+            <div class="comp-row active"><span class="pv" style="background:var(--amber);color:var(--amber-ink)">Aa</span><span class="nm">Primary Button</span><span class="ct">btn</span></div>
+            <div class="comp-row"><span class="pv" style="background:#18181c;color:#fff">Aa</span><span class="nm">Secondary Button</span><span class="ct">btn</span></div>
+            <div class="comp-row"><span class="pv" style="background:#222;color:#c8c8ce;border:1px solid var(--border-2)">Aa</span><span class="nm">Ghost Button</span><span class="ct">btn</span></div>
+            <div class="comp-row"><span class="pv" style="background:#222;color:var(--amber)">◐</span><span class="nm">Icon Button</span><span class="ct">btn</span></div>
+            <div class="comp-row"><span class="pv" style="background:#2b2b30">▭</span><span class="nm">Feature Card</span><span class="ct">card</span></div>
+            <div class="comp-row"><span class="pv" style="background:#2b2b30">▭</span><span class="nm">Stat Card</span><span class="ct">card</span></div>
+            <div class="comp-row"><span class="pv" style="background:#2b2b30">▭</span><span class="nm">Text Input</span><span class="ct">input</span></div>
+            <div class="comp-row"><span class="pv" style="background:var(--amber)"></span><span class="nm">Amber / 500</span><span class="ct">color</span></div>
+            <div class="comp-row"><span class="pv" style="background:#18181c"></span><span class="nm">Ink / 900</span><span class="ct">color</span></div>
+          </div>
+        </aside>
+
+        <main class="stage canvas-dots">
+          <div class="board">
+            <div class="board-h"><h2>Local Library</h2><span class="tag">no upload</span></div>
+            <div class="board-sub">9 components · lives in this file · publish keeps them on your disk</div>
+
+            <div class="grp-label">BUTTONS</div>
+            <div class="btns">
+              <div class="selo"><div class="ui-btn primary">Get Groundwork</div></div>
+              <div class="ui-btn secondary">Learn more</div>
+              <div class="ui-btn ghost">Cancel</div>
+              <div class="ui-btn icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#18181c" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+            </div>
+
+            <div class="grp-label">CARDS</div>
+            <div class="cards">
+              <div class="ui-card"><div class="ch"></div><div class="cb"><b>Feature</b><i></i><i style="width:60%"></i></div></div>
+              <div class="ui-card"><div class="ch" style="background:#18181c"></div><div class="cb"><b>Stat · 100%</b><i></i><i style="width:50%"></i></div></div>
+            </div>
+
+            <div class="grp-label">INPUTS</div>
+            <div class="inputs"><div class="ui-input">Placeholder…</div><div class="ui-input focus">Focused field</div></div>
+
+            <div class="grp-label">COLOR STYLES</div>
+            <div class="colors">
+              <div class="col-style"><div class="sw" style="background:#f2a33c"></div><span>Amber</span></div>
+              <div class="col-style"><div class="sw" style="background:#18181c"></div><span>Ink</span></div>
+              <div class="col-style"><div class="sw" style="background:#5ec98b"></div><span>Green</span></div>
+              <div class="col-style"><div class="sw" style="background:#4c8dff"></div><span>Blue</span></div>
+              <div class="col-style"><div class="sw" style="background:#f4ecdd"></div><span>Cream</span></div>
+            </div>
+          </div>
+        </main>
+
+        <aside class="panel r">
+          <div class="insp-head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 17l-5.5 2.5 1-6.3L3 8.9 9 8z"/></svg></span><span class="nm">Primary Button</span></div>
+          <div class="group"><div class="ghead">COMPONENT</div>
+            <div class="prop-row"><span class="k">Variant</span><span class="v">Primary</span></div>
+            <div class="prop-row"><span class="k">Used in file</span><span class="v">7×</span></div>
+            <div class="prop-row"><span class="k">Source</span><span class="v amber-tx">local</span></div>
+          </div>
+          <div class="group"><div class="ghead">PROPERTIES</div>
+            <div class="prop-row"><span class="k">Label</span><span class="v">"Get Groundwork"</span></div>
+            <div class="prop-row"><span class="k">Size</span><span class="v">Medium</span></div>
+            <div class="prop-row"><span class="k">Icon</span><span class="v">None</span></div>
+          </div>
+          <div class="group"><div class="ghead">FILL</div><div class="row"><div class="swatch" style="background:#f2a33c"></div><div class="field" style="flex:1"><span>#</span><input value="F2A33C"/></div></div></div>
+          <button class="btn amber publish"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg> Publish to library · stays on disk</button>
+        </aside>
+      </div>
+
+      <footer class="statusbar"><span class="amber-tx">● Local library</span><span>9 components · no upload</span><div class="spacer"></div><span>landing.gwork</span></footer>
+    </div>
+  </body>
+</html>

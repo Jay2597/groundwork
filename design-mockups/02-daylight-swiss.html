@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Daylight Swiss</title>
+    <style>
+      :root {
+        --bg: #f4f4f2;
+        --panel: #fbfbfa;
+        --panel-2: #efefec;
+        --border: #dcdcd6;
+        --ink: #14140f;
+        --muted: #6b6b62;
+        --faint: #9a9a90;
+        --accent: #e8442a; /* swiss red */
+        --canvas: #e9e9e5;
+        --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        --mono: "Courier New", ui-monospace, monospace;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--font); background: var(--bg); color: var(--ink); height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased; font-size: 13px; }
+      .app { display: grid; grid-template-rows: 52px 1fr; height: 100vh; }
+
+      .topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 18px; background: var(--panel); border-bottom: 2px solid var(--ink); }
+      .brand { display: flex; align-items: baseline; gap: 12px; }
+      .brand h1 { font-size: 17px; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; }
+      .brand .mark { width: 12px; height: 12px; background: var(--accent); display: inline-block; align-self: center; }
+      .badge { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); border-left: 2px solid var(--accent); padding-left: 8px; }
+      .docname { justify-self: center; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+      .actions { justify-self: end; display: flex; gap: 4px; align-items: center; }
+      .btn { padding: 7px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink); background: none; border: none; cursor: pointer; }
+      .btn:hover { background: var(--panel-2); }
+      .btn.primary { background: var(--ink); color: #fff; }
+      .btn.primary:hover { background: var(--accent); }
+
+      .body { display: grid; grid-template-columns: 56px 250px 1fr 268px; min-height: 0; }
+      .rail { background: var(--panel); border-right: 2px solid var(--ink); display: flex; flex-direction: column; align-items: center; padding: 10px 0; gap: 2px; }
+      .tool { width: 38px; height: 38px; display: grid; place-items: center; color: var(--muted); cursor: pointer; border: 2px solid transparent; }
+      .tool:hover { color: var(--ink); }
+      .tool.active { background: var(--accent); color: #fff; }
+      .tool svg { width: 18px; height: 18px; }
+      .rail-sep { width: 22px; height: 2px; background: var(--border); margin: 8px 0; }
+
+      .panel { background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+      .panel.left { border-right: 2px solid var(--ink); }
+      .panel.right { border-left: 2px solid var(--ink); }
+      .phead { padding: 14px 16px 10px; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+      .layers { padding: 6px; }
+      .layer { display: flex; align-items: center; gap: 10px; padding: 8px 10px; color: var(--muted); cursor: pointer; border-left: 3px solid transparent; }
+      .layer:hover { background: var(--panel-2); }
+      .layer.active { background: #fff; color: var(--ink); border-left-color: var(--accent); }
+      .layer.child { padding-left: 26px; }
+      .layer .ico { width: 13px; color: var(--faint); }
+      .layer .nm { flex: 1; font-size: 12.5px; }
+      .layer .num { font-family: var(--mono); font-size: 10px; color: var(--faint); }
+
+      .stage { position: relative; overflow: hidden; background:
+        linear-gradient(var(--border) 1px, transparent 1px) 0 0 / 100% 28px,
+        linear-gradient(90deg, var(--border) 1px, transparent 1px) 0 0 / 28px 100%,
+        var(--canvas); }
+      .frame { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 520px; height: 360px; background: #fff; border: 1px solid var(--ink); box-shadow: 14px 14px 0 rgba(20,20,15,0.1); overflow: hidden; }
+      .frame-label { position: absolute; left: calc(50% - 260px); top: calc(50% - 200px); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+      .poster { display: grid; grid-template-columns: 1.4fr 1fr; height: 100%; }
+      .poster .left-col { padding: 28px; border-right: 1px solid var(--ink); display: flex; flex-direction: column; }
+      .poster .kick { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); }
+      .poster h2 { font-size: 40px; line-height: 0.95; font-weight: 800; letter-spacing: -0.03em; margin-top: auto; }
+      .poster .sub { font-size: 12px; color: var(--muted); margin-top: 12px; max-width: 230px; line-height: 1.4; }
+      .poster .right-col { background: var(--accent); position: relative; }
+      .poster .right-col .circle { position: absolute; width: 120px; height: 120px; border-radius: 50%; background: var(--ink); left: 30px; top: 40px; }
+      .poster .right-col .sq { position: absolute; width: 80px; height: 80px; background: #fff; right: 24px; bottom: 36px; }
+      .poster .num-big { position: absolute; left: 24px; bottom: 20px; font-family: var(--mono); color: #fff; font-size: 13px; }
+
+      .sel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 520px; height: 360px; outline: 2px solid var(--accent); }
+      .handle { position: absolute; width: 9px; height: 9px; background: #fff; border: 2px solid var(--accent); }
+      .handle.tl{left:-5px;top:-5px}.handle.tr{right:-5px;top:-5px}.handle.bl{left:-5px;bottom:-5px}.handle.br{right:-5px;bottom:-5px}
+      .dim { position: absolute; top: -26px; left: 0; background: var(--accent); color: #fff; font-size: 10px; font-family: var(--mono); padding: 2px 7px; }
+
+      .zoom { position: absolute; right: 16px; bottom: 16px; background: var(--ink); color: #fff; padding: 7px 12px; font-family: var(--mono); font-size: 11px; display: flex; gap: 10px; }
+
+      .group { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+      .glabel { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--faint); margin-bottom: 10px; }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .field { display: flex; align-items: center; gap: 7px; border: 1px solid var(--ink); padding: 6px 9px; background: #fff; }
+      .field span { color: var(--faint); font-family: var(--mono); font-size: 10px; }
+      .field input { border: none; background: none; width: 100%; font-family: var(--mono); font-size: 12px; outline: none; color: var(--ink); }
+      .row { display: flex; gap: 8px; align-items: center; }
+      .swatch { width: 20px; height: 20px; border: 1px solid var(--ink); }
+      .seg { display: flex; border: 1px solid var(--ink); }
+      .seg div { flex: 1; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 7px 4px; cursor: pointer; border-right: 1px solid var(--ink); }
+      .seg div:last-child { border-right: none; }
+      .seg div.on { background: var(--ink); color: #fff; }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="mark"></span><h1>Groundwork</h1>
+          <span class="badge">on-device / no cloud</span>
+        </div>
+        <div class="docname">Poster — A4 / Landscape</div>
+        <div class="actions">
+          <button class="btn">Undo</button><button class="btn">Redo</button>
+          <button class="btn">Open</button><button class="btn primary">Save</button>
+          <button class="btn">Export</button>
+        </div>
+      </header>
+      <div class="body">
+        <nav class="rail">
+          <div class="tool active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3l7 17 2-7 7-2z"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 13V5a1.5 1.5 0 013 0v6m0-1a1.5 1.5 0 013 0v2m0-1a1.5 1.5 0 013 0v4a6 6 0 01-6 6h-1a6 6 0 01-5-3l-2-3a1.5 1.5 0 012-2l1 1"/></svg></div>
+          <div class="rail-sep"></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7-4-4-7 7zM5 21l3-1"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M12 6v13"/></svg></div>
+        </nav>
+        <aside class="panel left">
+          <div class="phead">Layers</div>
+          <div class="layers">
+            <div class="layer active"><span class="ico">▦</span><span class="nm">Poster Frame</span><span class="num">01</span></div>
+            <div class="layer child"><span class="ico">▭</span><span class="nm">Type Column</span><span class="num">02</span></div>
+            <div class="layer child"><span class="ico">T</span><span class="nm">Headline</span><span class="num">03</span></div>
+            <div class="layer child"><span class="ico">▭</span><span class="nm">Color Block</span><span class="num">04</span></div>
+            <div class="layer child"><span class="ico">○</span><span class="nm">Circle</span><span class="num">05</span></div>
+            <div class="layer child"><span class="ico">▱</span><span class="nm">Square</span><span class="num">06</span></div>
+          </div>
+        </aside>
+        <main class="stage">
+          <div class="frame-label">Poster Frame — 520 × 360</div>
+          <div class="frame">
+            <div class="poster">
+              <div class="left-col">
+                <div class="kick">Groundwork / 2026</div>
+                <h2>Form follows the file.</h2>
+                <div class="sub">A local-first design system. Precision tooling, zero cloud, total ownership of your work.</div>
+              </div>
+              <div class="right-col">
+                <div class="circle"></div><div class="sq"></div>
+                <div class="num-big">№ 01</div>
+              </div>
+            </div>
+          </div>
+          <div class="sel">
+            <div class="handle tl"></div><div class="handle tr"></div><div class="handle bl"></div><div class="handle br"></div>
+            <div class="dim">520 × 360</div>
+          </div>
+          <div class="zoom"><span>100%</span><span>·</span><span>FIT</span></div>
+        </main>
+        <aside class="panel right">
+          <div class="phead">Poster Frame</div>
+          <div class="group">
+            <div class="glabel">Position / Size</div>
+            <div class="grid2">
+              <div class="field"><span>X</span><input value="0"></div>
+              <div class="field"><span>Y</span><input value="0"></div>
+              <div class="field"><span>W</span><input value="520"></div>
+              <div class="field"><span>H</span><input value="360"></div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="glabel">Fill</div>
+            <div class="row"><div class="swatch" style="background:#fff"></div><div class="field" style="flex:1"><span>HEX</span><input value="FFFFFF"></div></div>
+          </div>
+          <div class="group">
+            <div class="glabel">Grid</div>
+            <div class="seg"><div class="on">12 col</div><div>8 col</div><div>Off</div></div>
+          </div>
+          <div class="group">
+            <div class="glabel">Export</div>
+            <div class="seg"><div class="on">PDF</div><div>SVG</div><div>PNG</div></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

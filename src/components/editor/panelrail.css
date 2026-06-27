@@ -1,0 +1,30 @@
+.panel-rail {
+  width: 40px;
+  flex-shrink: 0;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+.panel-rail.left { border-right: 1px solid var(--border); }
+.panel-rail.right { border-left: 1px solid var(--border); }
+
+.rail-btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.rail-btn:hover { background: var(--raised); color: var(--text); }
+.rail-btn svg { width: 16px; height: 16px; }
+
+.rail-glyph { color: var(--faint); }
+.rail-glyph svg { width: 18px; height: 18px; }

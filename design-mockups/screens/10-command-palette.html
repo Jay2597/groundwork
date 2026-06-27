@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Command Palette</title>
+    <link rel="stylesheet" href="assets/groundwork.css" />
+    <style>
+      body { display: grid; place-items: start center; }
+      .backdrop { position: fixed; inset: 0; background: rgba(8,8,10,0.6); backdrop-filter: blur(2px); }
+      .palette { position: relative; margin-top: 12vh; width: 560px; max-width: 92vw; background: var(--panel); border: 1px solid var(--border-2); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); overflow: hidden; }
+      .p-search { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--border); }
+      .p-search svg { width: 18px; height: 18px; color: var(--amber); }
+      .p-search input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 15px; }
+      .p-search input::placeholder { color: var(--faint); }
+      .p-search .esc { font-family: var(--mono); font-size: 10px; color: var(--faint); border: 1px solid var(--border-2); border-radius: 5px; padding: 2px 7px; }
+      .p-list { max-height: 380px; overflow-y: auto; padding: 8px; }
+      .p-group { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--faint); padding: 10px 10px 6px; }
+      .cmd { display: flex; align-items: center; gap: 12px; padding: 10px 11px; border-radius: var(--r-md); color: var(--text-2); cursor: pointer; }
+      .cmd:hover { background: var(--panel-2); }
+      .cmd.sel { background: var(--amber-dim); color: var(--text); }
+      .cmd .ci { width: 20px; display: grid; place-items: center; color: var(--muted); } .cmd.sel .ci { color: var(--amber); } .cmd .ci svg { width: 16px; height: 16px; }
+      .cmd .nm { flex: 1; font-size: 13px; } .cmd .sub { font-size: 11px; color: var(--faint); }
+      .cmd .keys { display: flex; gap: 4px; }
+      .p-foot { display: flex; align-items: center; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
+      .p-foot .k { display: inline-flex; align-items: center; gap: 5px; } .p-foot .kbd { padding: 1px 5px; }
+    </style>
+  </head>
+  <body>
+    <div class="backdrop"></div>
+    <section class="palette">
+      <div class="p-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input value="exp" placeholder="Type a command or search…" />
+        <span class="esc">ESC</span>
+      </div>
+      <div class="p-list scroll">
+        <div class="p-group">ACTIONS</div>
+        <div class="cmd sel"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span class="nm">Export selection…</span><span class="keys"><span class="kbd">⇧</span><span class="kbd">E</span></span></div>
+        <div class="cmd"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span class="nm">Export all frames as PNG</span></div>
+        <div class="cmd"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></span><span class="nm">Export and reveal in folder</span></div>
+
+        <div class="p-group">CREATE</div>
+        <div class="cmd"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></span><span class="nm">New frame</span><span class="keys"><span class="kbd">F</span></span></div>
+        <div class="cmd"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span><span class="nm">New file…</span><span class="keys"><span class="kbd">⌘</span><span class="kbd">N</span></span></div>
+
+        <div class="p-group">GO TO</div>
+        <div class="cmd"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg></span><span class="nm">Home · all files</span></div>
+        <div class="cmd"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.3 1a7 7 0 0 0-1.7-1l-.4-2.5h-4l-.4 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.4 2 1.6a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.3-1a7 7 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.6a7 7 0 0 0 .1-1z"/></svg></span><span class="nm">Settings</span><span class="keys"><span class="kbd">⌘</span><span class="kbd">,</span></span></div>
+      </div>
+      <div class="p-foot">
+        <span class="k"><span class="kbd">↑</span><span class="kbd">↓</span> navigate</span>
+        <span class="k"><span class="kbd">↵</span> run</span>
+        <span class="spacer" style="flex:1"></span>
+        <span class="amber-tx">Groundwork ⌘K · everything runs locally</span>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+.page-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 12px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 12.5px;
+}
+.page-item:hover { background: var(--panel-2); }
+.page-item.active { background: var(--amber-dim); color: var(--text); }
+.page-dot { width: 7px; height: 7px; border-radius: 2px; background: var(--amber); flex-shrink: 0; }
+.pages-list { max-height: 120px; overflow-y: auto; }
+.page-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.page-rename { flex: 1; background: var(--bg); border: 1px solid var(--amber); border-radius: 4px; padding: 1px 5px; color: var(--text); font-family: inherit; font-size: 12.5px; }
+.page-del { opacity: 0; background: none; border: none; color: var(--faint); font-size: 15px; line-height: 1; cursor: pointer; padding: 0 2px; }
+.page-item:hover .page-del { opacity: 0.7; }
+.page-del:hover { color: var(--red); opacity: 1; }
+
+.sec-add { float: right; background: none; border: none; color: var(--muted); font-size: 14px; line-height: 1; cursor: pointer; padding: 0 2px; }
+.sec-add:hover { color: var(--amber); }
+
+.assets { flex: 1; overflow-y: auto; padding: 2px 10px 10px; }
+.asset-grid { display: flex; flex-direction: column; gap: 4px; }
+.asset-chip { display: flex; align-items: center; gap: 9px; padding: 8px 10px; background: var(--panel-2); border: 1px solid var(--border); border-radius: var(--r-sm); cursor: pointer; color: var(--muted); }
+.asset-chip:hover { border-color: var(--amber); color: var(--text); }
+.asset-glyph { color: var(--amber); }
+.asset-name, .swatch-name { flex: 1; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.asset-del { opacity: 0; background: none; border: none; color: var(--faint); font-size: 15px; line-height: 1; cursor: pointer; padding: 0 2px; }
+.asset-chip:hover .asset-del, .swatch-row:hover .asset-del { opacity: 0.7; }
+.asset-del:hover { color: var(--red); opacity: 1; }
+
+.swatch-list { display: flex; flex-direction: column; gap: 3px; }
+.swatch-row { display: flex; align-items: center; gap: 9px; padding: 6px 8px; border-radius: var(--r-sm); cursor: pointer; color: var(--muted); }
+.swatch-row:hover { background: var(--panel-2); color: var(--text); }
+.swatch { width: 18px; height: 18px; border-radius: 4px; border: 1px solid var(--border); flex-shrink: 0; }
+.swatch-dim { font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
+
+.layers-list { flex: 1; overflow-y: auto; padding: 2px 6px; }
+.layers-empty { color: var(--faint); font-size: var(--text-sm); line-height: 1.5; padding: 12px; }
+
+.layer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 8px;
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  cursor: pointer;
+}
+.layer:hover { background: var(--panel-2); }
+.layer.active { background: var(--amber-dim); color: var(--text); }
+.layer-icon { width: 16px; text-align: center; color: var(--faint); font-size: 12px; }
+.layer-name { flex: 1; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.layer-toggle {
+  opacity: 0;
+  color: var(--faint);
+  padding: 3px;
+  border-radius: var(--r-sm);
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--fast) var(--ease), color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.layer-toggle svg { width: 14px; height: 14px; }
+.layer:hover .layer-toggle, .layer.active .layer-toggle { opacity: 0.7; }
+.layer-toggle.shown { opacity: 0.9; }
+.layer-toggle:hover { opacity: 1; color: var(--amber); background: var(--raised); }
+.layer.locked .layer-name, .layer.locked .layer-icon { opacity: 0.55; }
+.layer[draggable="true"] { cursor: grab; }
+.layer.drop-before { box-shadow: inset 0 2px 0 var(--amber); }
+.layer.drop-inside { background: var(--amber-dim); box-shadow: inset 0 0 0 1px var(--amber); }
+
+.tab[aria-disabled="true"] { cursor: default; color: var(--faint); }
+.tab[aria-disabled="true"]:hover { color: var(--faint); }
+
+.panel-foot {
+  border-top: 1px solid var(--border);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.panel-foot svg { width: 13px; height: 13px; color: var(--amber); }

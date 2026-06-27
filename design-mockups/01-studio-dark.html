@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Studio Dark</title>
+    <style>
+      :root {
+        --bg: #16181d;
+        --panel: #1c1f26;
+        --panel-2: #23272f;
+        --border: #2d323c;
+        --border-soft: #262b33;
+        --text: #eef1f6;
+        --muted: #9aa3b2;
+        --faint: #646d7d;
+        --accent: #5b8def;
+        --accent-2: #7c5cff;
+        --canvas: #0f1115;
+        --radius: 8px;
+        --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        height: 100vh;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+        font-size: 13px;
+      }
+      .app { display: grid; grid-template-rows: 48px 1fr; height: 100vh; }
+
+      /* ---------- Top bar ---------- */
+      .topbar {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        padding: 0 14px;
+        background: linear-gradient(180deg, #1e222a, var(--panel));
+        border-bottom: 1px solid var(--border);
+      }
+      .brand { display: flex; align-items: center; gap: 10px; }
+      .logo {
+        width: 26px; height: 26px; border-radius: 7px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        display: grid; place-items: center; color: #fff; font-weight: 800;
+        box-shadow: 0 2px 10px rgba(91, 141, 239, 0.4);
+      }
+      .brand h1 { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+      .badge {
+        font-size: 10.5px; color: var(--accent);
+        border: 1px solid rgba(91,141,239,0.5); border-radius: 999px;
+        padding: 2px 8px; display: inline-flex; align-items: center; gap: 5px;
+      }
+      .badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #44d07b; box-shadow: 0 0 8px #44d07b; }
+      .docname {
+        justify-self: center; color: var(--muted); font-size: 13px;
+        padding: 5px 12px; border-radius: 6px; border: 1px solid transparent;
+      }
+      .docname:hover { border-color: var(--border); }
+      .actions { justify-self: end; display: flex; align-items: center; gap: 6px; }
+      .btn { padding: 6px 11px; border-radius: 6px; color: var(--muted); font-size: 12.5px; border: 1px solid transparent; cursor: pointer; background: none; }
+      .btn:hover { background: var(--panel-2); color: var(--text); }
+      .btn.primary { background: var(--accent); color: #fff; }
+      .btn.primary:hover { background: #4d7fe0; }
+      .avatars { display: flex; margin-left: 6px; }
+      .avatar { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--panel); margin-left: -7px; background: var(--accent-2); }
+      .avatar:nth-child(2){ background:#e0654d; } .avatar:nth-child(3){ background:#44b0a0; }
+
+      /* ---------- Body ---------- */
+      .body { display: grid; grid-template-columns: 52px 248px 1fr 264px; min-height: 0; }
+
+      /* tool rail */
+      .rail { background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 8px 0; gap: 4px; }
+      .tool { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; color: var(--muted); cursor: pointer; }
+      .tool:hover { background: var(--panel-2); color: var(--text); }
+      .tool.active { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(91,141,239,0.45); }
+      .tool svg { width: 17px; height: 17px; }
+      .rail-sep { width: 24px; height: 1px; background: var(--border); margin: 6px 0; }
+
+      /* panels */
+      .panel { background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+      .panel.left { border-right: 1px solid var(--border); }
+      .panel.right { border-left: 1px solid var(--border); }
+      .phead { padding: 12px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); }
+      .layers { padding: 0 6px; overflow: auto; }
+      .layer { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 6px; color: var(--muted); cursor: pointer; }
+      .layer:hover { background: var(--panel-2); }
+      .layer.active { background: rgba(91,141,239,0.18); color: var(--text); }
+      .layer.child { padding-left: 26px; }
+      .layer .ico { width: 14px; color: var(--faint); display: grid; place-items: center; }
+      .layer .ico svg { width: 13px; height: 13px; }
+      .layer .nm { flex: 1; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .layer .eye { opacity: 0; color: var(--faint); }
+      .layer:hover .eye, .layer.active .eye { opacity: 0.7; }
+
+      /* canvas */
+      .stage {
+        position: relative; overflow: hidden;
+        background:
+          radial-gradient(circle at 1px 1px, #20242c 1px, transparent 0) 0 0 / 22px 22px,
+          var(--canvas);
+      }
+      .frame {
+        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        width: 360px; height: 460px; background: #fff; border-radius: 18px;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.2);
+        overflow: hidden; color: #15171c;
+      }
+      .frame-label { position: absolute; left: 50%; top: calc(50% - 250px); transform: translateX(-50%); font-size: 11px; color: var(--accent); font-family: var(--mono); }
+      .hero { height: 190px; background: linear-gradient(135deg, #5b8def, #7c5cff); padding: 22px; color: #fff; position: relative; }
+      .hero .pill { font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.85; }
+      .hero h2 { font-size: 26px; line-height: 1.05; margin-top: 40px; font-weight: 800; letter-spacing: -0.02em; }
+      .hero p { font-size: 11px; opacity: 0.9; margin-top: 8px; max-width: 200px; }
+      .card-body { padding: 18px; }
+      .stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
+      .stat { flex: 1; background: #f1f3f7; border-radius: 10px; padding: 12px; }
+      .stat b { font-size: 18px; } .stat span { font-size: 9px; color: #6b7280; display: block; }
+      .cta { background: #15171c; color: #fff; text-align: center; padding: 12px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+      .line { height: 8px; background: #e7eaf0; border-radius: 4px; margin-top: 10px; }
+      .line.s { width: 60%; }
+
+      /* selection */
+      .sel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 360px; height: 190px; margin-top: -135px; outline: 1.5px solid var(--accent); }
+      .handle { position: absolute; width: 9px; height: 9px; background: #fff; border: 1.5px solid var(--accent); border-radius: 2px; }
+      .handle.tl{left:-5px;top:-5px}.handle.tr{right:-5px;top:-5px}.handle.bl{left:-5px;bottom:-5px}.handle.br{right:-5px;bottom:-5px}
+      .dim { position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 10px; padding: 2px 7px; border-radius: 4px; font-family: var(--mono); }
+
+      /* zoom chip */
+      .zoom { position: absolute; right: 14px; bottom: 14px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 11.5px; color: var(--muted); display: flex; gap: 10px; align-items: center; }
+
+      /* right panel fields */
+      .group { padding: 12px 14px; border-top: 1px solid var(--border-soft); }
+      .group:first-of-type { border-top: none; }
+      .glabel { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); margin-bottom: 9px; }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .field { display: flex; align-items: center; gap: 7px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 6px 9px; }
+      .field span { color: var(--faint); font-size: 11px; }
+      .field input { background: none; border: none; color: var(--text); width: 100%; font-size: 12px; font-family: var(--mono); outline: none; }
+      .swatch { width: 18px; height: 18px; border-radius: 5px; border: 1px solid var(--border); }
+      .row { display: flex; align-items: center; gap: 8px; }
+      .seg { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 2px; }
+      .seg div { flex: 1; text-align: center; font-size: 11px; padding: 5px; border-radius: 5px; color: var(--muted); cursor: pointer; }
+      .seg div.on { background: var(--panel-2); color: var(--text); }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo">G</div>
+          <h1>Groundwork</h1>
+          <span class="badge">local · nothing leaves this machine</span>
+        </div>
+        <div class="docname">Onboarding — Mobile ▾</div>
+        <div class="actions">
+          <button class="btn">Undo</button>
+          <button class="btn">Redo</button>
+          <button class="btn">Open</button>
+          <button class="btn primary">Save</button>
+          <button class="btn">Export ▾</button>
+          <div class="avatars"><div class="avatar"></div><div class="avatar"></div><div class="avatar"></div></div>
+        </div>
+      </header>
+
+      <div class="body">
+        <!-- tool rail -->
+        <nav class="rail">
+          <div class="tool active" title="Move (V)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3l7 17 2-7 7-2z"/></svg></div>
+          <div class="tool" title="Hand (H)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 13V5a1.5 1.5 0 013 0v6m0-1a1.5 1.5 0 013 0v2m0-1a1.5 1.5 0 013 0v4a6 6 0 01-6 6h-1a6 6 0 01-5-3l-2-3a1.5 1.5 0 012-2l1 1"/></svg></div>
+          <div class="rail-sep"></div>
+          <div class="tool" title="Rectangle (R)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></div>
+          <div class="tool" title="Ellipse (O)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg></div>
+          <div class="tool" title="Pen (P)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7-4-4-7 7zM5 21l3-1"/></svg></div>
+          <div class="tool" title="Text (T)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M12 6v13"/></svg></div>
+          <div class="rail-sep"></div>
+          <div class="tool" title="Comment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/></svg></div>
+        </nav>
+
+        <!-- layers -->
+        <aside class="panel left">
+          <div class="phead">Layers</div>
+          <div class="layers">
+            <div class="layer"><span class="ico">▦</span><span class="nm">Onboarding Frame</span><span class="eye">◉</span></div>
+            <div class="layer active child"><span class="ico">▭</span><span class="nm">Hero / Gradient</span><span class="eye">◉</span></div>
+            <div class="layer child"><span class="ico">T</span><span class="nm">Headline</span><span class="eye">◉</span></div>
+            <div class="layer child"><span class="ico">▱</span><span class="nm">Stat Card · L</span><span class="eye">◉</span></div>
+            <div class="layer child"><span class="ico">▱</span><span class="nm">Stat Card · R</span><span class="eye">◉</span></div>
+            <div class="layer child"><span class="ico">▭</span><span class="nm">CTA Button</span><span class="eye">◉</span></div>
+            <div class="layer child"><span class="ico">○</span><span class="nm">Avatar</span><span class="eye">◉</span></div>
+          </div>
+        </aside>
+
+        <!-- canvas -->
+        <main class="stage">
+          <div class="frame-label">Onboarding Frame · 360 × 460</div>
+          <div class="frame">
+            <div class="hero">
+              <div class="pill">Get started</div>
+              <h2>Design that stays yours.</h2>
+              <p>Everything you make lives on your machine. No cloud, no account.</p>
+            </div>
+            <div class="card-body">
+              <div class="stat-row">
+                <div class="stat"><b>0 ms</b><span>upload latency</span></div>
+                <div class="stat"><b>100%</b><span>on-device</span></div>
+              </div>
+              <div class="cta">Create your first file</div>
+              <div class="line"></div><div class="line s"></div>
+            </div>
+          </div>
+          <div class="sel">
+            <div class="handle tl"></div><div class="handle tr"></div>
+            <div class="handle bl"></div><div class="handle br"></div>
+            <div class="dim">360 × 190</div>
+          </div>
+          <div class="zoom"><span>100%</span><span style="color:var(--faint)">|</span><span>Fit</span></div>
+        </main>
+
+        <!-- properties -->
+        <aside class="panel right">
+          <div class="phead">Hero / Gradient</div>
+          <div class="group">
+            <div class="glabel">Position &amp; size</div>
+            <div class="grid2">
+              <div class="field"><span>X</span><input value="0" /></div>
+              <div class="field"><span>Y</span><input value="0" /></div>
+              <div class="field"><span>W</span><input value="360" /></div>
+              <div class="field"><span>H</span><input value="190" /></div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="glabel">Fill</div>
+            <div class="row" style="margin-bottom:8px">
+              <div class="swatch" style="background:linear-gradient(135deg,#5b8def,#7c5cff)"></div>
+              <div class="field" style="flex:1"><span>Linear</span><input value="135°" /></div>
+            </div>
+            <div class="seg"><div class="on">Solid</div><div>Linear</div><div>Radial</div><div>Image</div></div>
+          </div>
+          <div class="group">
+            <div class="glabel">Appearance</div>
+            <div class="grid2">
+              <div class="field"><span>Opacity</span><input value="100%" /></div>
+              <div class="field"><span>Radius</span><input value="18" /></div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="glabel">Export</div>
+            <div class="seg"><div class="on">PNG 2×</div><div>SVG</div><div>PDF</div></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

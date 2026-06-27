@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Neo-Brutalist</title>
+    <style>
+      :root {
+        --bg: #e9e6dd;
+        --panel: #fffef6;
+        --ink: #100f0c;
+        --muted: #54514a;
+        --accent: #ffd23f;   /* electric yellow */
+        --accent-2: #2f6df0; /* blue */
+        --pink: #ff5da2;
+        --canvas: #d9d6cc;
+        --font: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+        --mono: "Space Mono", ui-monospace, monospace;
+        --shadow: 4px 4px 0 var(--ink);
+        --shadow-lg: 6px 6px 0 var(--ink);
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--font); background: var(--bg); color: var(--ink); height: 100vh; overflow: hidden; font-size: 13px; }
+      .app { display: grid; grid-template-rows: 56px 1fr; height: 100vh; }
+
+      .topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 16px; background: var(--accent); border-bottom: 3px solid var(--ink); }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .logo { width: 32px; height: 32px; background: var(--ink); color: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 17px; border: 2px solid var(--ink); box-shadow: var(--shadow); }
+      .brand h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
+      .badge { font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--ink); color: #fff; padding: 4px 9px; border: 2px solid var(--ink); }
+      .docname { justify-self: center; font-weight: 700; font-size: 14px; background: #fff; border: 2px solid var(--ink); padding: 6px 14px; box-shadow: var(--shadow); }
+      .actions { justify-self: end; display: flex; gap: 8px; }
+      .btn { padding: 7px 13px; font-weight: 700; font-size: 12px; background: #fff; border: 2px solid var(--ink); cursor: pointer; box-shadow: 3px 3px 0 var(--ink); }
+      .btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+      .btn.primary { background: var(--accent-2); color: #fff; }
+
+      .body { display: grid; grid-template-columns: 60px 252px 1fr 272px; min-height: 0; }
+      .rail { background: var(--panel); border-right: 3px solid var(--ink); display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 8px; }
+      .tool { width: 40px; height: 40px; display: grid; place-items: center; background: #fff; border: 2px solid var(--ink); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+      .tool:hover { transform: translate(-1px,-1px); }
+      .tool.active { background: var(--pink); color: #fff; }
+      .tool svg { width: 18px; height: 18px; }
+
+      .panel { background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+      .panel.left { border-right: 3px solid var(--ink); }
+      .panel.right { border-left: 3px solid var(--ink); }
+      .phead { padding: 14px 16px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 3px solid var(--ink); background: var(--accent); }
+      .layers { padding: 8px; }
+      .layer { display: flex; align-items: center; gap: 10px; padding: 9px 10px; margin-bottom: 6px; background: #fff; border: 2px solid var(--ink); cursor: pointer; font-weight: 600; }
+      .layer:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); }
+      .layer.active { background: var(--accent); box-shadow: var(--shadow); }
+      .layer .ico { width: 14px; }
+      .layer .nm { flex: 1; font-size: 12.5px; }
+
+      .stage { position: relative; overflow: hidden; background:
+        repeating-linear-gradient(45deg, #d2cfc4 0 2px, transparent 2px 14px), var(--canvas); }
+      .frame { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 400px; height: 420px; background: #fff; border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); overflow: hidden; }
+      .frame-label { position: absolute; left: 50%; top: calc(50% - 236px); transform: translateX(-50%); font-family: var(--mono); font-size: 11px; font-weight: 700; background: var(--ink); color: var(--accent); padding: 3px 9px; }
+      .b-hero { background: var(--accent-2); color: #fff; padding: 24px; border-bottom: 3px solid var(--ink); }
+      .b-hero .tag { font-family: var(--mono); font-size: 10px; font-weight: 700; background: var(--accent); color: var(--ink); display: inline-block; padding: 3px 8px; border: 2px solid var(--ink); }
+      .b-hero h2 { font-size: 34px; line-height: 0.95; font-weight: 800; margin-top: 16px; letter-spacing: -0.02em; }
+      .b-body { padding: 20px; }
+      .chip-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+      .chip { font-weight: 700; font-size: 12px; padding: 8px 12px; background: var(--pink); color: #fff; border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+      .chip.alt { background: var(--accent); color: var(--ink); }
+      .chip.alt2 { background: #fff; color: var(--ink); }
+      .b-cta { background: var(--ink); color: var(--accent); text-align: center; padding: 14px; font-weight: 800; font-size: 15px; text-transform: uppercase; border: 2px solid var(--ink); }
+
+      .sel { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 400px; height: 158px; margin-top: -131px; outline: 3px solid var(--pink); }
+      .handle { position: absolute; width: 12px; height: 12px; background: #fff; border: 3px solid var(--pink); }
+      .handle.tl{left:-7px;top:-7px}.handle.tr{right:-7px;top:-7px}.handle.bl{left:-7px;bottom:-7px}.handle.br{right:-7px;bottom:-7px}
+      .dim { position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%); background: var(--pink); color: #fff; font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 3px 9px; border: 2px solid var(--ink); }
+
+      .zoom { position: absolute; right: 16px; bottom: 16px; background: #fff; border: 2px solid var(--ink); padding: 7px 12px; font-family: var(--mono); font-size: 11px; font-weight: 700; box-shadow: var(--shadow); display: flex; gap: 10px; }
+
+      .group { padding: 14px 16px; border-bottom: 3px solid var(--ink); }
+      .glabel { font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .field { display: flex; align-items: center; gap: 7px; background: #fff; border: 2px solid var(--ink); padding: 7px 10px; }
+      .field span { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--muted); }
+      .field input { border: none; background: none; width: 100%; font-family: var(--mono); font-weight: 700; font-size: 12px; outline: none; }
+      .row { display: flex; gap: 8px; align-items: center; }
+      .swatch { width: 24px; height: 24px; border: 2px solid var(--ink); }
+      .seg { display: flex; gap: 6px; }
+      .seg div { flex: 1; text-align: center; font-size: 11px; font-weight: 700; padding: 7px 4px; background: #fff; border: 2px solid var(--ink); cursor: pointer; }
+      .seg div.on { background: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo">G</div><h1>GROUNDWORK</h1>
+          <span class="badge">No Cloud · No Cap</span>
+        </div>
+        <div class="docname">Promo Card</div>
+        <div class="actions">
+          <button class="btn">Undo</button><button class="btn">Open</button>
+          <button class="btn primary">Save</button><button class="btn">Export</button>
+        </div>
+      </header>
+      <div class="body">
+        <nav class="rail">
+          <div class="tool active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 3l7 17 2-7 7-2z"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 13V5a1.5 1.5 0 013 0v6m0-1a1.5 1.5 0 013 0v2m0-1a1.5 1.5 0 013 0v4a6 6 0 01-6 6h-1a6 6 0 01-5-3l-2-3a1.5 1.5 0 012-2l1 1"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="5" width="16" height="14"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8"/></svg></div>
+          <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 6h14M12 6v13"/></svg></div>
+        </nav>
+        <aside class="panel left">
+          <div class="phead">Layers</div>
+          <div class="layers">
+            <div class="layer"><span class="ico">▦</span><span class="nm">Promo Frame</span></div>
+            <div class="layer active"><span class="ico">▭</span><span class="nm">Hero Block</span></div>
+            <div class="layer"><span class="ico">T</span><span class="nm">Big Headline</span></div>
+            <div class="layer"><span class="ico">▱</span><span class="nm">Chip · Private</span></div>
+            <div class="layer"><span class="ico">▱</span><span class="nm">Chip · Offline</span></div>
+            <div class="layer"><span class="ico">▭</span><span class="nm">CTA Button</span></div>
+          </div>
+        </aside>
+        <main class="stage">
+          <div class="frame-label">PROMO_FRAME · 400×420</div>
+          <div class="frame">
+            <div class="b-hero">
+              <span class="tag">GROUNDWORK 1.0</span>
+              <h2>Own your<br>design files.</h2>
+            </div>
+            <div class="b-body">
+              <div class="chip-row">
+                <div class="chip">100% LOCAL</div>
+                <div class="chip alt">OFFLINE</div>
+                <div class="chip alt2">$0 CLOUD</div>
+              </div>
+              <div class="b-cta">Start Building →</div>
+            </div>
+          </div>
+          <div class="sel">
+            <div class="handle tl"></div><div class="handle tr"></div><div class="handle bl"></div><div class="handle br"></div>
+            <div class="dim">400 × 158</div>
+          </div>
+          <div class="zoom"><span>100%</span><span>·</span><span>FIT</span></div>
+        </main>
+        <aside class="panel right">
+          <div class="phead">Hero Block</div>
+          <div class="group">
+            <div class="glabel">Frame</div>
+            <div class="grid2">
+              <div class="field"><span>X</span><input value="0"></div>
+              <div class="field"><span>Y</span><input value="0"></div>
+              <div class="field"><span>W</span><input value="400"></div>
+              <div class="field"><span>H</span><input value="158"></div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="glabel">Fill</div>
+            <div class="row"><div class="swatch" style="background:#2f6df0"></div><div class="field" style="flex:1"><span>HEX</span><input value="2F6DF0"></div></div>
+          </div>
+          <div class="group">
+            <div class="glabel">Stroke</div>
+            <div class="seg"><div class="on">3px</div><div>2px</div><div>None</div></div>
+          </div>
+          <div class="group">
+            <div class="glabel">Export</div>
+            <div class="seg"><div class="on">PNG</div><div>SVG</div></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

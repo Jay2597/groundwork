@@ -1,0 +1,93 @@
+.rulers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.ruler-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.ruler-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+}
+.ruler-corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+/* invisible drag strips that emit new guides */
+.ruler-hit-top {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 0;
+  height: 20px;
+  pointer-events: auto;
+  cursor: row-resize;
+}
+.ruler-hit-left {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  pointer-events: auto;
+  cursor: col-resize;
+}
+
+/* guide lines */
+.guide {
+  position: absolute;
+  pointer-events: auto;
+}
+.guide-v {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #4cc2ff;
+  cursor: col-resize;
+}
+.guide-h {
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #4cc2ff;
+  cursor: row-resize;
+}
+.guide-v::before { content: ""; position: absolute; inset: 0 -4px; }
+.guide-h::before { content: ""; position: absolute; inset: -4px 0; }
+.guide.draft { opacity: 0.7; pointer-events: none; }
+.guide-v:hover, .guide-h:hover { background: #7ad4ff; }
+
+.guide-tip {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #0a0a0c;
+  background: #4cc2ff;
+  padding: 1px 4px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity var(--fast) var(--ease);
+  white-space: nowrap;
+}
+.guide-v .guide-tip { top: 22px; left: 3px; }
+.guide-h .guide-tip { left: 22px; top: 3px; }
+.guide:hover .guide-tip, .guide.draft .guide-tip { opacity: 1; }

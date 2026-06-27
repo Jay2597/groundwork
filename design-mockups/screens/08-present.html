@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groundwork — Present</title>
+    <link rel="stylesheet" href="assets/groundwork.css" />
+    <style>
+      body { background: #08080a; }
+      .present { height: 100vh; display: grid; grid-template-rows: 50px 1fr 56px; }
+      .p-top { display: flex; align-items: center; gap: 12px; padding: 0 18px; color: var(--text-2); }
+      .p-top .left, .p-top .right { display: flex; align-items: center; gap: 8px; flex: 1; }
+      .p-top .right { justify-content: flex-end; }
+      .p-top .center { display: flex; align-items: center; gap: 10px; }
+      .p-top .fname { font-size: 13px; font-weight: 500; }
+      .icon-btn { width: 34px; height: 34px; border-radius: var(--r-sm); display: grid; place-items: center; color: var(--muted); }
+      .icon-btn:hover { background: var(--raised); color: var(--text); }
+      .icon-btn svg { width: 17px; height: 17px; }
+      .device-pick { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--r-md); padding: 6px 11px; font-size: 12px; color: var(--text-2); }
+
+      .stage { display: grid; place-items: center; position: relative; }
+      .device { width: 300px; height: 600px; max-height: 78vh; background: #18181c; border-radius: 30px; padding: 10px; box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px #2b2b30; position: relative; }
+      .screen { width: 100%; height: 100%; background: #fbfbfb; border-radius: 22px; overflow: hidden; color: #18181c; position: relative; }
+      .s-hero { background: #18181c; color: #fff; padding: 40px 26px 46px; }
+      .s-hero .eb { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--amber); }
+      .s-hero h1 { font-size: 30px; line-height: 1.05; font-weight: 700; margin-top: 14px; letter-spacing: -0.02em; }
+      .s-hero p { font-size: 12px; color: #b5b5bd; margin-top: 12px; line-height: 1.5; }
+      .s-body { padding: 26px; }
+      .s-cta { background: var(--amber); color: var(--amber-ink); text-align: center; font-weight: 600; font-size: 14px; padding: 15px; border-radius: 12px; box-shadow: 0 8px 24px rgba(242,163,60,0.3); animation: pulse 2.4s var(--ease) infinite; }
+      @keyframes pulse { 0%,100%{ box-shadow: 0 8px 24px rgba(242,163,60,0.25);} 50%{ box-shadow: 0 8px 36px rgba(242,163,60,0.55);} }
+      .s-row { display: flex; gap: 10px; margin-top: 16px; } .s-feat { flex: 1; background: #f4f4f5; border-radius: 12px; padding: 14px; } .s-feat b { font-size: 13px; } .s-feat span { font-size: 10px; color: #82828a; display: block; margin-top: 3px; }
+
+      .hint { position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; color: var(--muted); background: rgba(20,20,22,0.8); border: 1px solid var(--border); padding: 6px 12px; border-radius: 999px; }
+
+      .p-bot { display: flex; align-items: center; justify-content: center; gap: 18px; }
+      .p-bot .chip { background: var(--panel); border: 1px solid var(--border); }
+      .dots { display: flex; gap: 8px; }
+      .dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--raised-2); cursor: pointer; }
+      .dots i.on { background: var(--amber); width: 22px; border-radius: 4px; }
+      .p-bot .ctrl { display: flex; gap: 4px; }
+    </style>
+  </head>
+  <body>
+    <div class="present">
+      <header class="p-top">
+        <div class="left">
+          <button class="icon-btn" title="Exit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          <button class="icon-btn" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg></button>
+        </div>
+        <div class="center"><div class="gw-logo" style="width:20px;height:20px;font-size:12px">G</div><span class="fname">Onboarding flow · 1 / 3</span></div>
+        <div class="right">
+          <div class="device-pick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="3" width="10" height="18" rx="2"/></svg> iPhone 15 ▾</div>
+          <button class="icon-btn" title="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+        </div>
+      </header>
+
+      <main class="stage">
+        <div class="device">
+          <div class="screen">
+            <div class="s-hero">
+              <div class="eb">LOCAL-FIRST DESIGN</div>
+              <h1>Make yourself at home.</h1>
+              <p>Your designs live here, with you. Nothing is uploaded, nothing tracked.</p>
+            </div>
+            <div class="s-body">
+              <div class="s-cta">Create your first file</div>
+              <div class="s-row">
+                <div class="s-feat"><b>Private</b><span>on-device</span></div>
+                <div class="s-feat"><b>Offline</b><span>anywhere</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/></svg> Tap the glowing button to advance the flow</div>
+      </main>
+
+      <footer class="p-bot">
+        <span class="chip green">Local preview · nothing streamed</span>
+        <div class="dots"><i class="on"></i><i></i><i></i></div>
+        <div class="ctrl">
+          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
