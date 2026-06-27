@@ -5,6 +5,12 @@ dist-ssr
 .DS_Store
 .vite
 
+# tsc -b / build artifacts
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+dev.log
+
 # Editor
 .vscode/*
 !.vscode/extensions.json

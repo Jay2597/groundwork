@@ -1,0 +1,14 @@
+.text-editor {
+  position: absolute;
+  z-index: 7;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: 1px solid var(--amber);
+  background: transparent;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.text-editor:focus { outline: 1px solid var(--amber); }

@@ -36,6 +36,13 @@ export function useKeyboardShortcuts(): void {
         return;
       }
 
+      // Shortcuts help (?)
+      if (!mod && (e.key === "?" || (e.shiftKey && key === "/"))) {
+        e.preventDefault();
+        ui.setHelpOpen(!ui.helpOpen);
+        return;
+      }
+
       // Zoom
       if (mod && (key === "=" || key === "+")) {
         e.preventDefault();
@@ -136,6 +143,7 @@ export function useKeyboardShortcuts(): void {
         return;
       }
       if (e.key === "Escape") {
+        if (ui.helpOpen) ui.setHelpOpen(false);
         if (ui.presentMode) ui.setPresentMode(false);
         store.clearSelection();
         return;

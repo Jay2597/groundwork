@@ -43,6 +43,7 @@ export function TopBar() {
   const rightOpen = useUiStore((s) => s.rightOpen);
   const toggleLeft = useUiStore((s) => s.toggleLeft);
   const toggleRight = useUiStore((s) => s.toggleRight);
+  const setHelpOpen = useUiStore((s) => s.setHelpOpen);
 
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -121,6 +122,7 @@ export function TopBar() {
       { label: `${rightOpen ? "Hide" : "Show"} properties panel`, run: () => toggleRight() },
       { label: "Present", run: () => setPresentMode(true), sep: true },
       { label: "Settings…", run: () => setSettingsOpen(true) },
+      { label: "Keyboard shortcuts", shortcut: "?", run: () => setHelpOpen(true) },
     ],
     Object: [
       { label: "Group", shortcut: "Ctrl+G", run: () => ed().groupSelected() },

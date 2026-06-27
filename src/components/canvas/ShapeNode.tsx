@@ -4,6 +4,7 @@ import type { KonvaEventObject } from "konva/lib/Node";
 import type { ImageNode, RectNode, SceneNode } from "@/types/document";
 import { useImage } from "@/hooks/useImage";
 import { fillsFor, paintToKonva, strokeToKonva } from "@/lib/paint";
+import { useUiStore } from "@/store/uiStore";
 
 interface ShapeNodeProps {
   node: SceneNode;
@@ -74,8 +75,12 @@ function radiusValue(node: RectNode): number | number[] {
 }
 
 function Child({ node }: { node: SceneNode }) {
+  const editingTextId = useUiStore((s) => s.editingTextId);
   const stroke = strokeToKonva(node.stroke);
   const shadow = shadowProps(node);
+
+  // Hide the Konva text while it's being edited inline (the textarea covers it).
+  if (node.type === "text" && editingTextId === node.id) return null;
 
   switch (node.type) {
     case "rect": {

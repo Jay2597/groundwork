@@ -23,6 +23,7 @@ export function CommandPalette() {
   const setSettingsOpen = useUiStore((s) => s.setSettingsOpen);
   const setExportOpen = useUiStore((s) => s.setExportOpen);
   const setCodeOpen = useUiStore((s) => s.setCodeOpen);
+  const setHelpOpen = useUiStore((s) => s.setHelpOpen);
   const setPresentMode = useUiStore((s) => s.setPresentMode);
   const navigate = useNavigate();
 
@@ -64,9 +65,10 @@ export function CommandPalette() {
       { id: "export-code", group: "Export", label: "View code (HTML/CSS)…", run: wrap(() => setCodeOpen(true)) },
       { id: "present", group: "View", label: "Present", run: wrap(() => setPresentMode(true)) },
       { id: "settings", group: "View", label: "Settings…", run: wrap(() => setSettingsOpen(true)) },
+      { id: "help", group: "View", label: "Keyboard shortcuts", run: wrap(() => setHelpOpen(true)) },
       { id: "home", group: "View", label: "Back to files", run: wrap(() => navigate("/")) },
     ];
-  }, [navigate, setCodeOpen, setExportOpen, setOpen, setPresentMode, setSettingsOpen]);
+  }, [navigate, setCodeOpen, setExportOpen, setHelpOpen, setOpen, setPresentMode, setSettingsOpen]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

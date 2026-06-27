@@ -10,6 +10,7 @@ import {
   type FileMeta,
 } from "@/lib/persistence/fileLibrary";
 import { openDocument } from "@/lib/persistence/fileSystem";
+import { createSampleDocument } from "@/lib/sampleDocument";
 import { Logo } from "@/components/brand/Logo";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import "./home.css";
@@ -34,6 +35,11 @@ export function HomeScreen() {
 
   async function handleNew() {
     const id = await createFile("Untitled");
+    navigate(`/editor/${id}`);
+  }
+
+  async function handleSample() {
+    const id = await importFile(createSampleDocument());
     navigate(`/editor/${id}`);
   }
 
@@ -106,6 +112,7 @@ export function HomeScreen() {
           </div>
           <span className="spacer" />
           <ThemeToggle />
+          <button className="btn" onClick={handleSample}>Try a sample</button>
           <button className="btn" onClick={handleOpen}>Open from disk</button>
           <button className="btn amber" onClick={handleNew}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M12 5v14M5 12h14" /></svg>
@@ -115,7 +122,7 @@ export function HomeScreen() {
 
         <div className="home-content scroll">
           {shown.length === 0 ? (
-            <EmptyState hasFiles={files.length > 0} onNew={handleNew} />
+            <EmptyState hasFiles={files.length > 0} onNew={handleNew} onSample={handleSample} />
           ) : (
             <div className="file-grid">
               {shown.map((f) => (
@@ -182,7 +189,7 @@ export function HomeScreen() {
   );
 }
 
-function EmptyState({ hasFiles, onNew }: { hasFiles: boolean; onNew: () => void }) {
+function EmptyState({ hasFiles, onNew, onSample }: { hasFiles: boolean; onNew: () => void; onSample: () => void }) {
   return (
     <div className="home-empty">
       <div className="home-empty-ill">
@@ -190,7 +197,12 @@ function EmptyState({ hasFiles, onNew }: { hasFiles: boolean; onNew: () => void 
       </div>
       <h2>{hasFiles ? "No matches" : "No files yet"}</h2>
       <p>{hasFiles ? "Try a different search." : "Create your first design — it'll be saved right here on your device."}</p>
-      {!hasFiles && <button className="btn amber lg" onClick={onNew}>New file</button>}
+      {!hasFiles && (
+        <div className="home-empty-actions">
+          <button className="btn amber lg" onClick={onNew}>New file</button>
+          <button className="btn lg" onClick={onSample}>Try a sample</button>
+        </div>
+      )}
     </div>
   );
 }

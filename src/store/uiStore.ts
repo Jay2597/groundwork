@@ -19,6 +19,9 @@ interface UiState {
   codeOpen: boolean;
   presentMode: boolean;
   commentMode: boolean;
+  helpOpen: boolean;
+  /** Id of the text node currently being edited inline on the canvas. */
+  editingTextId: string | null;
   leftOpen: boolean;
   rightOpen: boolean;
 
@@ -31,6 +34,8 @@ interface UiState {
   setCodeOpen: (open: boolean) => void;
   setPresentMode: (on: boolean) => void;
   toggleCommentMode: () => void;
+  setHelpOpen: (open: boolean) => void;
+  setEditingTextId: (id: string | null) => void;
   toggleLeft: () => void;
   toggleRight: () => void;
 }
@@ -43,6 +48,8 @@ export const useUiStore = create<UiState>((set, get) => ({
   codeOpen: false,
   presentMode: false,
   commentMode: false,
+  helpOpen: false,
+  editingTextId: null,
   leftOpen: true,
   rightOpen: true,
 
@@ -56,6 +63,8 @@ export const useUiStore = create<UiState>((set, get) => ({
   setCodeOpen: (open) => set({ codeOpen: open }),
   setPresentMode: (on) => set({ presentMode: on }),
   toggleCommentMode: () => set({ commentMode: !get().commentMode }),
+  setHelpOpen: (open) => set({ helpOpen: open }),
+  setEditingTextId: (id) => set({ editingTextId: id }),
   toggleLeft: () => set({ leftOpen: !get().leftOpen }),
   toggleRight: () => set({ rightOpen: !get().rightOpen }),
 }));

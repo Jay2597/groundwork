@@ -29,6 +29,7 @@ import { usePrefsStore } from "@/store/prefsStore";
 import { CommentsLayer } from "@/components/comments/CommentsLayer";
 import { Rulers } from "./Rulers";
 import { CornerRadiusHandles } from "./CornerRadiusHandles";
+import { TextEditor } from "./TextEditor";
 import type { DraftShape } from "@/types/editor";
 import { ShapeNode } from "./ShapeNode";
 import { FrameView } from "./FrameView";
@@ -79,6 +80,7 @@ export function CanvasStage() {
   const setTool = useEditorStore((s) => s.setTool);
   const openContextMenu = useUiStore((s) => s.openContextMenu);
   const commentMode = useUiStore((s) => s.commentMode);
+  const setEditingTextId = useUiStore((s) => s.setEditingTextId);
   const addComment = useEditorStore((s) => s.addComment);
   const snapping = usePrefsStore((s) => s.snapping);
   const showGrid = usePrefsStore((s) => s.showGrid);
@@ -257,6 +259,7 @@ export function CanvasStage() {
     addNode(node, frame?.id);
     select([node.id]);
     setTool("select");
+    setEditingTextId(node.id);
   }
 
   function handleStageDragEnd(e: KonvaEventObject<DragEvent>) {
@@ -451,7 +454,21 @@ export function CanvasStage() {
         onMouseMove={handleStageMouseMove}
         onMouseUp={handleStageMouseUp}
         onDblClick={() => {
-          if (tool === "pen" && penPoints) commitPath(penPoints, false);
+          if (tool === "pen" && penPoints) {
+            commitPath(penPoints, false);
+            return;
+          }
+          const stage = stageRef.current;
+          const pointer = stage?.getPointerPosition();
+          if (!stage || !pointer) return;
+          const hit = stage.getIntersection(pointer)?.findAncestor(".scene-node", true);
+          if (hit) {
+            const model = findNode(nodes, hit.id());
+            if (model?.type === "text" && !model.locked) {
+              select([model.id]);
+              setEditingTextId(model.id);
+            }
+          }
         }}
         onDragEnd={handleStageDragEnd}
       >
@@ -544,6 +561,7 @@ export function CanvasStage() {
       </Stage>
       <CommentsLayer />
       <Rulers />
+      <TextEditor />
     </div>
   );
 }

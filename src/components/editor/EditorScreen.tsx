@@ -11,10 +11,12 @@ import { SettingsDialog } from "@/components/settings/SettingsDialog";
 import { ExportPanel } from "@/components/export/ExportPanel";
 import { CodePanel } from "@/components/code/CodePanel";
 import { PresentMode } from "@/components/present/PresentMode";
+import { ShortcutsHelp } from "@/components/help/ShortcutsHelp";
 import { PanelRail } from "@/components/editor/PanelRail";
 import { PanelResizer } from "@/components/editor/PanelResizer";
 import { useUiStore } from "@/store/uiStore";
 import { usePrefsStore } from "@/store/prefsStore";
+import { zoomToFit } from "@/lib/zoom";
 
 const RAIL = 40;
 import { useAutosave } from "@/hooks/useAutosave";
@@ -50,6 +52,8 @@ export function EditorScreen() {
       loadDocument(doc);
       setCurrentFile(fileId);
       setReady(true);
+      // Fit the content into view once the canvas has mounted/sized.
+      requestAnimationFrame(() => requestAnimationFrame(() => zoomToFit()));
     });
     return () => {
       active = false;
@@ -89,6 +93,7 @@ function EditorShell() {
       <ExportPanel />
       <CodePanel />
       <PresentMode />
+      <ShortcutsHelp />
     </div>
   );
 }

@@ -1,0 +1,28 @@
+.help-dialog { width: min(720px, 94vw); }
+.help-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 28px;
+}
+.help-group { padding: 8px 0; }
+.help-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 8px;
+}
+.help-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 0;
+}
+.help-label { font-size: 12.5px; color: var(--text-2); }
+.help-keys { display: flex; gap: 4px; flex-shrink: 0; }
+
+@media (max-width: 560px) {
+  .help-grid { grid-template-columns: 1fr; }
+}
