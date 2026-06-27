@@ -111,7 +111,8 @@ export function useKeyboardShortcuts(): void {
       }
       if (mod && key === "g") {
         e.preventDefault();
-        if (e.shiftKey) store.ungroupSelected();
+        if (e.altKey) store.frameSelection();
+        else if (e.shiftKey) store.ungroupSelected();
         else store.groupSelected();
         return;
       }

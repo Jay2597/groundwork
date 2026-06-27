@@ -54,6 +54,7 @@ export function PropertiesPanel() {
   const duplicateSelected = useEditorStore((s) => s.duplicateSelected);
   const groupSelected = useEditorStore((s) => s.groupSelected);
   const ungroupSelected = useEditorStore((s) => s.ungroupSelected);
+  const frameSelection = useEditorStore((s) => s.frameSelection);
   const booleanSelected = useEditorStore((s) => s.booleanSelected);
   const alignSelected = useEditorStore((s) => s.alignSelected);
   const distributeSelected = useEditorStore((s) => s.distributeSelected);
@@ -83,9 +84,17 @@ export function PropertiesPanel() {
           <BooleanToolbar onOp={booleanSelected} />
         </section>
 
+        <section className="group">
+          <div className="ghead">ARRANGE</div>
+          <div className="arrange-grid">
+            <button className="prop-btn" onClick={groupSelected}>Group</button>
+            <button className="prop-btn" onClick={frameSelection}>Frame</button>
+            <button className="prop-btn" onClick={createComponentFromSelection}>Component</button>
+            <button className="prop-btn" onClick={duplicateSelected}>Duplicate</button>
+          </div>
+        </section>
+
         <div className="prop-actions">
-          <button className="prop-btn" onClick={groupSelected}>Group</button>
-          <button className="prop-btn" onClick={duplicateSelected}>Duplicate</button>
           <button className="prop-btn danger" onClick={deleteSelected}>Delete</button>
         </div>
       </aside>

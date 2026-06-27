@@ -21,6 +21,7 @@ import {
   booleanNodes,
   componentFromNode,
   duplicateNode,
+  frameFromNodes,
   groupNodes,
   instanceFromComponent,
 } from "@/lib/nodeFactory";
@@ -72,6 +73,7 @@ interface EditorState {
   duplicateSelected: () => void;
   groupSelected: () => void;
   ungroupSelected: () => void;
+  frameSelection: () => void;
   booleanSelected: (op: BooleanOp) => void;
   reorderSelected: (direction: "front" | "back" | "forward" | "backward") => void;
   alignSelected: (mode: AlignMode) => void;
@@ -341,6 +343,17 @@ export const useEditorStore = create<EditorState>((set, get) => {
         return { ...commitNodes(state, out), selectedIds: freed };
       }),
 
+    frameSelection: () =>
+      set((state) => {
+        const sel = new Set(state.selectedIds);
+        const nodes = currentNodes(state);
+        const picked = nodes.filter((n) => sel.has(n.id));
+        if (picked.length === 0) return {};
+        const frame = frameFromNodes(picked, countNodes(nodes) + 1);
+        const rest = nodes.filter((n) => !sel.has(n.id));
+        return { ...commitNodes(state, [...rest, frame]), selectedIds: [frame.id] };
+      }),
+
     booleanSelected: (op) =>
       set((state) => {
         const sel = new Set(state.selectedIds);
@@ -539,14 +552,32 @@ export const useEditorStore = create<EditorState>((set, get) => {
 
     createComponentFromSelection: () =>
       set((state) => {
-        if (state.selectedIds.length !== 1) return {};
-        const node = findNode(currentNodes(state), state.selectedIds[0]);
-        if (!node) return {};
-        const component: Component = componentFromNode(node, state.document.components.length + 1);
-        return withHistory(state, {
-          ...state.document,
-          components: [...state.document.components, component],
-        });
+        if (state.selectedIds.length === 0) return {};
+        let nodes = currentNodes(state);
+        let source: SceneNode | undefined;
+        let selectedId: string;
+
+        if (state.selectedIds.length === 1) {
+          source = findNode(nodes, state.selectedIds[0]);
+          selectedId = state.selectedIds[0];
+        } else {
+          // Wrap a multi-selection in a group, then componentize the group.
+          const sel = new Set(state.selectedIds);
+          const picked = nodes.filter((n) => sel.has(n.id));
+          if (picked.length < 2) return {};
+          const group = groupNodes(picked, countNodes(nodes) + 1);
+          nodes = [...nodes.filter((n) => !sel.has(n.id)), group];
+          source = group;
+          selectedId = group.id;
+        }
+        if (!source) return {};
+
+        const component: Component = componentFromNode(source, state.document.components.length + 1);
+        const nextDoc = withNodes(state.document, nodes);
+        return {
+          ...withHistory(state, { ...nextDoc, components: [...nextDoc.components, component] }),
+          selectedIds: [selectedId],
+        };
       }),
 
     insertInstance: (componentId) =>

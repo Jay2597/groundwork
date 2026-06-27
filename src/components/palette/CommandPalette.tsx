@@ -48,6 +48,7 @@ export function CommandPalette() {
       { id: "edit-dup", group: "Edit", label: "Duplicate", hint: "Ctrl+D", run: wrap(s.duplicateSelected) },
       { id: "edit-del", group: "Edit", label: "Delete", hint: "Del", run: wrap(s.deleteSelected) },
       { id: "edit-group", group: "Edit", label: "Group", hint: "Ctrl+G", run: wrap(s.groupSelected) },
+      { id: "edit-frame", group: "Edit", label: "Frame selection", hint: "Ctrl+Alt+G", run: wrap(s.frameSelection) },
       { id: "edit-ungroup", group: "Edit", label: "Ungroup", hint: "Ctrl+Shift+G", run: wrap(s.ungroupSelected) },
       { id: "edit-component", group: "Edit", label: "Make component", run: wrap(s.createComponentFromSelection) },
       { id: "bool-union", group: "Boolean", label: "Union", run: wrap(() => s.booleanSelected("union")) },

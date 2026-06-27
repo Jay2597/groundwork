@@ -4,6 +4,7 @@ import {
   createPath,
   createRect,
   duplicateNode,
+  frameFromNodes,
   groupNodes,
 } from "./nodeFactory";
 import type { RectNode } from "@/types/document";
@@ -43,6 +44,17 @@ describe("nodeFactory", () => {
     expect(g.height).toBe(30); // (30+10) - 10
     expect(g.children[0].x).toBe(0);
     expect(g.children[1].x).toBe(30);
+  });
+
+  test("frameFromNodes wraps selection into a frame with relative children", () => {
+    const f = frameFromNodes([rect("a", 30, 40), rect("b", 60, 80)], 1);
+    expect(f.type).toBe("frame");
+    expect(f.clipContent).toBe(true);
+    expect(f.x).toBe(30);
+    expect(f.y).toBe(40);
+    expect(f.width).toBe(40); // (60+10) - 30
+    expect(f.children[0]).toMatchObject({ id: "a", x: 0, y: 0 });
+    expect(f.children[1]).toMatchObject({ id: "b", x: 30, y: 40 });
   });
 
   test("booleanNodes carries op and first fill", () => {

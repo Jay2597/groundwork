@@ -174,6 +174,27 @@ export function groupNodes(nodes: SceneNode[], count: number): GroupNode {
   };
 }
 
+/** Wrap nodes into a new frame sized to their bounding box (children made relative). */
+export function frameFromNodes(nodes: SceneNode[], count: number): FrameNode {
+  const { minX, minY, maxX, maxY } = bounds(nodes);
+  return {
+    id: nanoid(8),
+    type: "frame",
+    name: nextName("frame", count),
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY,
+    rotation: 0,
+    fill: "#ffffff",
+    opacity: 1,
+    visible: true,
+    locked: false,
+    clipContent: true,
+    children: nodes.map((n) => ({ ...n, x: n.x - minX, y: n.y - minY })),
+  };
+}
+
 /** Combine nodes into a boolean node (shares the first node's fill). */
 export function booleanNodes(nodes: SceneNode[], op: BooleanOp, count: number): BooleanNode {
   const { minX, minY, maxX, maxY } = bounds(nodes);
