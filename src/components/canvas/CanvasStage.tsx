@@ -163,6 +163,7 @@ export function CanvasStage() {
   }
 
   function handleStageMouseDown(e: KonvaEventObject<MouseEvent>) {
+    if (e.evt.button === 2) return; // right-click is for the context menu only
     if (tool === "pen") {
       const pos = pointerInCanvas();
       if (pos) handlePenClick(pos);
@@ -285,6 +286,11 @@ export function CanvasStage() {
     e.cancelBubble = true;
     const model = findNode(nodes, id);
     if (model?.locked) return; // locked layers aren't selectable on the canvas
+    // Right-click must not collapse a multi-selection (the context menu needs it).
+    if (e.evt.button === 2) {
+      if (!selectedIds.includes(id)) select([id]);
+      return;
+    }
     if (e.evt.shiftKey) toggleSelect(id);
     else select([id]);
   }
