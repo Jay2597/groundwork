@@ -10,7 +10,7 @@ interface Props {
 }
 
 /**
- * Figma-style on-canvas corner-radius handles: four amber dots inset from each
+ * On-canvas corner-radius handles: four amber dots inset from each
  * corner of a selected rectangle/frame. Dragging any of them sets a uniform
  * cornerRadius. Handles sit a constant screen gap beyond the rounded corner so
  * they never collide with the resize anchors.

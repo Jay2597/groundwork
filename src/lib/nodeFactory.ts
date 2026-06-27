@@ -17,7 +17,7 @@ import {
 
 // Factory helpers keep node creation in one place so defaults stay consistent.
 
-// Matches Figma's default shape fill (a neutral light gray).
+// A neutral light-gray default shape fill.
 const DEFAULT_FILL = "#d9d9d9";
 
 interface Rect {

@@ -9,8 +9,8 @@ import {
 } from "@/types/document";
 import { fillsFor, paintToSvg } from "@/lib/paint";
 
-// Serialize the document to clean, standards-based SVG — the same open-format
-// philosophy Penpot uses, but generated 100% client-side. Gradients are emitted
+// Serialize the document to clean, standards-based SVG — an open, portable
+// format generated 100% client-side. Gradients are emitted
 // into a shared <defs>; strokes carry dash/cap/join; rects support per-corner radii.
 
 export function documentToSvg(doc: GroundworkDocument): string {

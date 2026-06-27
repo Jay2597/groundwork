@@ -1,7 +1,7 @@
 import type { PointerEvent as ReactPointerEvent } from "react";
 
 /**
- * Drag-to-scrub on a field label (Figma-style): horizontal drag adjusts the
+ * Drag-to-scrub on a field label: horizontal drag adjusts the
  * value. Returns a pointer-down handler. `min` clamps the low end.
  */
 export function makeScrub(
