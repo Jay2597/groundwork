@@ -26,6 +26,9 @@ import {
   instanceFromComponent,
 } from "@/lib/nodeFactory";
 import { flattenNodes } from "@/lib/flatten";
+import { reflowHug } from "@/lib/autolayout";
+import { createVariableCollection, newVariable } from "@/lib/variables";
+import { rebuildInstance } from "@/lib/components";
 import {
   appendChild,
   countNodes,
@@ -100,10 +103,24 @@ interface EditorState {
   addTextStyle: (name: string, base: Omit<TextStyle, "id" | "name">) => void;
   deleteTextStyle: (id: string) => void;
 
+  // variables / modes
+  addColorVariable: (name: string, value: string) => void;
+  setVariableValue: (varId: string, modeId: string, value: string | number) => void;
+  renameVariable: (varId: string, name: string) => void;
+  deleteVariable: (varId: string) => void;
+  addVariableMode: (name: string) => void;
+  setActiveMode: (modeId: string) => void;
+  deleteVariableMode: (modeId: string) => void;
+  bindFillVariable: (nodeId: string, varId: string | undefined) => void;
+
   // components
   createComponentFromSelection: () => void;
   insertInstance: (componentId: string) => void;
   deleteComponent: (id: string) => void;
+  swapInstance: (nodeId: string, componentId: string) => void;
+  resetInstance: (nodeId: string) => void;
+  detachInstance: (nodeId: string) => void;
+  combineAsVariants: (componentIds: string[], setName: string) => void;
 
   // comments
   addComment: (x: number, y: number) => string;
@@ -172,7 +189,7 @@ export const useEditorStore = create<EditorState>((set, get) => {
 
   /** Commit a new node array for the active page, with history. */
   function commitNodes(state: EditorState, nodes: SceneNode[]): Partial<EditorState> {
-    return withHistory(state, withNodes(state.document, nodes));
+    return withHistory(state, withNodes(state.document, reflowHug(nodes)));
   }
 
   function currentNodes(state: EditorState): SceneNode[] {
@@ -564,6 +581,85 @@ export const useEditorStore = create<EditorState>((set, get) => {
         }),
       ),
 
+    addColorVariable: (name, value) =>
+      set((state) => {
+        const coll = state.document.variables ?? createVariableCollection();
+        const variable = newVariable("color", name, coll.modes.map((m) => m.id), value);
+        return withHistory(state, {
+          ...state.document,
+          variables: { ...coll, variables: [...coll.variables, variable] },
+        });
+      }),
+
+    setVariableValue: (varId, modeId, value) =>
+      set((state) => {
+        const coll = state.document.variables;
+        if (!coll) return {};
+        return withHistory(state, {
+          ...state.document,
+          variables: {
+            ...coll,
+            variables: coll.variables.map((v) =>
+              v.id === varId ? { ...v, valuesByMode: { ...v.valuesByMode, [modeId]: value } } : v,
+            ),
+          },
+        });
+      }),
+
+    renameVariable: (varId, name) =>
+      set((state) => {
+        const coll = state.document.variables;
+        if (!coll) return {};
+        return withHistory(state, {
+          ...state.document,
+          variables: { ...coll, variables: coll.variables.map((v) => (v.id === varId ? { ...v, name } : v)) },
+        });
+      }),
+
+    deleteVariable: (varId) =>
+      set((state) => {
+        const coll = state.document.variables;
+        if (!coll) return {};
+        return withHistory(state, {
+          ...state.document,
+          variables: { ...coll, variables: coll.variables.filter((v) => v.id !== varId) },
+        });
+      }),
+
+    addVariableMode: (name) =>
+      set((state) => {
+        const coll = state.document.variables ?? createVariableCollection();
+        const mode = { id: `mode-${Date.now().toString(36)}`, name };
+        // Seed the new mode from the active mode's values.
+        const variables = coll.variables.map((v) => ({
+          ...v,
+          valuesByMode: { ...v.valuesByMode, [mode.id]: v.valuesByMode[coll.activeModeId] },
+        }));
+        return withHistory(state, {
+          ...state.document,
+          variables: { ...coll, modes: [...coll.modes, mode], variables },
+        });
+      }),
+
+    setActiveMode: (modeId) =>
+      set((state) => {
+        const coll = state.document.variables;
+        if (!coll) return {};
+        return withHistory(state, { ...state.document, variables: { ...coll, activeModeId: modeId } });
+      }),
+
+    deleteVariableMode: (modeId) =>
+      set((state) => {
+        const coll = state.document.variables;
+        if (!coll || coll.modes.length <= 1) return {};
+        const modes = coll.modes.filter((m) => m.id !== modeId);
+        const activeModeId = coll.activeModeId === modeId ? modes[0].id : coll.activeModeId;
+        return withHistory(state, { ...state.document, variables: { ...coll, modes, activeModeId } });
+      }),
+
+    bindFillVariable: (nodeId, varId) =>
+      set((state) => commitNodes(state, updateNodeById(currentNodes(state), nodeId, { fillVarId: varId }))),
+
     createComponentFromSelection: () =>
       set((state) => {
         if (state.selectedIds.length === 0) return {};
@@ -612,6 +708,43 @@ export const useEditorStore = create<EditorState>((set, get) => {
           components: state.document.components.filter((c) => c.id !== id),
         }),
       ),
+
+    swapInstance: (nodeId, componentId) =>
+      set((state) => {
+        const component = state.document.components.find((c) => c.id === componentId);
+        const node = findNode(currentNodes(state), nodeId);
+        if (!component || !node) return {};
+        const rebuilt = rebuildInstance(node, component.node, componentId);
+        return commitNodes(state, updateNodeById(currentNodes(state), nodeId, rebuilt as NodePatch));
+      }),
+
+    resetInstance: (nodeId) =>
+      set((state) => {
+        const node = findNode(currentNodes(state), nodeId);
+        if (!node?.mainComponentId) return {};
+        const component = state.document.components.find((c) => c.id === node.mainComponentId);
+        if (!component) return {};
+        const rebuilt = rebuildInstance(node, component.node, component.id);
+        return commitNodes(state, updateNodeById(currentNodes(state), nodeId, rebuilt as NodePatch));
+      }),
+
+    detachInstance: (nodeId) =>
+      set((state) => {
+        const node = findNode(currentNodes(state), nodeId);
+        if (!node?.mainComponentId) return {};
+        return commitNodes(state, updateNodeById(currentNodes(state), nodeId, { mainComponentId: undefined }));
+      }),
+
+    combineAsVariants: (componentIds, setName) =>
+      set((state) => {
+        const ids = new Set(componentIds);
+        const components = state.document.components.map((c, i) =>
+          ids.has(c.id)
+            ? { ...c, setName, variantProps: c.variantProps ?? { Variant: String(i + 1) } }
+            : c,
+        );
+        return withHistory(state, { ...state.document, components });
+      }),
 
     addComment: (x, y) => {
       const comment: Comment = {

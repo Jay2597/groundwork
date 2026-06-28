@@ -95,6 +95,45 @@ overlays `src/components/{palette,settings,export,present,comments,contextmenu}`
 
 ---
 
+## Phase 6 — Vector & text maturity ✅
+
+- ✅ **Smooth Bézier paths** (Catmull-Rom → cubic Bézier; `lib/bezier.ts`), rendered + exported as true curves (SVG/CSS); flatten samples curves
+- ✅ **Text decoration** (underline / strikethrough), **letter-case** transform, **resize modes** (fixed / auto-width / auto-height)
+- ⬜ Deferred (high-risk UX/geometry): interactive on-canvas vertex/handle editing; from-scratch polygon-clipping boolean engine (current composited boolean still works)
+
+## Phase 7 — Auto-layout depth + layout grids ✅
+
+- ✅ **Sizing modes** hug / fill / fixed per axis (`lib/autolayout.ts` `computeAutoLayout` + `reflowHug`)
+- ✅ **Per-side padding**, **justify** (start/center/end/space-between)
+- ✅ **Layout grids** (columns / rows / uniform grid) overlaid on frames
+
+## Phase 8 — Variables, effects & blend ✅
+
+- ✅ **Variables with modes** (`lib/variables.ts`) — bind a fill to a color variable; switching the active mode re-themes canvas + exports live
+- ✅ **Multiple effects** (drop shadow, inner shadow, layer blur) + **blend modes** (`lib/effects.ts`); legacy single-shadow migrates forward
+- ✅ Effect-style model scaffolded (`EffectStyle`); save/apply-style UI deferred
+
+## Phase 9 — Components 2.0 ✅
+
+- ✅ **Instance linking** (`mainComponentId`), **swap / reset / detach** (`lib/components.ts`)
+- ✅ **Variant sets** — combine components into a set, switch variant on an instance
+- ⬜ Deferred: formal named component properties (boolean/text/swap) UI; master-on-canvas editing for full override propagation
+
+## Phase 10 — Prototyping & dev inspect ✅
+
+- ✅ **Triggers** (click, after-delay) + **transitions** (dissolve / slide / smart-animate→dissolve) + **easing** (`lib/prototype.ts`), wired into present mode
+- ✅ **Dev inspect** measurement readout (gap + center distance between two selected nodes; `lib/inspect.ts`)
+- ⬜ Deferred: overlays, scroll/fixed behaviour, interactive-component prototyping
+
+## Phase 11 — Import & polish ✅
+
+- ✅ **SVG import** → editable vector/shape nodes (`lib/import/importSvg.ts`), grouped at the drop point; falls back to image placement
+- ✅ **Math in number inputs** (`lib/mathEval.ts`) — type `120/2`, `8*3`, `(2+3)*4`
+- ✅ **Eyedropper** (feature-detected `EyeDropper` API in the color field)
+- ⬜ Deferred: shape masking (alpha mask render), slice tool, image crop/tiling
+
+---
+
 ## Cross-cutting (ongoing)
 
 - ✅ Tests — **Vitest** unit suite for pure modules (`tree`, `snapping`, `constraints`, `autolayout`, `nodeFactory`, document migration); 29 tests green

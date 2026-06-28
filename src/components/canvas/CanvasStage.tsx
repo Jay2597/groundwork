@@ -24,6 +24,8 @@ import {
 import { activePage, isContainer, isFrame, isGroup } from "@/types/document";
 import { fileToPlacedImage } from "@/lib/image";
 import { placeImageAt } from "@/lib/placeImage";
+import { applyVariables } from "@/lib/variables";
+import { parseSvg, groupImported } from "@/lib/import/importSvg";
 import { useUiStore } from "@/store/uiStore";
 import { usePrefsStore } from "@/store/prefsStore";
 import { CommentsLayer } from "@/components/comments/CommentsLayer";
@@ -66,6 +68,7 @@ export function CanvasStage() {
 
   const document = useEditorStore((s) => s.document);
   const nodes = activePage(document).nodes;
+  const renderNodes = applyVariables(nodes, document.variables);
   const selectedIds = useEditorStore((s) => s.selectedIds);
   const tool = useEditorStore((s) => s.tool);
   const viewport = useEditorStore((s) => s.viewport);
@@ -278,6 +281,18 @@ export function CanvasStage() {
     if (!rect) return;
     const docX = (e.clientX - rect.left - viewport.x) / viewport.scale;
     const docY = (e.clientY - rect.top - viewport.y) / viewport.scale;
+
+    // Prefer importing SVG as editable vectors; fall back to placing it as image.
+    const isSvg = file.type === "image/svg+xml" || file.name.toLowerCase().endsWith(".svg");
+    if (isSvg) {
+      const parsed = parseSvg(await file.text());
+      if (parsed.length) {
+        const group = groupImported(parsed, docX, docY, countNodes(nodes) + 1);
+        addNode(group);
+        select([group.id]);
+        return;
+      }
+    }
     const placed = await fileToPlacedImage(file);
     if (placed) placeImageAt(placed, docX, docY);
   }
@@ -479,7 +494,7 @@ export function CanvasStage() {
         onDragEnd={handleStageDragEnd}
       >
         <Layer onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd}>
-          {nodes.map((node) =>
+          {renderNodes.map((node) =>
             isFrame(node) ? (
               <FrameView
                 key={node.id}

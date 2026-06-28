@@ -5,6 +5,9 @@ import type { KonvaEventObject } from "konva/lib/Node";
 import type { ImageNode, PathNode, RectNode, SceneNode } from "@/types/document";
 import { useImage } from "@/hooks/useImage";
 import { fillsFor, paintToKonva, strokeToKonva } from "@/lib/paint";
+import { catmullRomToBezier } from "@/lib/bezier";
+import { dropShadowKonva, blendModeKonva } from "@/lib/effects";
+import { displayText } from "@/lib/text";
 import { useUiStore } from "@/store/uiStore";
 
 interface ShapeNodeProps {
@@ -49,6 +52,7 @@ export function ShapeNode({ node, draggable, onSelect, onChange }: ShapeNodeProp
       y={node.y}
       rotation={node.rotation}
       opacity={node.opacity}
+      globalCompositeOperation={blendModeKonva(node) as GlobalCompositeOperation | undefined}
       draggable={draggable && !node.locked}
       onMouseDown={onSelect}
       onTap={onSelect}
@@ -61,13 +65,7 @@ export function ShapeNode({ node, draggable, onSelect, onChange }: ShapeNodeProp
 }
 
 function shadowProps(node: SceneNode) {
-  return {
-    shadowColor: node.shadow?.color,
-    shadowBlur: node.shadow?.blur,
-    shadowOffsetX: node.shadow?.offsetX,
-    shadowOffsetY: node.shadow?.offsetY,
-    shadowEnabled: Boolean(node.shadow),
-  };
+  return dropShadowKonva(node);
 }
 
 /** Konva cornerRadius: a 4-tuple when per-corner, else the uniform number. */
@@ -128,11 +126,15 @@ function Child({ node }: { node: SceneNode }) {
         return <CompoundPath node={node} stroke={stroke} shadow={shadow} />;
       }
       const top = fillsFor(node)[fillsFor(node).length - 1];
+      const fillProps = node.closed ? paintToKonva(top, node.width, node.height) : { fill: undefined };
+      if (node.smooth && node.points.length >= 6) {
+        return <SmoothPath node={node} fillProps={fillProps} stroke={stroke} shadow={shadow} />;
+      }
       return (
         <Line
           points={node.points}
           closed={node.closed}
-          {...(node.closed ? paintToKonva(top, node.width, node.height) : { fill: undefined })}
+          {...fillProps}
           {...stroke}
           {...shadow}
         />
@@ -140,13 +142,15 @@ function Child({ node }: { node: SceneNode }) {
     }
     case "text": {
       const top = fillsFor(node)[fillsFor(node).length - 1];
+      const autoWidth = node.textResize === "auto-width";
       return (
         <Text
-          width={node.width}
-          text={node.text}
+          width={autoWidth ? undefined : node.width}
+          text={displayText(node)}
           fontSize={node.fontSize}
           fontFamily={node.fontFamily}
           fontStyle={node.fontStyle}
+          textDecoration={node.textDecoration === "none" ? undefined : node.textDecoration}
           align={node.align}
           lineHeight={node.lineHeight}
           letterSpacing={node.letterSpacing}
@@ -187,6 +191,43 @@ function CompoundPath({ node, stroke, shadow }: { node: PathNode; stroke: Fx; sh
         raw.fillStyle = node.fill;
         raw.fill("evenodd");
         ctx.strokeShape(shape);
+      }}
+      hitFunc={(ctx, shape) => {
+        trace(ctx);
+        ctx.fillStrokeShape(shape);
+      }}
+    />
+  );
+}
+
+/** A smooth (Catmull-Rom → cubic Bézier) path, drawn via a custom sceneFunc. */
+function SmoothPath({
+  node,
+  fillProps,
+  stroke,
+  shadow,
+}: {
+  node: PathNode;
+  fillProps: Fx;
+  stroke: Fx;
+  shadow: Fx;
+}) {
+  const segs = catmullRomToBezier(node.points, node.closed);
+  const trace = (ctx: KonvaContext) => {
+    if (segs.length === 0) return;
+    ctx.beginPath();
+    ctx.moveTo(segs[0].x0, segs[0].y0);
+    for (const s of segs) ctx.bezierCurveTo(s.cx1, s.cy1, s.cx2, s.cy2, s.x1, s.y1);
+    if (node.closed) ctx.closePath();
+  };
+  return (
+    <Shape
+      {...fillProps}
+      {...stroke}
+      {...shadow}
+      sceneFunc={(ctx, shape) => {
+        trace(ctx);
+        ctx.fillStrokeShape(shape);
       }}
       hitFunc={(ctx, shape) => {
         trace(ctx);

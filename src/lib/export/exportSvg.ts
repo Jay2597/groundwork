@@ -8,13 +8,18 @@ import {
   type TextNode,
 } from "@/types/document";
 import { fillsFor, paintToSvg } from "@/lib/paint";
+import { smoothPathToSvgD } from "@/lib/bezier";
+import { displayText } from "@/lib/text";
+import { effectsOf, blendModeCss } from "@/lib/effects";
+import { applyVariables } from "@/lib/variables";
 
 // Serialize the document to clean, standards-based SVG — an open, portable
 // format generated 100% client-side. Gradients are emitted
 // into a shared <defs>; strokes carry dash/cap/join; rects support per-corner radii.
 
 export function documentToSvg(doc: GroundworkDocument): string {
-  return pageToSvg(activePage(doc));
+  const page = activePage(doc);
+  return pageToSvg({ ...page, nodes: applyVariables(page.nodes, doc.variables) });
 }
 
 export function pageToSvg(page: Page): string {
@@ -36,6 +41,22 @@ function fillRef(node: SceneNode, defs: string[]): string {
   const fills = fillsFor(node);
   const top = fills[fills.length - 1];
   return paintToSvg(top, `grad-${node.id}`, defs);
+}
+
+/** Drop-shadow filter (into defs) + blend-mode style, as element attributes. */
+function effectsAttr(node: SceneNode, defs: string[]): string {
+  let out = "";
+  const ds = effectsOf(node).find((e) => e.type === "drop-shadow");
+  if (ds && ds.type === "drop-shadow") {
+    const id = `fx-${node.id}`;
+    defs.push(
+      `<filter id="${id}" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="${ds.offsetX}" dy="${ds.offsetY}" stdDeviation="${ds.blur / 2}" flood-color="${ds.color}" /></filter>`,
+    );
+    out += ` filter="url(#${id})"`;
+  }
+  const blend = blendModeCss(node);
+  if (blend) out += ` style="mix-blend-mode:${blend}"`;
+  return out;
 }
 
 function strokeAttr(node: SceneNode): string {
@@ -72,7 +93,7 @@ function nodeToSvg(node: SceneNode, defs: string[]): string {
   const transform = node.rotation
     ? ` transform="rotate(${node.rotation} ${node.x + node.width / 2} ${node.y + node.height / 2})"`
     : "";
-  const opacity = node.opacity !== 1 ? ` opacity="${node.opacity}"` : "";
+  const opacity = `${node.opacity !== 1 ? ` opacity="${node.opacity}"` : ""}${effectsAttr(node, defs)}`;
   const stroke = strokeAttr(node);
   const fill = fillRef(node, defs);
 
@@ -108,6 +129,10 @@ function pathToSvg(
       .map((sp) => subpathToD(node.x, node.y, sp.points, sp.closed))
       .join(" ");
     return `<path d="${d}" fill="${fill}" fill-rule="evenodd"${stroke}${opacity}${transform} />`;
+  }
+  if (node.smooth && node.points.length >= 6) {
+    const d = smoothPathToSvgD(node.points, node.closed, node.x, node.y);
+    return `<path d="${d}" fill="${fill}"${stroke}${opacity}${transform} />`;
   }
   const pts: string[] = [];
   for (let i = 0; i < node.points.length; i += 2) {
@@ -155,9 +180,10 @@ function groupToSvg(group: GroupNode | Extract<SceneNode, { type: "boolean" }>, 
 function textToSvg(node: TextNode, opacity: string, transform: string, defs: string[]): string {
   const weight = node.fontStyle === "bold" ? ' font-weight="bold"' : "";
   const style = node.fontStyle === "italic" ? ' font-style="italic"' : "";
-  const safe = escapeXml(node.text);
+  const deco = node.textDecoration && node.textDecoration !== "none" ? ` text-decoration="${node.textDecoration}"` : "";
+  const safe = escapeXml(displayText(node));
   const fill = fillRef(node, defs);
-  return `<text x="${node.x}" y="${node.y + node.fontSize}" font-family="${escapeXml(node.fontFamily)}" font-size="${node.fontSize}" fill="${fill}"${weight}${style}${opacity}${transform}>${safe}</text>`;
+  return `<text x="${node.x}" y="${node.y + node.fontSize}" font-family="${escapeXml(node.fontFamily)}" font-size="${node.fontSize}" fill="${fill}"${weight}${style}${deco}${opacity}${transform}>${safe}</text>`;
 }
 
 function escapeXml(value: string): string {

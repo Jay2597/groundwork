@@ -226,10 +226,10 @@ export function componentFromNode(node: SceneNode, count: number): Component {
   };
 }
 
-/** Instantiate a component master at an offset position. */
+/** Instantiate a component master at an offset position (linked to the master). */
 export function instanceFromComponent(component: Component, count: number): SceneNode {
   const clone = cloneWithNewIds(component.node);
-  return { ...clone, name: `${component.name} ${count}`, x: 40, y: 40 };
+  return { ...clone, name: `${component.name} ${count}`, x: 40, y: 40, mainComponentId: component.id };
 }
 
 /** A drag can produce negative width/height; flip so x,y is always top-left. */

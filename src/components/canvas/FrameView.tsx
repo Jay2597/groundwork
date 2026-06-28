@@ -1,10 +1,11 @@
-import { Group, Rect } from "react-konva";
 import type Konva from "konva";
 import type { KonvaEventObject } from "konva/lib/Node";
-import { isFrame, isGroup, type FrameNode, type NodePatch, type SceneNode } from "@/types/document";
-import { layoutPositions } from "@/lib/autolayout";
+import { Group, Rect, Line } from "react-konva";
+import { isFrame, isGroup, type FrameNode, type LayoutGrid, type NodePatch, type SceneNode } from "@/types/document";
+import { computeAutoLayout } from "@/lib/autolayout";
 import { applyConstraints } from "@/lib/constraints";
 import { fillsFor, paintToKonva, strokeToKonva } from "@/lib/paint";
+import { dropShadowKonva, blendModeKonva } from "@/lib/effects";
 import { ShapeNode } from "./ShapeNode";
 import { GroupView } from "./GroupView";
 import { BooleanView } from "./BooleanView";
@@ -62,6 +63,7 @@ export function FrameView({
       y={frame.y}
       rotation={frame.rotation}
       opacity={frame.opacity}
+      globalCompositeOperation={blendModeKonva(frame) as GlobalCompositeOperation | undefined}
       draggable={frameDraggable && !frame.locked}
       onMouseDown={(e) => onSelect(frame.id, e)}
       onDragEnd={handleDragEnd}
@@ -75,14 +77,7 @@ export function FrameView({
           cornerRadius={frame.cornerRadius ?? 0}
           {...paintToKonva(p, frame.width, frame.height)}
           {...(i === arr.length - 1
-            ? {
-                ...strokeToKonva(frame.stroke),
-                shadowColor: frame.shadow?.color,
-                shadowBlur: frame.shadow?.blur,
-                shadowOffsetX: frame.shadow?.offsetX,
-                shadowOffsetY: frame.shadow?.offsetY,
-                shadowEnabled: Boolean(frame.shadow),
-              }
+            ? { ...strokeToKonva(frame.stroke), ...dropShadowKonva(frame) }
             : {})}
         />
       ))}
@@ -94,10 +89,12 @@ export function FrameView({
         }
       >
         {(() => {
-          const layout = frame.autoLayout ? layoutPositions(frame) : null;
+          const layout = frame.autoLayout ? computeAutoLayout(frame) : null;
           return frame.children.map((child) => {
-            const pos = layout?.[child.id];
-            const node = pos ? ({ ...child, x: pos.x, y: pos.y } as SceneNode) : child;
+            const box = layout?.[child.id];
+            const node = box
+              ? ({ ...child, x: box.x, y: box.y, width: box.width, height: box.height } as SceneNode)
+              : child;
             return (
               <FrameChild
                 key={child.id}
@@ -110,8 +107,56 @@ export function FrameView({
           });
         })()}
       </Group>
+      <LayoutGrids frame={frame} />
     </Group>
   );
+}
+
+/** Render the frame's layout grids as non-interactive line overlays. */
+function LayoutGrids({ frame }: { frame: FrameNode }) {
+  const grids = frame.layoutGrids?.filter((g) => g.visible);
+  if (!grids || grids.length === 0) return null;
+  return (
+    <Group listening={false}>
+      {grids.map((grid, gi) => (
+        <Group key={gi}>
+          {gridLines(grid, frame.width, frame.height).map((seg, i) => (
+            <Line key={i} points={seg} stroke={grid.color} strokeWidth={1} opacity={0.6} />
+          ))}
+        </Group>
+      ))}
+    </Group>
+  );
+}
+
+/** Compute line segments [x1,y1,x2,y2] for one layout grid. */
+function gridLines(grid: LayoutGrid, w: number, h: number): number[][] {
+  const lines: number[][] = [];
+  if (grid.type === "grid") {
+    const step = Math.max(1, grid.size);
+    for (let x = step; x < w; x += step) lines.push([x, 0, x, h]);
+    for (let y = step; y < h; y += step) lines.push([0, y, w, y]);
+    return lines;
+  }
+  const isCols = grid.type === "columns";
+  const extent = isCols ? w : h;
+  const count = Math.max(1, grid.count);
+  const usable = extent - grid.margin * 2 - grid.gutter * (count - 1);
+  const track = usable / count;
+  let pos = grid.margin;
+  for (let i = 0; i < count; i++) {
+    const a = pos;
+    const b = pos + track;
+    if (isCols) {
+      lines.push([a, 0, a, h]);
+      lines.push([b, 0, b, h]);
+    } else {
+      lines.push([0, a, w, a]);
+      lines.push([0, b, w, b]);
+    }
+    pos = b + grid.gutter;
+  }
+  return lines;
 }
 
 interface FrameChildProps {
