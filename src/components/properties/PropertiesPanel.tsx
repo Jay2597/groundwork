@@ -292,6 +292,22 @@ function StrokeSection({ node, set }: SectionProps) {
               </div>
             ))}
           </div>
+          {node.type === "path" && !node.closed && (
+            <div className="grid2" style={{ marginTop: 8 }}>
+              <label className="field" title="Start marker">
+                <span>↤</span>
+                <select value={stroke.markerStart ?? "none"} onChange={(e) => set({ stroke: { ...stroke, markerStart: e.target.value as "none" } })}>
+                  {(["none", "arrow", "triangle", "circle"] as const).map((m) => <option key={m} value={m}>{m}</option>)}
+                </select>
+              </label>
+              <label className="field" title="End marker">
+                <span>↦</span>
+                <select value={stroke.markerEnd ?? "none"} onChange={(e) => set({ stroke: { ...stroke, markerEnd: e.target.value as "none" } })}>
+                  {(["none", "arrow", "triangle", "circle"] as const).map((m) => <option key={m} value={m}>{m}</option>)}
+                </select>
+              </label>
+            </div>
+          )}
         </>
       )}
     </section>

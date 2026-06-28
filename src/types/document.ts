@@ -19,6 +19,9 @@ export interface Stroke {
   position?: "inside" | "center" | "outside";
   cap?: "butt" | "round" | "square";
   join?: "miter" | "round" | "bevel";
+  /** Endpoint markers for open paths (none/arrow/triangle/circle). */
+  markerStart?: "none" | "arrow" | "triangle" | "circle";
+  markerEnd?: "none" | "arrow" | "triangle" | "circle";
 }
 
 /** Drop shadow effect. */
