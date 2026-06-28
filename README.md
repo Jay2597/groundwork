@@ -12,6 +12,8 @@ A **local-first, client-side design tool** that runs entirely in the browser. No
 
 ## Features
 
+> 📖 **See [FEATURES.md](FEATURES.md) for the full, detailed feature tour.**
+
 **Canvas & shapes**
 - Infinite canvas with pan (Hand / **H**) and zoom-to-cursor; rulers with draggable guides; snapping & smart guides; grid.
 - Rectangle, Ellipse, Text, Pen/path, plus Frames, Groups, and Boolean shapes.
