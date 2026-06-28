@@ -4,6 +4,7 @@ import { useEditorStore } from "@/store/editorStore";
 import { activePage } from "@/types/document";
 import { findNode } from "@/lib/tree";
 import { downloadHtmlDocument, selectionToCode } from "@/lib/export/exportCode";
+import { selectionToReact } from "@/lib/export/exportReact";
 import "./code.css";
 
 /** Live HTML/CSS "dev mode" for the current selection (or whole page). */
@@ -12,16 +13,17 @@ export function CodePanel() {
   const setOpen = useUiStore((s) => s.setCodeOpen);
   const document = useEditorStore((s) => s.document);
   const selectedIds = useEditorStore((s) => s.selectedIds);
-  const [tab, setTab] = useState<"html" | "css">("html");
+  const [tab, setTab] = useState<"html" | "css" | "react">("html");
   const [copied, setCopied] = useState(false);
 
   const selected = selectedIds.length === 1 ? findNode(activePage(document).nodes, selectedIds[0]) : undefined;
 
   const code = useMemo(() => selectionToCode(document, selected), [document, selected]);
+  const react = useMemo(() => selectionToReact(document, selected), [document, selected]);
 
   if (!open) return null;
 
-  const text = tab === "html" ? code.html : code.css;
+  const text = tab === "html" ? code.html : tab === "css" ? code.css : react;
 
   async function copy() {
     try {
@@ -45,6 +47,7 @@ export function CodePanel() {
           <div className="code-tabs">
             <button className={`code-tab${tab === "html" ? " active" : ""}`} onClick={() => setTab("html")}>HTML</button>
             <button className={`code-tab${tab === "css" ? " active" : ""}`} onClick={() => setTab("css")}>CSS</button>
+            <button className={`code-tab${tab === "react" ? " active" : ""}`} onClick={() => setTab("react")}>React + Tailwind</button>
           </div>
           <div className="code-actions">
             <button className="btn sm" onClick={copy}>{copied ? "Copied ✓" : "Copy"}</button>
