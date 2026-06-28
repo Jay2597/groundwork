@@ -11,6 +11,7 @@ import { SettingsDialog } from "@/components/settings/SettingsDialog";
 import { ExportPanel } from "@/components/export/ExportPanel";
 import { CodePanel } from "@/components/code/CodePanel";
 import { LintPanel } from "@/components/lint/LintPanel";
+import { HistoryPanel } from "@/components/history/HistoryPanel";
 import { PresentMode } from "@/components/present/PresentMode";
 import { ShortcutsHelp } from "@/components/help/ShortcutsHelp";
 import { PanelRail } from "@/components/editor/PanelRail";
@@ -105,6 +106,7 @@ function EditorShell() {
       <ExportPanel />
       <CodePanel />
       <LintPanel />
+      <HistoryPanel />
       <PresentMode />
       <ShortcutsHelp />
     </div>
