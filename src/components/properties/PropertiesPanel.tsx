@@ -29,8 +29,9 @@ import { variantLabel } from "@/lib/components";
 import { textDescendants, toggleableChildren } from "@/lib/componentProps";
 import { DEFAULT_INTERACTION } from "@/lib/prototype";
 import { measureGap } from "@/lib/inspect";
+import { selectionBounds, commonValue, translateSelection, resizeSelection } from "@/lib/multiSelect";
 import { findNode } from "@/lib/tree";
-import { ColorField, NumberField, OpacityField, TextField, makeScrub } from "./PropertyInputs";
+import { ColorField, MixedNumberField, NumberField, OpacityField, TextField, makeScrub } from "./PropertyInputs";
 import { FramePresets } from "./FramePresets";
 import {
   IcAlignBottom,
@@ -88,6 +89,8 @@ export function PropertiesPanel() {
           <span className="insp-name">{selectedIds.length} selected</span>
           <RightCollapse />
         </div>
+
+        <MultiSelectEditor ids={selectedIds} nodes={nodes} colorStyles={colorStyles} />
 
         <section className="group">
           <div className="ghead">ALIGN</div>
@@ -726,6 +729,78 @@ function ConstraintsSection({ node, set }: SectionProps) {
         </label>
       </div>
     </section>
+  );
+}
+
+function MultiSelectEditor({ ids, nodes, colorStyles }: { ids: string[]; nodes: SceneNode[]; colorStyles: ColorStyle[] }) {
+  const updateNodes = useEditorStore((s) => s.updateNodes);
+  const updateNodesBatch = useEditorStore((s) => s.updateNodesBatch);
+  const addColorStyle = useEditorStore((s) => s.addColorStyle);
+
+  const picked = ids.map((id) => findNode(nodes, id)).filter((n): n is SceneNode => Boolean(n));
+  if (picked.length < 2) return null;
+
+  const bounds = selectionBounds(picked);
+  const toBatch = (updated: SceneNode[]) => updateNodesBatch(updated.map((n) => ({ id: n.id, patch: n as NodePatch })));
+
+  const opacity = commonValue(picked, "opacity");
+  const rotation = commonValue(picked, "rotation");
+  const blend = (commonValue(picked, "blendMode") as BlendMode | undefined) ?? "normal";
+  const fillCommon = commonValue(picked, "fill");
+  const firstFill = typeof fillCommon === "string" ? fillCommon : (picked[0].fill as string);
+  const radiusNodes = picked.filter((n) => n.type === "rect" || n.type === "frame") as Extract<SceneNode, { type: "rect" | "frame" }>[];
+  const radii = radiusNodes.map((n) => n.cornerRadius ?? 0);
+  const commonRadius = radii.length && radii.every((r) => r === radii[0]) ? radii[0] : undefined;
+
+  return (
+    <>
+      <section className="group">
+        <div className="ghead">TRANSFORM · BOUNDS</div>
+        <div className="grid2" style={{ marginBottom: 8 }}>
+          <MixedNumberField label="X" value={Math.round(bounds.x)} onChange={(x) => toBatch(translateSelection(picked, x - bounds.x, 0))} />
+          <MixedNumberField label="Y" value={Math.round(bounds.y)} onChange={(y) => toBatch(translateSelection(picked, 0, y - bounds.y))} />
+          <MixedNumberField label="W" value={Math.round(bounds.width)} min={1} onChange={(w) => toBatch(resizeSelection(picked, bounds, w, bounds.height))} />
+          <MixedNumberField label="H" value={Math.round(bounds.height)} min={1} onChange={(h) => toBatch(resizeSelection(picked, bounds, bounds.width, h))} />
+        </div>
+        <div className="grid2">
+          <MixedNumberField label="∠" value={rotation} onChange={(r) => updateNodes(ids, { rotation: r })} />
+          {radiusNodes.length > 0 && (
+            <MixedNumberField label="⌜" value={commonRadius} min={0} onChange={(cornerRadius) => updateNodes(ids, { cornerRadius })} />
+          )}
+        </div>
+      </section>
+
+      <section className="group">
+        <div className="ghead">APPEARANCE</div>
+        <OpacityField value={opacity ?? 1} onChange={(o) => updateNodes(ids, { opacity: clamp01(o) })} />
+        <label className="field" style={{ marginTop: 8 }} title="Blend mode">
+          <span>Blend</span>
+          <select value={blend} onChange={(e) => updateNodes(ids, { blendMode: e.target.value as BlendMode })}>
+            {BLEND_MODES.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+        </label>
+        <div style={{ marginTop: 8 }}>
+          <ColorField label="Fill" value={firstFill} onChange={(fill) => updateNodes(ids, { fill, fills: undefined })} />
+        </div>
+        {colorStyles.length > 0 && (
+          <div className="swatch-strip" style={{ marginTop: 8 }}>
+            {colorStyles.map((c) => (
+              <button
+                key={c.id}
+                className="swatch-mini"
+                style={{ background: c.value }}
+                title={`Apply ${c.name}`}
+                aria-label={`Apply ${c.name}`}
+                onClick={() => updateNodes(ids, { fill: c.value, fills: undefined })}
+              />
+            ))}
+          </div>
+        )}
+        <button className="prop-btn tiny" style={{ marginTop: 8 }} onClick={() => addColorStyle(`Color ${colorStyles.length + 1}`, firstFill)}>
+          Save style
+        </button>
+      </section>
+    </>
   );
 }
 

@@ -79,6 +79,51 @@ export function NumberField({ label, value, step = 1, min, onChange }: NumberFie
   );
 }
 
+interface MixedNumberFieldProps {
+  label: string;
+  /** undefined → values differ across the selection ("Mixed"). */
+  value: number | undefined;
+  step?: number;
+  min?: number;
+  onChange: (value: number) => void;
+}
+
+/** Like NumberField, but renders a "Mixed" placeholder when value is undefined. */
+export function MixedNumberField({ label, value, step = 1, min, onChange }: MixedNumberFieldProps) {
+  const [draft, setDraft] = useState<string | null>(null);
+
+  function commit() {
+    if (draft === null) return;
+    const result = evalMath(draft);
+    if (result !== null) onChange(min !== undefined ? Math.max(min, result) : result);
+    setDraft(null);
+  }
+
+  const display = draft ?? (value === undefined ? "" : String(Math.round(value * 100) / 100));
+  return (
+    <label className="field">
+      <span className="field-scrub" onPointerDown={value !== undefined ? makeScrub(value, step, onChange, min) : undefined}>{label}</span>
+      <input
+        type="text"
+        inputMode="decimal"
+        value={display}
+        placeholder={value === undefined ? "Mixed" : undefined}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            commit();
+            (e.target as HTMLInputElement).blur();
+          } else if (e.key === "Escape") {
+            setDraft(null);
+            (e.target as HTMLInputElement).blur();
+          }
+        }}
+      />
+    </label>
+  );
+}
+
 interface ColorFieldProps {
   label: string;
   value: string;
