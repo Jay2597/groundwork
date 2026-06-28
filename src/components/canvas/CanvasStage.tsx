@@ -26,6 +26,7 @@ import { fileToPlacedImage } from "@/lib/image";
 import { placeImageAt } from "@/lib/placeImage";
 import { applyVariables } from "@/lib/variables";
 import { applyInstanceProps } from "@/lib/componentProps";
+import { resolveConnectors } from "@/lib/connectors";
 import { cullNodes, visibleDocRect } from "@/lib/culling";
 import { parseSvg, groupImported } from "@/lib/import/importSvg";
 import { useUiStore } from "@/store/uiStore";
@@ -72,7 +73,7 @@ export function CanvasStage() {
 
   const document = useEditorStore((s) => s.document);
   const nodes = activePage(document).nodes;
-  const resolvedNodes = applyInstanceProps(applyVariables(nodes, document.variables));
+  const resolvedNodes = resolveConnectors(applyInstanceProps(applyVariables(nodes, document.variables)));
   const selectedIds = useEditorStore((s) => s.selectedIds);
   const tool = useEditorStore((s) => s.tool);
   const viewport = useEditorStore((s) => s.viewport);

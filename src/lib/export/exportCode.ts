@@ -12,6 +12,7 @@ import { displayText } from "@/lib/text";
 import { effectsToBoxShadow, effectsToCssFilter, blendModeCss } from "@/lib/effects";
 import { applyVariables } from "@/lib/variables";
 import { applyInstanceProps } from "@/lib/componentProps";
+import { resolveConnectors } from "@/lib/connectors";
 
 // Generate clean, framework-free HTML + CSS from the scene — a local "Dev Mode".
 // Box-like nodes become absolutely-positioned divs (auto-layout frames become
@@ -306,7 +307,7 @@ export function pageToCode(doc: GroundworkDocument): GeneratedCode {
     `.canvas {\n  position: relative;\n  width: ${width}px;\n  height: ${height}px;\n  background: ${background};\n  overflow: hidden;\n}`,
   ];
   const inner: string[] = [];
-  for (const node of applyInstanceProps(applyVariables(page.nodes, doc.variables))) {
+  for (const node of resolveConnectors(applyInstanceProps(applyVariables(page.nodes, doc.variables)))) {
     const built = build(node, true, 1);
     inner.push(...built.html);
     rules.push(...built.rules);

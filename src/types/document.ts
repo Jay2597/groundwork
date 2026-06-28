@@ -293,6 +293,11 @@ export interface PathNode extends BaseNode {
    * renders as cubic Béziers driven by these handles (overrides `smooth`).
    */
   handles?: number[];
+  /**
+   * When set, this path is a connector between two nodes; its endpoints reflow
+   * to the linked nodes' edges whenever they move (resolved at render/export).
+   */
+  connector?: { from: string; to: string; kind?: "straight" | "elbow" };
 }
 
 /** A frame / artboard — a container whose children are positioned relative to it. */

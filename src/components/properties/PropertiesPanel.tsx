@@ -71,6 +71,7 @@ export function PropertiesPanel() {
   const ungroupSelected = useEditorStore((s) => s.ungroupSelected);
   const frameSelection = useEditorStore((s) => s.frameSelection);
   const flattenSelected = useEditorStore((s) => s.flattenSelected);
+  const connectSelection = useEditorStore((s) => s.connectSelection);
   const booleanSelected = useEditorStore((s) => s.booleanSelected);
   const trueBooleanSelected = useEditorStore((s) => s.trueBooleanSelected);
   const alignSelected = useEditorStore((s) => s.alignSelected);
@@ -115,6 +116,9 @@ export function PropertiesPanel() {
             <button className="prop-btn" onClick={createComponentFromSelection}>Component</button>
             <button className="prop-btn" onClick={flattenSelected}>Flatten</button>
             <button className="prop-btn" onClick={duplicateSelected}>Duplicate</button>
+            {selectedIds.length === 2 && (
+              <button className="prop-btn" onClick={() => connectSelection("straight")} title="Draw a connector arrow between the two">Connect</button>
+            )}
           </div>
         </section>
 
