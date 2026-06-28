@@ -10,6 +10,8 @@ export interface Prefs {
   gridSize: number;
   leftWidth: number;
   rightWidth: number;
+  /** Opt-out for anonymous, content-free usage analytics. */
+  analytics: boolean;
 }
 
 const DEFAULTS: Prefs = {
@@ -18,6 +20,7 @@ const DEFAULTS: Prefs = {
   gridSize: 24,
   leftWidth: 244,
   rightWidth: 268,
+  analytics: true,
 };
 
 function read(): Prefs {
@@ -38,10 +41,10 @@ export const usePrefsStore = create<PrefsState>((set, get) => ({
   ...read(),
   setPref: (key, value) => {
     set({ [key]: value } as Pick<Prefs, typeof key>);
-    const { snapping, showGrid, gridSize, leftWidth, rightWidth } = get();
+    const { snapping, showGrid, gridSize, leftWidth, rightWidth, analytics } = get();
     localStorage.setItem(
       KEY,
-      JSON.stringify({ snapping, showGrid, gridSize, leftWidth, rightWidth }),
+      JSON.stringify({ snapping, showGrid, gridSize, leftWidth, rightWidth, analytics }),
     );
   },
 }));
