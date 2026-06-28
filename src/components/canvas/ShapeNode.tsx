@@ -5,7 +5,8 @@ import type { KonvaEventObject } from "konva/lib/Node";
 import type { ImageNode, PathNode, RectNode, SceneNode } from "@/types/document";
 import { useImage } from "@/hooks/useImage";
 import { fillsFor, paintToKonva, strokeToKonva } from "@/lib/paint";
-import { catmullRomToBezier } from "@/lib/bezier";
+import { catmullRomToBezier, type CubicSegment } from "@/lib/bezier";
+import { handleSegments } from "@/lib/bezierPath";
 import { dropShadowKonva, blendModeKonva } from "@/lib/effects";
 import { cropToPixels } from "@/lib/imageCrop";
 import { displayText } from "@/lib/text";
@@ -128,6 +129,10 @@ function Child({ node }: { node: SceneNode }) {
       }
       const top = fillsFor(node)[fillsFor(node).length - 1];
       const fillProps = node.closed ? paintToKonva(top, node.width, node.height) : { fill: undefined };
+      if (node.handles && node.handles.length >= 8 && node.points.length >= 4) {
+        const segs = handleSegments(node.points, node.handles, node.closed);
+        return <CubicPath segments={segs} closed={node.closed} fillProps={fillProps} stroke={stroke} shadow={shadow} />;
+      }
       if (node.smooth && node.points.length >= 6) {
         return <SmoothPath node={node} fillProps={fillProps} stroke={stroke} shadow={shadow} />;
       }
@@ -214,12 +219,29 @@ function SmoothPath({
   shadow: Fx;
 }) {
   const segs = catmullRomToBezier(node.points, node.closed);
+  return <CubicPath segments={segs} closed={node.closed} fillProps={fillProps} stroke={stroke} shadow={shadow} />;
+}
+
+/** Render an arbitrary list of cubic Bézier segments. */
+function CubicPath({
+  segments,
+  closed,
+  fillProps,
+  stroke,
+  shadow,
+}: {
+  segments: CubicSegment[];
+  closed: boolean;
+  fillProps: Fx;
+  stroke: Fx;
+  shadow: Fx;
+}) {
   const trace = (ctx: KonvaContext) => {
-    if (segs.length === 0) return;
+    if (segments.length === 0) return;
     ctx.beginPath();
-    ctx.moveTo(segs[0].x0, segs[0].y0);
-    for (const s of segs) ctx.bezierCurveTo(s.cx1, s.cy1, s.cx2, s.cy2, s.x1, s.y1);
-    if (node.closed) ctx.closePath();
+    ctx.moveTo(segments[0].x0, segments[0].y0);
+    for (const s of segments) ctx.bezierCurveTo(s.cx1, s.cy1, s.cx2, s.cy2, s.x1, s.y1);
+    if (closed) ctx.closePath();
   };
   return (
     <Shape

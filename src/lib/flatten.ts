@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { isContainer, type PathNode, type SceneNode, type SubPath } from "@/types/document";
 import { sampleSmooth } from "@/lib/bezier";
+import { sampleHandles } from "@/lib/bezierPath";
 
 // Flatten shapes/booleans into a single compound vector path. Each source shape
 // becomes one or more contours; the result uses the even-odd fill rule, so a
@@ -45,12 +46,13 @@ function nodeContours(node: SceneNode, ox: number, oy: number): Contour[] {
     case "ellipse":
       return [ellipseContour(ax, ay, node.width, node.height)];
     case "path": {
-      const subs: SubPath[] = node.subpaths ?? [
-        {
-          points: node.smooth && node.points.length >= 6 ? sampleSmooth(node.points, node.closed) : node.points,
-          closed: node.closed,
-        },
-      ];
+      const sampled =
+        node.handles && node.handles.length >= 8 && node.points.length >= 4
+          ? sampleHandles(node.points, node.handles, node.closed)
+          : node.smooth && node.points.length >= 6
+            ? sampleSmooth(node.points, node.closed)
+            : node.points;
+      const subs: SubPath[] = node.subpaths ?? [{ points: sampled, closed: node.closed }];
       return subs.map((sp) => ({
         points: sp.points.map((p, i) => (i % 2 === 0 ? ax + p : ay + p)),
         closed: sp.closed,

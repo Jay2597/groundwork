@@ -13,6 +13,7 @@ export function scaleNodeTree(node: SceneNode, sx: number, sy: number): SceneNod
       ...box,
       points: scalePts(node.points),
       subpaths: node.subpaths?.map((sp) => ({ ...sp, points: scalePts(sp.points) })),
+      handles: node.handles ? scalePts(node.handles) : undefined,
     };
   }
   if (isContainer(node)) {

@@ -279,6 +279,12 @@ export interface PathNode extends BaseNode {
   subpaths?: SubPath[];
   /** When true, anchors are interpreted as a smooth (Catmull-Rom → Bézier) curve. */
   smooth?: boolean;
+  /**
+   * Explicit per-vertex Bézier handles, four numbers per anchor
+   * ([inDX, inDY, outDX, outDY], relative to the anchor). When present, the path
+   * renders as cubic Béziers driven by these handles (overrides `smooth`).
+   */
+  handles?: number[];
 }
 
 /** A frame / artboard — a container whose children are positioned relative to it. */

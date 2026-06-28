@@ -29,6 +29,7 @@ import { variantLabel } from "@/lib/components";
 import { textDescendants, toggleableChildren } from "@/lib/componentProps";
 import { DEFAULT_INTERACTION } from "@/lib/prototype";
 import { measureGap } from "@/lib/inspect";
+import { deriveSmoothHandles } from "@/lib/bezierPath";
 import { selectionBounds, commonValue, translateSelection, resizeSelection } from "@/lib/multiSelect";
 import { findNode } from "@/lib/tree";
 import { ColorField, MixedNumberField, NumberField, OpacityField, TextField, makeScrub } from "./PropertyInputs";
@@ -561,6 +562,22 @@ function PathSection({ node, set }: SectionProps) {
         <div className={node.closed ? "on" : ""} onClick={() => set({ closed: true })}>Closed</div>
         <div className={!node.closed ? "on" : ""} onClick={() => set({ closed: false })}>Open</div>
       </div>
+      <div className="seg" style={{ marginTop: 8 }}>
+        <div
+          className={node.handles && node.handles.length ? "on" : ""}
+          title="Add editable Bézier control handles (seeded from the current curve)"
+          onClick={() => set({ handles: deriveSmoothHandles(node.points, node.closed), smooth: false })}
+        >
+          Curve handles
+        </div>
+        <div
+          className={!node.handles || !node.handles.length ? "on" : ""}
+          title="Remove handles (sharp corners)"
+          onClick={() => set({ handles: undefined })}
+        >
+          Corners
+        </div>
+      </div>
       <button
         className="prop-btn"
         style={{ marginTop: 8, width: "100%" }}
@@ -569,7 +586,7 @@ function PathSection({ node, set }: SectionProps) {
         {editing ? "Done editing" : "Edit points"}
       </button>
       <p className="prop-hint" style={{ margin: "6px 0 0", fontSize: 10 }}>
-        Double-click a path to edit · drag anchors · click midpoints to add · alt/right-click to remove
+        Double-click to edit · drag anchors & control dots · alt-drag a handle to break the tangent · click midpoints to add · alt/right-click to remove
       </p>
     </section>
   );
