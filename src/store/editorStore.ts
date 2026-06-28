@@ -73,6 +73,8 @@ interface EditorState {
   // mutations
   addNode: (node: SceneNode, parentId?: string) => void;
   updateNode: (id: string, patch: NodePatch) => void;
+  updateNodes: (ids: string[], patch: NodePatch) => void;
+  updateNodesBatch: (updates: { id: string; patch: NodePatch }[]) => void;
   updateNodesPositions: (updates: { id: string; x: number; y: number }[]) => void;
   reparentNode: (id: string, newParentId: string | null, x: number, y: number) => void;
   moveNode: (id: string, newParentId: string | null, beforeId: string | null) => void;
@@ -266,6 +268,20 @@ export const useEditorStore = create<EditorState>((set, get) => {
 
     updateNode: (id, patch) =>
       set((state) => commitNodes(state, updateNodeById(currentNodes(state), id, patch))),
+
+    updateNodes: (ids, patch) =>
+      set((state) => {
+        let nodes = currentNodes(state);
+        for (const id of ids) nodes = updateNodeById(nodes, id, patch);
+        return commitNodes(state, nodes);
+      }),
+
+    updateNodesBatch: (updates) =>
+      set((state) => {
+        let nodes = currentNodes(state);
+        for (const u of updates) nodes = updateNodeById(nodes, u.id, u.patch);
+        return commitNodes(state, nodes);
+      }),
 
     updateNodesPositions: (updates) =>
       set((state) => {
