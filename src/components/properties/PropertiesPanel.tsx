@@ -16,6 +16,7 @@ import {
   type LayoutGrid,
   type NodePatch,
   type Paint,
+  type PrototypeAction,
   type PrototypeEasing,
   type PrototypeTransition,
   type PrototypeTrigger,
@@ -25,6 +26,7 @@ import {
 import { fillsFor } from "@/lib/paint";
 import { BLEND_MODES } from "@/lib/effects";
 import { variantLabel } from "@/lib/components";
+import { textDescendants, toggleableChildren } from "@/lib/componentProps";
 import { DEFAULT_INTERACTION } from "@/lib/prototype";
 import { measureGap } from "@/lib/inspect";
 import { findNode } from "@/lib/tree";
@@ -68,6 +70,7 @@ export function PropertiesPanel() {
   const frameSelection = useEditorStore((s) => s.frameSelection);
   const flattenSelected = useEditorStore((s) => s.flattenSelected);
   const booleanSelected = useEditorStore((s) => s.booleanSelected);
+  const trueBooleanSelected = useEditorStore((s) => s.trueBooleanSelected);
   const alignSelected = useEditorStore((s) => s.alignSelected);
   const distributeSelected = useEditorStore((s) => s.distributeSelected);
   const reorderSelected = useEditorStore((s) => s.reorderSelected);
@@ -96,6 +99,8 @@ export function PropertiesPanel() {
         <section className="group">
           <div className="ghead">BOOLEAN</div>
           <BooleanToolbar onOp={booleanSelected} />
+          <div className="field-label" style={{ marginTop: 8 }}>True geometry (editable path)</div>
+          <BooleanToolbar onOp={trueBooleanSelected} />
         </section>
 
         <section className="group">
@@ -157,6 +162,13 @@ export function PropertiesPanel() {
         <div className="ghead">APPEARANCE</div>
         <OpacityField value={selected.opacity} onChange={(opacity) => set({ opacity: clamp01(opacity) })} />
         <BlendModeControl node={selected} set={set} />
+        {selected.type !== "frame" && (
+          <label className="check-row" style={{ marginTop: 8 }}>
+            <input type="checkbox" checked={Boolean(selected.isMask)} onChange={(e) => set({ isMask: e.target.checked })} />
+            <span>Use as mask</span>
+            <span className="prop-hint" style={{ margin: 0, fontSize: 10 }}>(clips siblings in a group)</span>
+          </label>
+        )}
         {selected.type === "boolean" && (
           <div className="seg" style={{ marginTop: 8 }}>
             {(["union", "subtract", "intersect", "exclude"] as const).map((op) => (
@@ -328,6 +340,8 @@ function effectsList(node: SceneNode): Effect[] {
 }
 
 function EffectsSection({ node, set }: SectionProps) {
+  const addEffectStyle = useEditorStore((s) => s.addEffectStyle);
+  const effectStyles = useEditorStore((s) => s.document.styles.effects ?? []);
   const effects = effectsList(node);
   const update = (next: Effect[]) => set({ effects: next, shadow: undefined });
   const setEffect = (i: number, e: Effect) => update(effects.map((x, idx) => (idx === i ? e : x)));
@@ -373,6 +387,15 @@ function EffectsSection({ node, set }: SectionProps) {
           )}
         </div>
       ))}
+      {effects.length > 0 && (
+        <button
+          className="prop-btn tiny"
+          style={{ marginTop: 6 }}
+          onClick={() => addEffectStyle(`Effect ${effectStyles.length + 1}`, effects.map((e) => ({ ...e })))}
+        >
+          Save effect style
+        </button>
+      )}
     </section>
   );
 }
@@ -404,7 +427,13 @@ function BlendModeControl({ node, set }: SectionProps) {
 function ImageSection({ node, set }: SectionProps) {
   const image = node.type === "image" ? node.image : node.type === "rect" ? node.image : undefined;
   if (!image) return null;
-  const fits = ["cover", "contain", "fill"] as const;
+  const fits = ["cover", "contain", "fill", "tile"] as const;
+  const crop = image.crop ?? [0, 0, 1, 1];
+  const setCrop = (i: number, pct: number) => {
+    const next = [...crop] as [number, number, number, number];
+    next[i] = Math.min(1, Math.max(0, pct / 100));
+    set({ image: { ...image, crop: next } });
+  };
   return (
     <section className="group">
       <div className="ghead">IMAGE</div>
@@ -415,6 +444,27 @@ function ImageSection({ node, set }: SectionProps) {
           </div>
         ))}
       </div>
+      {image.fit === "tile" && (
+        <div className="grid2" style={{ marginTop: 8 }}>
+          <NumberField label="Scale" value={image.scale ?? 1} min={0.05} step={0.05} onChange={(scale) => set({ image: { ...image, scale } })} />
+        </div>
+      )}
+      {image.fit !== "tile" && (
+        <>
+          <div className="field-label" style={{ marginTop: 8 }}>Crop %</div>
+          <div className="grid2">
+            <NumberField label="X" value={Math.round(crop[0] * 100)} min={0} onChange={(v) => setCrop(0, v)} />
+            <NumberField label="Y" value={Math.round(crop[1] * 100)} min={0} onChange={(v) => setCrop(1, v)} />
+            <NumberField label="W" value={Math.round(crop[2] * 100)} min={1} onChange={(v) => setCrop(2, v)} />
+            <NumberField label="H" value={Math.round(crop[3] * 100)} min={1} onChange={(v) => setCrop(3, v)} />
+          </div>
+          {image.crop && (
+            <button className="prop-btn tiny" style={{ marginTop: 6 }} onClick={() => set({ image: { ...image, crop: undefined } })}>
+              Reset crop
+            </button>
+          )}
+        </>
+      )}
     </section>
   );
 }
@@ -493,7 +543,10 @@ function TypographySection({ node, set }: SectionProps) {
 }
 
 function PathSection({ node, set }: SectionProps) {
+  const setEditingPathId = useUiStore((s) => s.setEditingPathId);
+  const editingPathId = useUiStore((s) => s.editingPathId);
   if (node.type !== "path") return null;
+  const editing = editingPathId === node.id;
   return (
     <section className="group">
       <div className="ghead">PATH</div>
@@ -505,6 +558,16 @@ function PathSection({ node, set }: SectionProps) {
         <div className={node.closed ? "on" : ""} onClick={() => set({ closed: true })}>Closed</div>
         <div className={!node.closed ? "on" : ""} onClick={() => set({ closed: false })}>Open</div>
       </div>
+      <button
+        className="prop-btn"
+        style={{ marginTop: 8, width: "100%" }}
+        onClick={() => setEditingPathId(editing ? null : node.id)}
+      >
+        {editing ? "Done editing" : "Edit points"}
+      </button>
+      <p className="prop-hint" style={{ margin: "6px 0 0", fontSize: 10 }}>
+        Double-click a path to edit · drag anchors · click midpoints to add · alt/right-click to remove
+      </p>
     </section>
   );
 }
@@ -688,9 +751,13 @@ function ComponentInstanceSection({ node }: { node: SceneNode }) {
   const swapInstance = useEditorStore((s) => s.swapInstance);
   const resetInstance = useEditorStore((s) => s.resetInstance);
   const detachInstance = useEditorStore((s) => s.detachInstance);
+  const setInstanceProp = useEditorStore((s) => s.setInstanceProp);
 
   const main = components.find((c) => c.id === node.mainComponentId);
   const siblings = main?.setName ? components.filter((c) => c.setName === main.setName) : [];
+  const props = node.props ?? {};
+  const textProps = textDescendants(node);
+  const childToggles = toggleableChildren(node);
 
   return (
     <section className="group">
@@ -711,6 +778,39 @@ function ComponentInstanceSection({ node }: { node: SceneNode }) {
           </select>
         </label>
       )}
+
+      {textProps.length > 0 && (
+        <>
+          <div className="field-label" style={{ marginTop: 8 }}>Text properties</div>
+          {textProps.map((tp) => (
+            <label key={tp.name} className="field field-stack" style={{ marginBottom: 6 }}>
+              <span>{tp.name}</span>
+              <input
+                type="text"
+                value={typeof props[tp.name] === "string" ? (props[tp.name] as string) : tp.value}
+                onChange={(e) => setInstanceProp(node.id, tp.name, e.target.value)}
+              />
+            </label>
+          ))}
+        </>
+      )}
+
+      {childToggles.length > 0 && (
+        <>
+          <div className="field-label" style={{ marginTop: 8 }}>Show / hide</div>
+          {childToggles.map((c) => (
+            <label key={c.name} className="check-row" style={{ marginBottom: 4 }}>
+              <input
+                type="checkbox"
+                checked={typeof props[c.name] === "boolean" ? (props[c.name] as boolean) : c.visible}
+                onChange={(e) => setInstanceProp(node.id, c.name, e.target.checked)}
+              />
+              <span>{c.name}</span>
+            </label>
+          ))}
+        </>
+      )}
+
       <div className="prop-actions" style={{ marginTop: 8 }}>
         <button className="prop-btn" onClick={() => resetInstance(node.id)}>Reset</button>
         <button className="prop-btn" onClick={() => detachInstance(node.id)}>Detach</button>
@@ -763,6 +863,14 @@ function PrototypeSection({
       </label>
       {current && (
         <>
+          <label className="field field-stack" style={{ marginTop: 8 }}>
+            <span>Action</span>
+            <select value={current.action ?? "navigate"} onChange={(e) => setInteraction({ action: e.target.value as PrototypeAction })}>
+              <option value="navigate">Navigate to</option>
+              <option value="open-overlay">Open overlay</option>
+              <option value="close-overlay">Close overlay</option>
+            </select>
+          </label>
           <label className="field field-stack" style={{ marginTop: 8 }}>
             <span>Trigger</span>
             <select value={current.trigger} onChange={(e) => setInteraction({ trigger: e.target.value as PrototypeTrigger })}>

@@ -2,7 +2,7 @@ import { useUiStore } from "@/store/uiStore";
 import { useEditorStore } from "@/store/editorStore";
 import { activePage, isFrame, type FrameNode } from "@/types/document";
 import { exportRegionAsImage, exportStageAsImage } from "@/lib/export/exportImage";
-import { downloadNodeSvg, downloadSvg } from "@/lib/export/exportSvg";
+import { downloadNodeSvg, downloadSvg, downloadRegionSvg } from "@/lib/export/exportSvg";
 import { getStage } from "@/lib/stageRegistry";
 import "./export.css";
 
@@ -17,10 +17,17 @@ export function ExportPanel() {
 
   const page = activePage(document);
   const frames = page.nodes.filter(isFrame);
+  const slices = page.slices ?? [];
+  const removeSlice = useEditorStore.getState().removeSlice;
 
   function framePng(frame: FrameNode) {
     const stage = getStage();
     if (stage) exportRegionAsImage(stage, frame, viewport, frame.name);
+  }
+
+  function slicePng(slice: { x: number; y: number; width: number; height: number; name: string }) {
+    const stage = getStage();
+    if (stage) exportRegionAsImage(stage, slice, viewport, slice.name);
   }
 
   function pagePng() {
@@ -85,6 +92,23 @@ export function ExportPanel() {
               </ul>
             )}
           </section>
+
+          {slices.length > 0 && (
+            <section className="exp-section">
+              <div className="exp-title">Slices <span className="exp-count">{slices.length}</span></div>
+              <ul className="exp-list">
+                {slices.map((slice) => (
+                  <li key={slice.id} className="exp-row">
+                    <span className="exp-name">{slice.name}</span>
+                    <span className="exp-dim">{slice.width}×{slice.height}</span>
+                    <button className="btn sm" onClick={() => slicePng(slice)}>PNG</button>
+                    <button className="btn sm" onClick={() => downloadRegionSvg(document, slice, slice.name)}>SVG</button>
+                    <button className="btn sm" onClick={() => removeSlice(slice.id)} aria-label={`Delete ${slice.name}`}>×</button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <p className="set-foot">Exports are generated on your device and downloaded directly.</p>
         </div>

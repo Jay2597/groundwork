@@ -12,6 +12,7 @@ import { smoothPathToSvgD } from "@/lib/bezier";
 import { displayText } from "@/lib/text";
 import { effectsOf, blendModeCss } from "@/lib/effects";
 import { applyVariables } from "@/lib/variables";
+import { applyInstanceProps } from "@/lib/componentProps";
 
 // Serialize the document to clean, standards-based SVG — an open, portable
 // format generated 100% client-side. Gradients are emitted
@@ -19,7 +20,7 @@ import { applyVariables } from "@/lib/variables";
 
 export function documentToSvg(doc: GroundworkDocument): string {
   const page = activePage(doc);
-  return pageToSvg({ ...page, nodes: applyVariables(page.nodes, doc.variables) });
+  return pageToSvg({ ...page, nodes: applyInstanceProps(applyVariables(page.nodes, doc.variables)) });
 }
 
 export function pageToSvg(page: Page): string {
@@ -34,6 +35,26 @@ export function pageToSvg(page: Page): string {
   ${defs.length ? `<defs>${defs.join("")}</defs>\n  ` : ""}<rect width="${width}" height="${height}" fill="${background}" />
   ${body}
 </svg>`;
+}
+
+/** Export a document-space region (a slice) as a cropped SVG string. */
+export function regionToSvg(doc: GroundworkDocument, rect: { x: number; y: number; width: number; height: number }): string {
+  const page = activePage(doc);
+  const nodes = applyInstanceProps(applyVariables(page.nodes, doc.variables));
+  const defs: string[] = [];
+  const body = nodes
+    .filter((node) => node.visible)
+    .map((n) => nodeToSvg(n, defs))
+    .join("\n  ");
+  const w = Math.max(1, Math.round(rect.width));
+  const h = Math.max(1, Math.round(rect.height));
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${rect.x} ${rect.y} ${w} ${h}">
+  ${defs.length ? `<defs>${defs.join("")}</defs>\n  ` : ""}${body}
+</svg>`;
+}
+
+export function downloadRegionSvg(doc: GroundworkDocument, rect: { x: number; y: number; width: number; height: number }, name: string): void {
+  downloadSvgString(regionToSvg(doc, rect), name);
 }
 
 /** Top visible fill as an SVG paint reference (solid color or url(#grad)). */
@@ -170,6 +191,20 @@ function frameToSvg(frame: FrameNode, defs: string[]): string {
 function groupToSvg(group: GroupNode | Extract<SceneNode, { type: "boolean" }>, defs: string[]): string {
   const rot = group.rotation ? ` rotate(${group.rotation} ${group.width / 2} ${group.height / 2})` : "";
   const opacity = group.opacity !== 1 ? ` opacity="${group.opacity}"` : "";
+
+  // Masked group: the first mask child becomes a <clipPath>; siblings are clipped.
+  const maskIndex = group.children.findIndex((c) => c.isMask && c.visible);
+  if (maskIndex >= 0) {
+    const maskNode = group.children[maskIndex];
+    const clipId = `mask-${group.id}`;
+    const clipShape = nodeToSvg({ ...maskNode, isMask: false } as SceneNode, defs);
+    const masked = group.children
+      .filter((c, i) => c.visible && i !== maskIndex)
+      .map((c) => nodeToSvg(c, defs))
+      .join("\n    ");
+    return `<g transform="translate(${group.x} ${group.y})${rot}"${opacity}><clipPath id="${clipId}">${clipShape}</clipPath><g clip-path="url(#${clipId})">${masked}</g></g>`;
+  }
+
   const children = group.children
     .filter((c) => c.visible)
     .map((c) => nodeToSvg(c, defs))

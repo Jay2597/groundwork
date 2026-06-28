@@ -8,6 +8,7 @@ import {
   type SceneNode,
 } from "@/types/document";
 import { scaleNodeTree } from "@/lib/transform";
+import { firstMaskIndex, traceMask } from "@/lib/mask";
 import { ShapeNode } from "./ShapeNode";
 import { FrameView } from "./FrameView";
 import { BooleanView } from "./BooleanView";
@@ -47,6 +48,11 @@ export function GroupView({ group, draggable, onSelect, onChange }: GroupViewPro
     });
   }
 
+  // A masked group clips all children to its first mask child's outline; the
+  // mask's own pixels aren't drawn (it only defines the clip).
+  const maskIndex = firstMaskIndex(group.children);
+  const mask = maskIndex >= 0 ? group.children[maskIndex] : undefined;
+
   return (
     <Group
       id={group.id}
@@ -59,15 +65,18 @@ export function GroupView({ group, draggable, onSelect, onChange }: GroupViewPro
       onMouseDown={(e) => onSelect(group.id, e)}
       onDragEnd={handleDragEnd}
       onTransformEnd={handleTransformEnd}
+      clipFunc={mask ? (ctx) => traceMask(ctx as unknown as Parameters<typeof traceMask>[0], mask) : undefined}
     >
-      {group.children.map((child) => (
-        <GroupChild
-          key={child.id}
-          node={child}
-          onSelectGroup={(e) => onSelect(group.id, e)}
-          onChange={onChange}
-        />
-      ))}
+      {group.children.map((child, i) =>
+        i === maskIndex ? null : (
+          <GroupChild
+            key={child.id}
+            node={child}
+            onSelectGroup={(e) => onSelect(group.id, e)}
+            onChange={onChange}
+          />
+        ),
+      )}
     </Group>
   );
 }

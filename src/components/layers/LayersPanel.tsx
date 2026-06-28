@@ -123,11 +123,14 @@ function AssetsTab() {
   const components = useEditorStore((s) => s.document.components);
   const colors = useEditorStore((s) => s.document.styles.colors);
   const texts = useEditorStore((s) => s.document.styles.texts);
+  const effects = useEditorStore((s) => s.document.styles.effects ?? []);
   const insertInstance = useEditorStore((s) => s.insertInstance);
   const deleteComponent = useEditorStore((s) => s.deleteComponent);
   const combineAsVariants = useEditorStore((s) => s.combineAsVariants);
   const deleteColorStyle = useEditorStore((s) => s.deleteColorStyle);
   const deleteTextStyle = useEditorStore((s) => s.deleteTextStyle);
+  const applyEffectStyle = useEditorStore((s) => s.applyEffectStyle);
+  const deleteEffectStyle = useEditorStore((s) => s.deleteEffectStyle);
   const updateNode = useEditorStore((s) => s.updateNode);
   const selectedIds = useEditorStore((s) => s.selectedIds);
   const [picked, setPicked] = useState<Set<string>>(new Set());
@@ -210,6 +213,21 @@ function AssetsTab() {
                 <span className="swatch-name" style={{ fontWeight: t.fontStyle === "bold" ? 700 : 400 }}>{t.name}</span>
                 <span className="swatch-dim">{t.fontSize}px</span>
                 <button className="asset-del" aria-label={`Delete ${t.name}`} onClick={() => deleteTextStyle(t.id)}>×</button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {effects.length > 0 && (
+        <>
+          <div className="sec-label">EFFECT STYLES</div>
+          <div className="swatch-list">
+            {effects.map((es) => (
+              <div key={es.id} className="swatch-row" onClick={() => applyEffectStyle(es.id)} title={`Apply ${es.name}`}>
+                <span className="swatch-name">{es.name}</span>
+                <span className="swatch-dim">{es.effects.length} fx</span>
+                <button className="asset-del" aria-label={`Delete ${es.name}`} onClick={(e) => { e.stopPropagation(); deleteEffectStyle(es.id); }}>×</button>
               </div>
             ))}
           </div>

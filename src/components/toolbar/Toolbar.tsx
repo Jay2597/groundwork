@@ -55,6 +55,12 @@ const TOOLS: ToolDef[] = [
     hint: "P",
     icon: <path d="M12 19l7-7-4-4-7 7-1 5z M5 19l3-1" />,
   },
+  {
+    id: "slice",
+    label: "Slice",
+    hint: "S",
+    icon: <path d="M5 5l14 14M9 5H5v4M19 15v4h-4" />,
+  },
 ];
 
 export function Toolbar() {

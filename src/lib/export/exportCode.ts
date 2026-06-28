@@ -10,6 +10,7 @@ import { smoothPathToSvgD } from "@/lib/bezier";
 import { displayText } from "@/lib/text";
 import { effectsToBoxShadow, effectsToCssFilter, blendModeCss } from "@/lib/effects";
 import { applyVariables } from "@/lib/variables";
+import { applyInstanceProps } from "@/lib/componentProps";
 
 // Generate clean, framework-free HTML + CSS from the scene — a local "Dev Mode".
 // Box-like nodes become absolutely-positioned divs (auto-layout frames become
@@ -214,6 +215,11 @@ function build(node: SceneNode, positioned: boolean, indent: number): Built {
   }
 
   if (node.type === "image") {
+    if (node.image.fit === "tile") {
+      style.push(`background: url(${node.image.src}) repeat`);
+      rules.push(`.${cls} {\n  ${style.join(";\n  ")};\n}`);
+      return { html: [`${pad}<div class="${cls}"></div>`], rules };
+    }
     style.push(`object-fit: ${node.image.fit === "contain" ? "contain" : "cover"}`);
     rules.push(`.${cls} {\n  ${style.join(";\n  ")};\n}`);
     return {
@@ -230,8 +236,9 @@ function build(node: SceneNode, positioned: boolean, indent: number): Built {
   }
 
   if (node.type === "rect") {
-    if (node.image) style.push(`background: center / cover url(${node.image.src})`);
-    else style.push(`background: ${fillsToCss(node)}`);
+    if (node.image) {
+      style.push(node.image.fit === "tile" ? `background: url(${node.image.src}) repeat` : `background: center / cover url(${node.image.src})`);
+    } else style.push(`background: ${fillsToCss(node)}`);
     if (node.cornerRadii) {
       const [tl, tr, br, bl] = node.cornerRadii;
       style.push(`border-radius: ${round(tl)}px ${round(tr)}px ${round(br)}px ${round(bl)}px`);
@@ -294,7 +301,7 @@ export function pageToCode(doc: GroundworkDocument): GeneratedCode {
     `.canvas {\n  position: relative;\n  width: ${width}px;\n  height: ${height}px;\n  background: ${background};\n  overflow: hidden;\n}`,
   ];
   const inner: string[] = [];
-  for (const node of applyVariables(page.nodes, doc.variables)) {
+  for (const node of applyInstanceProps(applyVariables(page.nodes, doc.variables))) {
     const built = build(node, true, 1);
     inner.push(...built.html);
     rules.push(...built.rules);

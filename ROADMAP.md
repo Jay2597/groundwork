@@ -130,7 +130,17 @@ overlays `src/components/{palette,settings,export,present,comments,contextmenu}`
 - ✅ **SVG import** → editable vector/shape nodes (`lib/import/importSvg.ts`), grouped at the drop point; falls back to image placement
 - ✅ **Math in number inputs** (`lib/mathEval.ts`) — type `120/2`, `8*3`, `(2+3)*4`
 - ✅ **Eyedropper** (feature-detected `EyeDropper` API in the color field)
-- ⬜ Deferred: shape masking (alpha mask render), slice tool, image crop/tiling
+
+## Phase 12 — Previously-deferred items, now done ✅
+
+- ✅ **Interactive vector editing** — double-click a path to edit; drag anchors, click midpoints to add, alt/right-click to remove (`lib/pathEdit.ts`, `components/canvas/PathEditor.tsx`)
+- ✅ **True polygon-clipping booleans** — Greiner–Hormann clipper producing real compound-path geometry; "True geometry" boolean row falls back to the composited boolean on degenerate input (`lib/polybool.ts`, `lib/trueBoolean.ts`)
+- ✅ **Shape masking** — a node flagged "Use as mask" clips its group; canvas clip + SVG `clipPath` export (`lib/mask.ts`)
+- ✅ **Image crop + tiling** — normalized crop rect + tile fill with scale (`lib/imageCrop.ts`)
+- ✅ **Slice / export-region tool** — slice tool draws named export regions exported as PNG/SVG (`SliceRegion`, `regionToSvg`)
+- ✅ **Effect-style save/apply** — save a node's effects as a named style; apply from Assets
+- ✅ **Component properties** — per-instance text + visibility overrides that survive reset (`lib/componentProps.ts`)
+- ✅ **Prototype overlays** — open/close-overlay interaction actions rendered as floating overlays in present mode
 
 ---
 

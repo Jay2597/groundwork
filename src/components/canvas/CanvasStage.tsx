@@ -25,6 +25,7 @@ import { activePage, isContainer, isFrame, isGroup } from "@/types/document";
 import { fileToPlacedImage } from "@/lib/image";
 import { placeImageAt } from "@/lib/placeImage";
 import { applyVariables } from "@/lib/variables";
+import { applyInstanceProps } from "@/lib/componentProps";
 import { parseSvg, groupImported } from "@/lib/import/importSvg";
 import { useUiStore } from "@/store/uiStore";
 import { usePrefsStore } from "@/store/prefsStore";
@@ -38,6 +39,7 @@ import { FrameView } from "./FrameView";
 import { GroupView } from "./GroupView";
 import { BooleanView } from "./BooleanView";
 import { SelectionTransformer } from "./SelectionTransformer";
+import { PathEditor } from "./PathEditor";
 import { useStageSize } from "./useStageSize";
 
 const MIN_SCALE = 0.05;
@@ -68,7 +70,7 @@ export function CanvasStage() {
 
   const document = useEditorStore((s) => s.document);
   const nodes = activePage(document).nodes;
-  const renderNodes = applyVariables(nodes, document.variables);
+  const renderNodes = applyInstanceProps(applyVariables(nodes, document.variables));
   const selectedIds = useEditorStore((s) => s.selectedIds);
   const tool = useEditorStore((s) => s.tool);
   const viewport = useEditorStore((s) => s.viewport);
@@ -84,12 +86,16 @@ export function CanvasStage() {
   const openContextMenu = useUiStore((s) => s.openContextMenu);
   const commentMode = useUiStore((s) => s.commentMode);
   const setEditingTextId = useUiStore((s) => s.setEditingTextId);
+  const editingPathId = useUiStore((s) => s.editingPathId);
+  const setEditingPathId = useUiStore((s) => s.setEditingPathId);
   const addComment = useEditorStore((s) => s.addComment);
+  const addSlice = useEditorStore((s) => s.addSlice);
   const snapping = usePrefsStore((s) => s.snapping);
   const showGrid = usePrefsStore((s) => s.showGrid);
   const gridSize = usePrefsStore((s) => s.gridSize);
 
-  const isDrawTool = tool === "rect" || tool === "ellipse" || tool === "frame";
+  const isDrawTool = tool === "rect" || tool === "ellipse" || tool === "frame" || tool === "slice";
+  const slices = activePage(document).slices ?? [];
 
   useEffect(() => {
     registerStage(stageRef.current);
@@ -239,6 +245,10 @@ export function CanvasStage() {
 
   function commitDraft(type: DraftShape["type"], box: Box) {
     const count = countNodes(nodes) + 1;
+    if (type === "slice") {
+      addSlice(box);
+      return;
+    }
     if (type === "frame") {
       const frame = createFrame(box, count);
       addNode(frame);
@@ -437,6 +447,23 @@ export function CanvasStage() {
 
   const selectDraggable = tool === "select";
 
+  // Vector edit-points mode targets a selected, still-present path.
+  const editingPath =
+    editingPathId && selectedIds.includes(editingPathId)
+      ? nodes.find((n) => n.id === editingPathId && n.type === "path")
+      : undefined;
+  useEffect(() => {
+    if (editingPathId && !editingPath) setEditingPathId(null);
+  }, [editingPathId, editingPath, setEditingPathId]);
+  useEffect(() => {
+    if (!editingPath) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setEditingPathId(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [editingPath, setEditingPathId]);
+
   // Single top-level rect/frame (unrotated) gets on-canvas corner-radius handles.
   const radiusTarget =
     tool === "select" && selectedIds.length === 1
@@ -488,6 +515,9 @@ export function CanvasStage() {
             if (model?.type === "text" && !model.locked) {
               select([model.id]);
               setEditingTextId(model.id);
+            } else if (model?.type === "path" && !model.locked) {
+              select([model.id]);
+              setEditingPathId(model.id);
             }
           }
         }}
@@ -545,14 +575,19 @@ export function CanvasStage() {
             />
           ))}
 
-          <SelectionTransformer
-            stage={stageRef.current}
-            selectedIds={selectedIds}
-            nodes={nodes}
-            viewport={viewport}
-            snapping={snapping}
-            onGuides={setGuides}
-          />
+          {!editingPath && (
+            <SelectionTransformer
+              stage={stageRef.current}
+              selectedIds={selectedIds}
+              nodes={nodes}
+              viewport={viewport}
+              snapping={snapping}
+              onGuides={setGuides}
+            />
+          )}
+          {editingPath && editingPath.type === "path" && (
+            <PathEditor node={editingPath} scale={viewport.scale} />
+          )}
           {showRadiusHandles && radiusTarget && (
             <CornerRadiusHandles
               node={radiusTarget as Extract<typeof radiusTarget, { type: "rect" | "frame" }>}
@@ -560,6 +595,27 @@ export function CanvasStage() {
               onChange={(patch) => updateNode(radiusTarget.id, patch)}
             />
           )}
+          {slices.map((s) => (
+            <Group key={s.id} listening={false}>
+              <Rect
+                x={s.x}
+                y={s.y}
+                width={s.width}
+                height={s.height}
+                stroke="#ff5da2"
+                strokeWidth={1 / viewport.scale}
+                dash={[6 / viewport.scale, 4 / viewport.scale]}
+              />
+              <Text
+                x={s.x}
+                y={s.y - 16 / viewport.scale}
+                text={s.name}
+                fontSize={11 / viewport.scale}
+                fontFamily="IBM Plex Mono, monospace"
+                fill="#ff5da2"
+              />
+            </Group>
+          ))}
           {draft && <DraftPreview draft={draft} />}
           {penPoints && <PenPreview points={penPoints} cursor={penCursor} scale={viewport.scale} />}
           {marquee && <MarqueeBox box={marquee} scale={viewport.scale} />}

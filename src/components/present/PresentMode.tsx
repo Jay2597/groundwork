@@ -18,11 +18,14 @@ export function PresentMode() {
   const [index, setIndex] = useState(0);
   // Bumped on every navigation to retrigger the CSS transition animation.
   const [anim, setAnim] = useState<{ key: number; interaction?: Interaction }>({ key: 0 });
+  // Frame id currently shown as a floating overlay (null = none).
+  const [overlayId, setOverlayId] = useState<string | null>(null);
 
   useEffect(() => {
     if (open) {
       setIndex(0);
       setAnim({ key: 0 });
+      setOverlayId(null);
     }
   }, [open]);
 
@@ -55,8 +58,18 @@ export function PresentMode() {
   }
 
   function navigate(interaction: Interaction) {
+    const action = interaction.action ?? "navigate";
+    if (action === "close-overlay") {
+      setOverlayId(null);
+      return;
+    }
+    if (action === "open-overlay") {
+      if (frames.some((f) => f.id === interaction.target)) setOverlayId(interaction.target);
+      return;
+    }
     const target = frames.findIndex((f) => f.id === interaction.target);
     if (target < 0) return;
+    setOverlayId(null);
     setIndex(target);
     setAnim((a) => ({ key: a.key + 1, interaction }));
   }
@@ -80,6 +93,7 @@ export function PresentMode() {
     1.5,
   );
 
+  const overlay = overlayId ? frames.find((f) => f.id === overlayId) : undefined;
   const anchorAnim = anim.interaction ? transitionAnimation(anim.interaction.transition) : null;
   const animStyle = anchorAnim
     ? {
@@ -118,6 +132,35 @@ export function PresentMode() {
           );
         })}
       </div>
+
+      {overlay && (
+        <div className="present-overlay-backdrop" onClick={() => setOverlayId(null)}>
+          <div
+            className="present-overlay"
+            style={{ width: overlay.width * scale, height: overlay.height * scale }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className="present-svg"
+              style={{ width: overlay.width, height: overlay.height, transform: `scale(${scale})` }}
+              dangerouslySetInnerHTML={{ __html: nodeToSvgDocument(overlay) }}
+            />
+            {overlay.children.map((c) => {
+              const click = clickInteraction(c);
+              if (!click) return null;
+              return (
+                <button
+                  key={c.id}
+                  className="present-hotspot"
+                  style={{ left: c.x * scale, top: c.y * scale, width: c.width * scale, height: c.height * scale }}
+                  onClick={() => navigate(click)}
+                  aria-label="Overlay hotspot"
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="present-bar">
         <button className="present-nav" disabled={index === 0} onClick={() => step(-1)}>‹</button>

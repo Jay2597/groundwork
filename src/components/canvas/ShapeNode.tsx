@@ -7,6 +7,7 @@ import { useImage } from "@/hooks/useImage";
 import { fillsFor, paintToKonva, strokeToKonva } from "@/lib/paint";
 import { catmullRomToBezier } from "@/lib/bezier";
 import { dropShadowKonva, blendModeKonva } from "@/lib/effects";
+import { cropToPixels } from "@/lib/imageCrop";
 import { displayText } from "@/lib/text";
 import { useUiStore } from "@/store/uiStore";
 
@@ -237,15 +238,38 @@ function SmoothPath({
   );
 }
 
+/** Konva props for an image fill's crop / tile mode. */
+function imageFillProps(image: { fit: string; crop?: [number, number, number, number]; scale?: number }, img: HTMLImageElement): Fx {
+  if (image.fit === "tile") {
+    const scale = image.scale ?? 1;
+    return {
+      fillPatternImage: img,
+      fillPatternRepeat: "repeat",
+      fillPatternScaleX: scale,
+      fillPatternScaleY: scale,
+    };
+  }
+  if (image.crop) {
+    return { crop: cropToPixels(image.crop, img.naturalWidth || img.width, img.naturalHeight || img.height) };
+  }
+  return {};
+}
+
 function ImageShape({ node, fx }: { node: ImageNode; fx: Fx }) {
   const img = useImage(node.image.src);
   if (!img) return <Rect width={node.width} height={node.height} fill="#e7e7ea" {...fx} />;
-  return <KonvaImage image={img} width={node.width} height={node.height} {...fx} />;
+  if (node.image.fit === "tile") {
+    return <Rect width={node.width} height={node.height} {...imageFillProps(node.image, img)} {...fx} />;
+  }
+  return <KonvaImage image={img} width={node.width} height={node.height} {...imageFillProps(node.image, img)} {...fx} />;
 }
 
 function ImageFillRect({ node, fx }: { node: RectNode; fx: Fx }) {
   const img = useImage(node.image?.src);
   const cr = radiusValue(node);
-  if (!img) return <Rect width={node.width} height={node.height} fill="#e7e7ea" cornerRadius={cr} {...fx} />;
-  return <KonvaImage image={img} width={node.width} height={node.height} cornerRadius={cr} {...fx} />;
+  if (!img || !node.image) return <Rect width={node.width} height={node.height} fill="#e7e7ea" cornerRadius={cr} {...fx} />;
+  if (node.image.fit === "tile") {
+    return <Rect width={node.width} height={node.height} cornerRadius={cr} {...imageFillProps(node.image, img)} {...fx} />;
+  }
+  return <KonvaImage image={img} width={node.width} height={node.height} cornerRadius={cr} {...imageFillProps(node.image, img)} {...fx} />;
 }
