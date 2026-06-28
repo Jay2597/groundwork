@@ -11,6 +11,7 @@ import {
 } from "@/lib/persistence/fileLibrary";
 import { openDocument } from "@/lib/persistence/fileSystem";
 import { createSampleDocument } from "@/lib/sampleDocument";
+import { TEMPLATES, type Template } from "@/lib/templates";
 import { Logo } from "@/components/brand/Logo";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import "./home.css";
@@ -40,6 +41,11 @@ export function HomeScreen() {
 
   async function handleSample() {
     const id = await importFile(createSampleDocument());
+    navigate(`/editor/${id}`);
+  }
+
+  async function handleTemplate(t: Template) {
+    const id = await importFile(t.build());
     navigate(`/editor/${id}`);
   }
 
@@ -121,6 +127,21 @@ export function HomeScreen() {
         </header>
 
         <div className="home-content scroll">
+          <section className="tmpl-strip" aria-label="Start from a template">
+            <button className="tmpl-card blank" onClick={handleNew}>
+              <span className="tmpl-glyph">＋</span>
+              <span className="tmpl-name">Blank</span>
+              <span className="tmpl-desc">Empty canvas</span>
+            </button>
+            {TEMPLATES.map((t) => (
+              <button key={t.id} className="tmpl-card" onClick={() => void handleTemplate(t)}>
+                <span className="tmpl-glyph">▤</span>
+                <span className="tmpl-name">{t.name}</span>
+                <span className="tmpl-desc">{t.description}</span>
+              </button>
+            ))}
+          </section>
+
           {shown.length === 0 ? (
             <EmptyState hasFiles={files.length > 0} onNew={handleNew} onSample={handleSample} />
           ) : (
