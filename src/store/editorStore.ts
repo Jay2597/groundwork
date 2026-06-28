@@ -29,8 +29,10 @@ import {
   instanceFromComponent,
 } from "@/lib/nodeFactory";
 import { flattenNodes } from "@/lib/flatten";
+import { nanoid } from "nanoid";
 import { reflowHug } from "@/lib/autolayout";
 import { trueBooleanPath } from "@/lib/trueBoolean";
+import { connectorPoints } from "@/lib/connectors";
 import { createVariableCollection, newVariable } from "@/lib/variables";
 import { rebuildInstance } from "@/lib/components";
 import {
@@ -87,6 +89,7 @@ interface EditorState {
   booleanSelected: (op: BooleanOp) => void;
   flattenSelected: () => void;
   trueBooleanSelected: (op: BooleanOp) => void;
+  connectSelection: (kind?: "straight" | "elbow") => void;
   reorderSelected: (direction: "front" | "back" | "forward" | "backward") => void;
   alignSelected: (mode: AlignMode) => void;
   distributeSelected: (axis: "h" | "v") => void;
@@ -451,6 +454,40 @@ export const useEditorStore = create<EditorState>((set, get) => {
         if (!path) return {};
         const rest = nodes.filter((n) => !sel.has(n.id));
         return { ...commitNodes(state, [...rest, path]), selectedIds: [path.id] };
+      }),
+
+    connectSelection: (kind = "straight") =>
+      set((state) => {
+        if (state.selectedIds.length !== 2) return {};
+        const [from, to] = state.selectedIds;
+        const nodes = currentNodes(state);
+        const a = findNode(nodes, from);
+        const b = findNode(nodes, to);
+        if (!a || !b) return {};
+        const points = connectorPoints(
+          { x: a.x, y: a.y, width: a.width, height: a.height },
+          { x: b.x, y: b.y, width: b.width, height: b.height },
+          kind,
+        );
+        const connector: SceneNode = {
+          id: nanoid(8),
+          type: "path",
+          name: `Connector ${countNodes(nodes) + 1}`,
+          x: 0,
+          y: 0,
+          width: 1,
+          height: 1,
+          rotation: 0,
+          fill: "#000000",
+          opacity: 1,
+          visible: true,
+          locked: false,
+          points,
+          closed: false,
+          stroke: { color: "#6a6a72", width: 2, markerEnd: "arrow" },
+          connector: { from, to, kind },
+        };
+        return { ...commitNodes(state, [...nodes, connector]), selectedIds: [connector.id] };
       }),
 
     reorderSelected: (direction) =>

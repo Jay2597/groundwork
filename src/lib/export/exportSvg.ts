@@ -14,6 +14,7 @@ import { displayText } from "@/lib/text";
 import { effectsOf, blendModeCss } from "@/lib/effects";
 import { applyVariables } from "@/lib/variables";
 import { applyInstanceProps } from "@/lib/componentProps";
+import { resolveConnectors } from "@/lib/connectors";
 
 // Serialize the document to clean, standards-based SVG — an open, portable
 // format generated 100% client-side. Gradients are emitted
@@ -21,7 +22,7 @@ import { applyInstanceProps } from "@/lib/componentProps";
 
 export function documentToSvg(doc: GroundworkDocument): string {
   const page = activePage(doc);
-  return pageToSvg({ ...page, nodes: applyInstanceProps(applyVariables(page.nodes, doc.variables)) });
+  return pageToSvg({ ...page, nodes: resolveConnectors(applyInstanceProps(applyVariables(page.nodes, doc.variables))) });
 }
 
 export function pageToSvg(page: Page): string {
@@ -41,7 +42,7 @@ export function pageToSvg(page: Page): string {
 /** Export a document-space region (a slice) as a cropped SVG string. */
 export function regionToSvg(doc: GroundworkDocument, rect: { x: number; y: number; width: number; height: number }): string {
   const page = activePage(doc);
-  const nodes = applyInstanceProps(applyVariables(page.nodes, doc.variables));
+  const nodes = resolveConnectors(applyInstanceProps(applyVariables(page.nodes, doc.variables)));
   const defs: string[] = [];
   const body = nodes
     .filter((node) => node.visible)

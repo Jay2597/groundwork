@@ -59,6 +59,8 @@ export function CommandPalette() {
       { id: "bool-intersect", group: "Boolean", label: "Intersect", run: wrap(() => s.booleanSelected("intersect")) },
       { id: "bool-exclude", group: "Boolean", label: "Exclude", run: wrap(() => s.booleanSelected("exclude")) },
       { id: "bool-flatten", group: "Boolean", label: "Flatten", hint: "Ctrl+E", run: wrap(s.flattenSelected) },
+      { id: "connect", group: "Edit", label: "Connect 2 selected (arrow)", run: wrap(() => s.connectSelection("straight")) },
+      { id: "connect-elbow", group: "Edit", label: "Connect 2 selected (elbow)", run: wrap(() => s.connectSelection("elbow")) },
       { id: "arr-front", group: "Arrange", label: "Bring to front", hint: "]", run: wrap(() => s.reorderSelected("front")) },
       { id: "arr-back", group: "Arrange", label: "Send to back", hint: "[", run: wrap(() => s.reorderSelected("back")) },
       { id: "hist-undo", group: "Edit", label: "Undo", hint: "Ctrl+Z", run: wrap(s.undo) },
