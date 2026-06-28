@@ -1,0 +1,30 @@
+.lint-dialog { width: 480px; max-width: 92vw; }
+.lint-summary { display: flex; gap: 6px; margin-left: auto; margin-right: 10px; }
+.lint-pill {
+  min-width: 22px; text-align: center; padding: 1px 7px; border-radius: 999px;
+  font-size: 11px; font-family: var(--mono); font-weight: 600; color: #0d0d0f;
+}
+.lint-pill.error { background: #ff5d5d; }
+.lint-pill.warning { background: #f2a33c; }
+.lint-pill.info { background: #6aa3ff; }
+
+.lint-body { max-height: 60vh; overflow: auto; }
+.lint-clean { color: var(--muted); font-size: 13px; padding: 8px 0; }
+
+.lint-section { margin-bottom: 12px; }
+.lint-sec-head { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.lint-count { color: var(--faint); }
+.lint-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+
+.lint-row {
+  display: flex; align-items: center; gap: 9px; width: 100%; text-align: left;
+  padding: 7px 8px; background: var(--panel-2); border: 1px solid transparent;
+  border-radius: var(--r-sm, 6px); cursor: pointer; color: var(--text);
+}
+.lint-row:hover { border-color: var(--amber); }
+.lint-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+.lint-dot.error { background: #ff5d5d; }
+.lint-dot.warning { background: #f2a33c; }
+.lint-dot.info { background: #6aa3ff; }
+.lint-node { font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.lint-msg { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
