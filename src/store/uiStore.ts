@@ -18,6 +18,7 @@ interface UiState {
   exportOpen: boolean;
   codeOpen: boolean;
   lintOpen: boolean;
+  historyOpen: boolean;
   presentMode: boolean;
   commentMode: boolean;
   helpOpen: boolean;
@@ -36,6 +37,7 @@ interface UiState {
   setExportOpen: (open: boolean) => void;
   setCodeOpen: (open: boolean) => void;
   setLintOpen: (open: boolean) => void;
+  setHistoryOpen: (open: boolean) => void;
   setPresentMode: (on: boolean) => void;
   toggleCommentMode: () => void;
   setHelpOpen: (open: boolean) => void;
@@ -52,6 +54,7 @@ export const useUiStore = create<UiState>((set, get) => ({
   exportOpen: false,
   codeOpen: false,
   lintOpen: false,
+  historyOpen: false,
   presentMode: false,
   commentMode: false,
   helpOpen: false,
@@ -69,6 +72,7 @@ export const useUiStore = create<UiState>((set, get) => ({
   setExportOpen: (open) => set({ exportOpen: open }),
   setCodeOpen: (open) => set({ codeOpen: open }),
   setLintOpen: (open) => set({ lintOpen: open }),
+  setHistoryOpen: (open) => set({ historyOpen: open }),
   setPresentMode: (on) => set({ presentMode: on }),
   toggleCommentMode: () => set({ commentMode: !get().commentMode }),
   setHelpOpen: (open) => set({ helpOpen: open }),
