@@ -1,4 +1,4 @@
-import { Ellipse, Group, Image as KonvaImage, Line, Rect, Shape, Text } from "react-konva";
+import { Circle, Ellipse, Group, Image as KonvaImage, Line, Rect, Shape, Text } from "react-konva";
 import type Konva from "konva";
 import type { Context as KonvaContext } from "konva/lib/Context";
 import type { KonvaEventObject } from "konva/lib/Node";
@@ -7,6 +7,7 @@ import { useImage } from "@/hooks/useImage";
 import { fillsFor, paintToKonva, strokeToKonva } from "@/lib/paint";
 import { catmullRomToBezier, type CubicSegment } from "@/lib/bezier";
 import { handleSegments } from "@/lib/bezierPath";
+import { arrowheadPoints, endpointTangents, markerSize, toFlat, type MarkerType } from "@/lib/markers";
 import { dropShadowKonva, blendModeKonva } from "@/lib/effects";
 import { cropToPixels } from "@/lib/imageCrop";
 import { displayText } from "@/lib/text";
@@ -129,21 +130,19 @@ function Child({ node }: { node: SceneNode }) {
       }
       const top = fillsFor(node)[fillsFor(node).length - 1];
       const fillProps = node.closed ? paintToKonva(top, node.width, node.height) : { fill: undefined };
+      const markers = !node.closed ? <PathMarkers node={node} /> : null;
       if (node.handles && node.handles.length >= 8 && node.points.length >= 4) {
         const segs = handleSegments(node.points, node.handles, node.closed);
-        return <CubicPath segments={segs} closed={node.closed} fillProps={fillProps} stroke={stroke} shadow={shadow} />;
+        return <><CubicPath segments={segs} closed={node.closed} fillProps={fillProps} stroke={stroke} shadow={shadow} />{markers}</>;
       }
       if (node.smooth && node.points.length >= 6) {
-        return <SmoothPath node={node} fillProps={fillProps} stroke={stroke} shadow={shadow} />;
+        return <><SmoothPath node={node} fillProps={fillProps} stroke={stroke} shadow={shadow} />{markers}</>;
       }
       return (
-        <Line
-          points={node.points}
-          closed={node.closed}
-          {...fillProps}
-          {...stroke}
-          {...shadow}
-        />
+        <>
+          <Line points={node.points} closed={node.closed} {...fillProps} {...stroke} {...shadow} />
+          {markers}
+        </>
       );
     }
     case "text": {
@@ -275,6 +274,34 @@ function imageFillProps(image: { fit: string; crop?: [number, number, number, nu
     return { crop: cropToPixels(image.crop, img.naturalWidth || img.width, img.naturalHeight || img.height) };
   }
   return {};
+}
+
+/** Endpoint markers (arrowheads / dots) for an open path. */
+function PathMarkers({ node }: { node: PathNode }) {
+  const stroke = node.stroke;
+  if (!stroke) return null;
+  const start = (stroke.markerStart ?? "none") as MarkerType;
+  const end = (stroke.markerEnd ?? "none") as MarkerType;
+  if (start === "none" && end === "none") return null;
+  const tangents = endpointTangents(node.points);
+  const size = markerSize(stroke.width);
+  const color = stroke.color;
+
+  function marker(type: MarkerType, seg: { tip: { x: number; y: number }; from: { x: number; y: number } } | undefined, key: string) {
+    if (!seg || type === "none") return null;
+    if (type === "circle") {
+      return <Circle key={key} x={seg.tip.x} y={seg.tip.y} radius={size / 2} fill={color} />;
+    }
+    const pts = toFlat(arrowheadPoints(seg.tip, seg.from, size));
+    return <Line key={key} points={pts} closed fill={color} stroke={color} strokeWidth={0} />;
+  }
+
+  return (
+    <>
+      {marker(start, tangents.start, "ms")}
+      {marker(end, tangents.end, "me")}
+    </>
+  );
 }
 
 function ImageShape({ node, fx }: { node: ImageNode; fx: Fx }) {

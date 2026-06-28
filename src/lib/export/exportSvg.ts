@@ -146,6 +146,7 @@ function pathToSvg(
   defs: string[],
 ): string {
   const fill = node.closed ? fillRef(node, defs) : "none";
+  stroke += pathMarkers(node, defs);
   if (node.subpaths && node.subpaths.length > 1) {
     const d = node.subpaths
       .map((sp) => subpathToD(node.x, node.y, sp.points, sp.closed))
@@ -166,6 +167,29 @@ function pathToSvg(
   }
   const tag = node.closed ? "polygon" : "polyline";
   return `<${tag} points="${pts.join(" ")}" fill="${fill}"${stroke}${opacity}${transform} />`;
+}
+
+/** Build <marker> defs + the marker-start/marker-end attribute string for a path. */
+function pathMarkers(node: Extract<SceneNode, { type: "path" }>, defs: string[]): string {
+  const s = node.stroke;
+  if (!s || node.closed) return "";
+  const start = s.markerStart ?? "none";
+  const end = s.markerEnd ?? "none";
+  if (start === "none" && end === "none") return "";
+  let attrs = "";
+  const ensure = (type: string): string => {
+    const id = `mk-${type}-${node.id}`;
+    const shape =
+      type === "circle"
+        ? `<circle cx="5" cy="5" r="4" fill="${s.color}" />`
+        : `<path d="M0,0 L10,5 L0,10 z" fill="${s.color}" />`;
+    const box = type === "circle" ? `viewBox="0 0 10 10" refX="5" refY="5"` : `viewBox="0 0 10 10" refX="9" refY="5"`;
+    defs.push(`<marker id="${id}" markerWidth="6" markerHeight="6" ${box} orient="auto" markerUnits="strokeWidth">${shape}</marker>`);
+    return id;
+  };
+  if (start !== "none") attrs += ` marker-start="url(#${ensure(start)})"`;
+  if (end !== "none") attrs += ` marker-end="url(#${ensure(end)})"`;
+  return attrs;
 }
 
 /** SVG path "d" for one contour, offset to (ox, oy). */
