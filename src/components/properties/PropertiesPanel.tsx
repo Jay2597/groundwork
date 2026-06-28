@@ -160,6 +160,7 @@ export function PropertiesPanel() {
         </div>
         {selected.type === "rect" && <CornerRadiusControl node={selected} set={set} />}
         <SizingControl node={selected} set={set} />
+        <NumberBindings node={selected} />
       </section>
 
       <section className="group">
@@ -702,6 +703,33 @@ function LayoutGridsSection({ frame, set }: { frame: FrameNode; set: (p: NodePat
         </div>
       ))}
     </section>
+  );
+}
+
+/** Bind numeric node properties (radius, opacity, rotation) to number variables. */
+function NumberBindings({ node }: { node: SceneNode }) {
+  const variables = useEditorStore((s) => s.document.variables);
+  const bindNodeVar = useEditorStore((s) => s.bindNodeVar);
+  const numberVars = variables?.variables.filter((v) => v.type === "number") ?? [];
+  if (numberVars.length === 0) return null;
+
+  const props: { prop: string; label: string }[] = [{ prop: "opacity", label: "Opacity" }, { prop: "rotation", label: "Rotation" }];
+  if (node.type === "rect" || node.type === "frame") props.unshift({ prop: "cornerRadius", label: "Radius" });
+  const bindings = node.varBindings ?? {};
+
+  return (
+    <>
+      <div className="field-label" style={{ marginTop: 8 }}>Bind to variable</div>
+      {props.map(({ prop, label }) => (
+        <label key={prop} className="field" style={{ marginBottom: 4 }} title={`Bind ${label} to a number variable`}>
+          <span>{label}</span>
+          <select value={bindings[prop] ?? ""} onChange={(e) => bindNodeVar(node.id, prop, e.target.value || undefined)}>
+            <option value="">—</option>
+            {numberVars.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
+          </select>
+        </label>
+      ))}
+    </>
   );
 }
 
@@ -1309,6 +1337,7 @@ function CanvasProperties() {
 function VariablesSection() {
   const variables = useEditorStore((s) => s.document.variables);
   const addColorVariable = useEditorStore((s) => s.addColorVariable);
+  const addNumberVariable = useEditorStore((s) => s.addNumberVariable);
   const setVariableValue = useEditorStore((s) => s.setVariableValue);
   const deleteVariable = useEditorStore((s) => s.deleteVariable);
   const addVariableMode = useEditorStore((s) => s.addVariableMode);
@@ -1316,18 +1345,14 @@ function VariablesSection() {
 
   const modes = variables?.modes ?? [];
   const active = variables?.activeModeId;
+  const count = variables?.variables.length ?? 0;
 
   return (
     <section className="group">
-      <div className="ghead">
-        VARIABLES
-        <button
-          className="ghead-add"
-          title="Add color variable"
-          onClick={() => addColorVariable(`Color ${(variables?.variables.length ?? 0) + 1}`, "#f2a33c")}
-        >
-          +
-        </button>
+      <div className="ghead">VARIABLES</div>
+      <div className="seg" style={{ marginBottom: 8 }}>
+        <div onClick={() => addColorVariable(`Color ${count + 1}`, "#f2a33c")}>+ Color</div>
+        <div onClick={() => addNumberVariable(`Number ${count + 1}`, 8)}>+ Number</div>
       </div>
       {modes.length > 0 && (
         <div className="field-row" style={{ marginBottom: 8 }}>
@@ -1342,19 +1367,29 @@ function VariablesSection() {
       )}
       {variables?.variables.map((v) => (
         <div key={v.id} className="var-row">
-          <input
-            type="color"
-            className="color-dot"
-            value={typeof v.valuesByMode[active ?? ""] === "string" ? (v.valuesByMode[active ?? ""] as string) : "#000000"}
-            onChange={(e) => active && setVariableValue(v.id, active, e.target.value)}
-            aria-label={`${v.name} value`}
-          />
+          {v.type === "color" ? (
+            <input
+              type="color"
+              className="color-dot"
+              value={typeof v.valuesByMode[active ?? ""] === "string" ? (v.valuesByMode[active ?? ""] as string) : "#000000"}
+              onChange={(e) => active && setVariableValue(v.id, active, e.target.value)}
+              aria-label={`${v.name} value`}
+            />
+          ) : (
+            <input
+              type="number"
+              className="var-num"
+              value={typeof v.valuesByMode[active ?? ""] === "number" ? (v.valuesByMode[active ?? ""] as number) : 0}
+              onChange={(e) => active && setVariableValue(v.id, active, Number(e.target.value))}
+              aria-label={`${v.name} value`}
+            />
+          )}
           <span className="var-name">{v.name}</span>
           <button className="paint-del" title="Delete variable" onClick={() => deleteVariable(v.id)}>−</button>
         </div>
       ))}
-      {(!variables || variables.variables.length === 0) && (
-        <p className="prop-hint" style={{ margin: 0 }}>Add a variable to theme fills across modes.</p>
+      {count === 0 && (
+        <p className="prop-hint" style={{ margin: 0 }}>Add color or number variables, then bind fills, radius, opacity, or rotation to them.</p>
       )}
     </section>
   );
