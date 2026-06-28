@@ -1,6 +1,7 @@
 import { useUiStore } from "@/store/uiStore";
 import { usePrefsStore } from "@/store/prefsStore";
 import { useThemeStore } from "@/store/themeStore";
+import { analyticsConfigured } from "@/lib/analytics";
 import "./settings.css";
 
 /** On-device preferences dialog. */
@@ -10,6 +11,7 @@ export function SettingsDialog() {
   const snapping = usePrefsStore((s) => s.snapping);
   const showGrid = usePrefsStore((s) => s.showGrid);
   const gridSize = usePrefsStore((s) => s.gridSize);
+  const analytics = usePrefsStore((s) => s.analytics);
   const setPref = usePrefsStore((s) => s.setPref);
   const theme = useThemeStore((s) => s.theme);
   const setTheme = useThemeStore((s) => s.setTheme);
@@ -67,7 +69,17 @@ export function SettingsDialog() {
             />
           </section>
 
-          <p className="set-foot">Everything stays on your device. No account, no sync, no upload.</p>
+          {analyticsConfigured() && (
+            <section className="set-row">
+              <div>
+                <div className="set-title">Anonymous usage stats</div>
+                <div className="set-sub">Counts visits and a few actions (e.g. export) — never your designs. No cookies, no account.</div>
+              </div>
+              <Toggle on={analytics} onChange={(v) => setPref("analytics", v)} />
+            </section>
+          )}
+
+          <p className="set-foot">Your designs never leave your device. No account, no sync, no upload of file content.</p>
         </div>
       </div>
     </div>

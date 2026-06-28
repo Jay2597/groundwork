@@ -4,6 +4,7 @@ import { activePage, isFrame, type FrameNode } from "@/types/document";
 import { exportRegionAsImage, exportStageAsImage } from "@/lib/export/exportImage";
 import { downloadNodeSvg, downloadSvg, downloadRegionSvg } from "@/lib/export/exportSvg";
 import { getStage } from "@/lib/stageRegistry";
+import { trackEvent } from "@/lib/analytics";
 import "./export.css";
 
 /** Export panel: whole page, or per-frame PNG / SVG, plus batch export. */
@@ -23,6 +24,7 @@ export function ExportPanel() {
   function framePng(frame: FrameNode) {
     const stage = getStage();
     if (stage) exportRegionAsImage(stage, frame, viewport, frame.name);
+    trackEvent("export");
   }
 
   function slicePng(slice: { x: number; y: number; width: number; height: number; name: string }) {
@@ -65,8 +67,8 @@ export function ExportPanel() {
           <section className="exp-section">
             <div className="exp-title">This page</div>
             <div className="exp-actions">
-              <button className="btn" onClick={pagePng}>PNG (2×)</button>
-              <button className="btn" onClick={() => downloadSvg(document)}>SVG</button>
+              <button className="btn" onClick={() => { pagePng(); trackEvent("export"); }}>PNG (2×)</button>
+              <button className="btn" onClick={() => { downloadSvg(document); trackEvent("export"); }}>SVG</button>
             </div>
           </section>
 
