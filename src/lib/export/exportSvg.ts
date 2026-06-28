@@ -9,6 +9,7 @@ import {
 } from "@/types/document";
 import { fillsFor, paintToSvg } from "@/lib/paint";
 import { smoothPathToSvgD } from "@/lib/bezier";
+import { handlePathToSvgD } from "@/lib/bezierPath";
 import { displayText } from "@/lib/text";
 import { effectsOf, blendModeCss } from "@/lib/effects";
 import { applyVariables } from "@/lib/variables";
@@ -150,6 +151,10 @@ function pathToSvg(
       .map((sp) => subpathToD(node.x, node.y, sp.points, sp.closed))
       .join(" ");
     return `<path d="${d}" fill="${fill}" fill-rule="evenodd"${stroke}${opacity}${transform} />`;
+  }
+  if (node.handles && node.handles.length >= 8 && node.points.length >= 4) {
+    const d = handlePathToSvgD(node.points, node.handles, node.closed, node.x, node.y);
+    return `<path d="${d}" fill="${fill}"${stroke}${opacity}${transform} />`;
   }
   if (node.smooth && node.points.length >= 6) {
     const d = smoothPathToSvgD(node.points, node.closed, node.x, node.y);

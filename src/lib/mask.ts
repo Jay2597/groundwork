@@ -1,5 +1,6 @@
 import type { SceneNode } from "@/types/document";
 import { catmullRomToBezier } from "@/lib/bezier";
+import { sampleHandles } from "@/lib/bezierPath";
 
 // Shape masking: a node flagged `isMask` clips its container's children to its
 // own outline. The clip is shape-based (rect / ellipse / path), traced into the
@@ -26,7 +27,12 @@ export function maskOutline(node: SceneNode, segments = 48): number[] {
     return pts;
   }
   if (node.type === "path") {
-    const local = node.smooth && node.points.length >= 6 ? samplePts(node.points, node.closed) : node.points;
+    const local =
+      node.handles && node.handles.length >= 8 && node.points.length >= 4
+        ? sampleHandles(node.points, node.handles, node.closed)
+        : node.smooth && node.points.length >= 6
+          ? samplePts(node.points, node.closed)
+          : node.points;
     const out: number[] = [];
     for (let i = 0; i < local.length; i += 2) out.push(x + local[i], y + local[i + 1]);
     return out;
