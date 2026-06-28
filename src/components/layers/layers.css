@@ -24,6 +24,8 @@
 .asset-grid { display: flex; flex-direction: column; gap: 4px; }
 .asset-chip { display: flex; align-items: center; gap: 9px; padding: 8px 10px; background: var(--panel-2); border: 1px solid var(--border); border-radius: var(--r-sm); cursor: pointer; color: var(--muted); }
 .asset-chip:hover { border-color: var(--amber); color: var(--text); }
+.asset-chip.picked { border-color: var(--amber); background: color-mix(in oklab, var(--amber) 12%, var(--panel-2)); }
+.asset-pick { accent-color: var(--amber); cursor: pointer; }
 .asset-glyph { color: var(--amber); }
 .asset-name, .swatch-name { flex: 1; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .asset-del { opacity: 0; background: none; border: none; color: var(--faint); font-size: 15px; line-height: 1; cursor: pointer; padding: 0 2px; }

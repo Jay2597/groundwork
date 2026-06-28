@@ -6,6 +6,10 @@ import {
   type SceneNode,
 } from "@/types/document";
 import { fillsFor, fillsToCss, paintToSvg } from "@/lib/paint";
+import { smoothPathToSvgD } from "@/lib/bezier";
+import { displayText } from "@/lib/text";
+import { effectsToBoxShadow, effectsToCssFilter, blendModeCss } from "@/lib/effects";
+import { applyVariables } from "@/lib/variables";
 
 // Generate clean, framework-free HTML + CSS from the scene — a local "Dev Mode".
 // Box-like nodes become absolutely-positioned divs (auto-layout frames become
@@ -48,23 +52,31 @@ function boxStyle(node: SceneNode, positioned: boolean): string[] {
   return s;
 }
 
-/** Border (stroke) + drop shadow — only meaningful for box-like nodes. */
+/** Border (stroke) + effects (shadows, blur) + blend mode for box-like nodes. */
 function effectStyle(node: SceneNode): string[] {
   const s: string[] = [];
   if (node.stroke) {
     const lineStyle = node.stroke.style === "dashed" ? "dashed" : node.stroke.style === "dotted" ? "dotted" : "solid";
     s.push(`border: ${round(node.stroke.width)}px ${lineStyle} ${node.stroke.color}`);
   }
-  if (node.shadow) {
-    s.push(
-      `box-shadow: ${round(node.shadow.offsetX)}px ${round(node.shadow.offsetY)}px ${round(node.shadow.blur)}px ${node.shadow.color}`,
-    );
-  }
+  const boxShadow = effectsToBoxShadow(node);
+  if (boxShadow) s.push(`box-shadow: ${boxShadow}`);
+  const filter = effectsToCssFilter(node);
+  if (filter) s.push(`filter: ${filter}`);
+  const blend = blendModeCss(node);
+  if (blend) s.push(`mix-blend-mode: ${blend}`);
   return s;
 }
 
 function alignToFlex(align: "start" | "center" | "end"): string {
   return align === "start" ? "flex-start" : align === "end" ? "flex-end" : "center";
+}
+
+function justifyToFlex(justify: "start" | "center" | "end" | "space-between" | undefined): string {
+  if (justify === "center") return "center";
+  if (justify === "end") return "flex-end";
+  if (justify === "space-between") return "space-between";
+  return "flex-start";
 }
 
 interface Built {
@@ -154,6 +166,10 @@ function pathInner(node: PathNode): string {
       .join(" ");
     return `${defsBlock}<path d="${d}" fill="${fill}" fill-rule="evenodd"${stroke} />`;
   }
+  if (node.smooth && node.points.length >= 6) {
+    const d = smoothPathToSvgD(node.points, node.closed);
+    return `${defsBlock}<path d="${d}" fill="${fill}"${stroke} />`;
+  }
   return `${defsBlock}<${tag} points="${pts.join(" ")}" fill="${fill}"${stroke} />`;
 }
 
@@ -192,8 +208,9 @@ function build(node: SceneNode, positioned: boolean, indent: number): Built {
     if (node.align) style.push(`text-align: ${node.align}`);
     if (node.lineHeight) style.push(`line-height: ${node.lineHeight}`);
     if (node.letterSpacing) style.push(`letter-spacing: ${round(node.letterSpacing)}px`);
+    if (node.textDecoration && node.textDecoration !== "none") style.push(`text-decoration: ${node.textDecoration}`);
     rules.push(`.${cls} {\n  ${style.join(";\n  ")};\n}`);
-    return { html: [`${pad}<p class="${cls}">${escapeHtml(node.text)}</p>`], rules };
+    return { html: [`${pad}<p class="${cls}">${escapeHtml(displayText(node))}</p>`], rules };
   }
 
   if (node.type === "image") {
@@ -236,8 +253,13 @@ function build(node: SceneNode, positioned: boolean, indent: number): Built {
       style.push("display: flex");
       style.push(`flex-direction: ${a.direction}`);
       style.push(`gap: ${round(a.gap)}px`);
-      style.push(`padding: ${round(a.padding)}px`);
+      const pt = a.paddingTop ?? a.padding;
+      const pr = a.paddingRight ?? a.padding;
+      const pb = a.paddingBottom ?? a.padding;
+      const pl = a.paddingLeft ?? a.padding;
+      style.push(`padding: ${round(pt)}px ${round(pr)}px ${round(pb)}px ${round(pl)}px`);
       style.push(`align-items: ${alignToFlex(a.align)}`);
+      style.push(`justify-content: ${justifyToFlex(a.justify)}`);
       childPositioned = false;
     } else if (!positioned) {
       style.push("position: relative");
@@ -272,7 +294,7 @@ export function pageToCode(doc: GroundworkDocument): GeneratedCode {
     `.canvas {\n  position: relative;\n  width: ${width}px;\n  height: ${height}px;\n  background: ${background};\n  overflow: hidden;\n}`,
   ];
   const inner: string[] = [];
-  for (const node of page.nodes) {
+  for (const node of applyVariables(page.nodes, doc.variables)) {
     const built = build(node, true, 1);
     inner.push(...built.html);
     rules.push(...built.rules);

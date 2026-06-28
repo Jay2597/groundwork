@@ -7,14 +7,26 @@ import {
   activePage,
   isFrame,
   type AutoLayout,
+  type BlendMode,
   type ColorStyle,
   type Constraint,
+  type Effect,
   type FrameNode,
+  type Interaction,
+  type LayoutGrid,
   type NodePatch,
   type Paint,
+  type PrototypeEasing,
+  type PrototypeTransition,
+  type PrototypeTrigger,
   type SceneNode,
+  type SizingMode,
 } from "@/types/document";
 import { fillsFor } from "@/lib/paint";
+import { BLEND_MODES } from "@/lib/effects";
+import { variantLabel } from "@/lib/components";
+import { DEFAULT_INTERACTION } from "@/lib/prototype";
+import { measureGap } from "@/lib/inspect";
 import { findNode } from "@/lib/tree";
 import { ColorField, NumberField, OpacityField, TextField, makeScrub } from "./PropertyInputs";
 import { FramePresets } from "./FramePresets";
@@ -39,7 +51,6 @@ import {
 } from "@/components/ui/Icons";
 import "./properties.css";
 
-const DEFAULT_SHADOW = { color: "#00000040", blur: 8, offsetX: 0, offsetY: 4 };
 const DEFAULT_STROKE = { color: "#1a1a1a", width: 1 };
 const DEFAULT_AUTOLAYOUT: AutoLayout = { direction: "row", gap: 12, padding: 16, align: "start" };
 const CONSTRAINTS: Constraint[] = ["min", "center", "max", "stretch", "scale"];
@@ -79,6 +90,8 @@ export function PropertiesPanel() {
           <div className="ghead">ALIGN</div>
           <AlignToolbar align={alignSelected} distribute={distributeSelected} canDistribute={selectedIds.length > 2} />
         </section>
+
+        {selectedIds.length === 2 && <DistanceReadout nodes={nodes} ids={selectedIds} />}
 
         <section className="group">
           <div className="ghead">BOOLEAN</div>
@@ -137,11 +150,13 @@ export function PropertiesPanel() {
           )}
         </div>
         {selected.type === "rect" && <CornerRadiusControl node={selected} set={set} />}
+        <SizingControl node={selected} set={set} />
       </section>
 
       <section className="group">
         <div className="ghead">APPEARANCE</div>
         <OpacityField value={selected.opacity} onChange={(opacity) => set({ opacity: clamp01(opacity) })} />
+        <BlendModeControl node={selected} set={set} />
         {selected.type === "boolean" && (
           <div className="seg" style={{ marginTop: 8 }}>
             {(["union", "subtract", "intersect", "exclude"] as const).map((op) => (
@@ -184,12 +199,16 @@ export function PropertiesPanel() {
             </div>
           </section>
           <AutoLayoutSection frame={selected} set={set} />
+          <LayoutGridsSection frame={selected} set={set} />
         </>
       )}
 
       {selected.type === "text" && <TypographySection node={selected} set={set} />}
+      {selected.type === "path" && <PathSection node={selected} set={set} />}
 
       {selected.type !== "frame" && <ConstraintsSection node={selected} set={set} />}
+
+      {selected.mainComponentId && <ComponentInstanceSection node={selected} />}
 
       <PrototypeSection node={selected} frames={frames} set={set} />
 
@@ -299,33 +318,86 @@ function CornerRadiusControl({ node, set }: { node: Extract<SceneNode, { type: "
   );
 }
 
+const DEFAULT_DROP: Effect = { type: "drop-shadow", color: "#00000040", blur: 8, offsetX: 0, offsetY: 4 };
+
+/** Read a node's effects, lifting a legacy `shadow` into the effects array. */
+function effectsList(node: SceneNode): Effect[] {
+  if (node.effects && node.effects.length) return node.effects;
+  if (node.shadow) return [{ type: "drop-shadow", ...node.shadow }];
+  return [];
+}
+
 function EffectsSection({ node, set }: SectionProps) {
-  const shadow = node.shadow;
+  const effects = effectsList(node);
+  const update = (next: Effect[]) => set({ effects: next, shadow: undefined });
+  const setEffect = (i: number, e: Effect) => update(effects.map((x, idx) => (idx === i ? e : x)));
+  const remove = (i: number) => update(effects.filter((_, idx) => idx !== i));
   return (
     <section className="group">
       <div className="ghead">
         EFFECTS
-        <button
-          className="ghead-add"
-          title={shadow ? "Remove shadow" : "Add drop shadow"}
-          onClick={() => set({ shadow: shadow ? undefined : { ...DEFAULT_SHADOW } })}
-        >
-          {shadow ? "−" : "+"}
-        </button>
+        <button className="ghead-add" title="Add effect" onClick={() => update([...effects, { ...DEFAULT_DROP }])}>+</button>
       </div>
-      {shadow && (
-        <>
-          <div className="row" style={{ marginBottom: 8 }}>
-            <ColorField label="Color" value={shadow.color} onChange={(color) => set({ shadow: { ...shadow, color } })} />
+      {effects.map((effect, i) => (
+        <div key={i} className="paint-row">
+          <div className="paint-head">
+            <div className="seg paint-type">
+              {(["drop-shadow", "inner-shadow", "layer-blur"] as const).map((t) => (
+                <div
+                  key={t}
+                  className={effect.type === t ? "on" : ""}
+                  title={t}
+                  onClick={() => setEffect(i, convertEffect(effect, t))}
+                >
+                  {t === "drop-shadow" ? "Drop" : t === "inner-shadow" ? "Inner" : "Blur"}
+                </div>
+              ))}
+            </div>
+            <button className="paint-del" title="Remove effect" onClick={() => remove(i)}>−</button>
           </div>
-          <div className="grid2">
-            <NumberField label="Blur" value={shadow.blur} min={0} onChange={(blur) => set({ shadow: { ...shadow, blur } })} />
-            <NumberField label="X" value={shadow.offsetX} onChange={(offsetX) => set({ shadow: { ...shadow, offsetX } })} />
-            <NumberField label="Y" value={shadow.offsetY} onChange={(offsetY) => set({ shadow: { ...shadow, offsetY } })} />
-          </div>
-        </>
-      )}
+          {effect.type === "layer-blur" ? (
+            <div className="grid2" style={{ marginTop: 6 }}>
+              <NumberField label="Radius" value={effect.radius} min={0} onChange={(radius) => setEffect(i, { ...effect, radius })} />
+            </div>
+          ) : (
+            <>
+              <div className="row" style={{ margin: "6px 0" }}>
+                <ColorField label="Color" value={effect.color} onChange={(color) => setEffect(i, { ...effect, color })} />
+              </div>
+              <div className="grid2">
+                <NumberField label="Blur" value={effect.blur} min={0} onChange={(blur) => setEffect(i, { ...effect, blur })} />
+                <NumberField label="X" value={effect.offsetX} onChange={(offsetX) => setEffect(i, { ...effect, offsetX })} />
+                <NumberField label="Y" value={effect.offsetY} onChange={(offsetY) => setEffect(i, { ...effect, offsetY })} />
+              </div>
+            </>
+          )}
+        </div>
+      ))}
     </section>
+  );
+}
+
+/** Convert one effect to another type, preserving shared fields. */
+function convertEffect(effect: Effect, type: Effect["type"]): Effect {
+  if (effect.type === type) return effect;
+  if (type === "layer-blur") {
+    const radius = effect.type === "layer-blur" ? effect.radius : effect.blur;
+    return { type: "layer-blur", radius };
+  }
+  const base = effect.type === "layer-blur"
+    ? { color: "#00000040", blur: effect.radius, offsetX: 0, offsetY: 4 }
+    : { color: effect.color, blur: effect.blur, offsetX: effect.offsetX, offsetY: effect.offsetY };
+  return { type, ...base };
+}
+
+function BlendModeControl({ node, set }: SectionProps) {
+  return (
+    <label className="field" style={{ marginTop: 8 }} title="Blend mode">
+      <span>Blend</span>
+      <select value={node.blendMode ?? "normal"} onChange={(e) => set({ blendMode: e.target.value as BlendMode })}>
+        {BLEND_MODES.map((m) => <option key={m} value={m}>{m}</option>)}
+      </select>
+    </label>
   );
 }
 
@@ -392,12 +464,54 @@ function TypographySection({ node, set }: SectionProps) {
           </div>
         ))}
       </div>
+      <div className="field-label" style={{ marginTop: 8 }}>Decoration</div>
+      <div className="seg">
+        {(["none", "underline", "line-through"] as const).map((d) => (
+          <div key={d} className={(node.textDecoration ?? "none") === d ? "on" : ""} onClick={() => set({ textDecoration: d })} title={d}>
+            {d === "none" ? "—" : d === "underline" ? "U̲" : "S̶"}
+          </div>
+        ))}
+      </div>
+      <div className="field-label" style={{ marginTop: 8 }}>Case</div>
+      <div className="seg">
+        {(["none", "upper", "lower"] as const).map((c) => (
+          <div key={c} className={(node.textCase ?? "none") === c ? "on" : ""} onClick={() => set({ textCase: c })} title={c}>
+            {c === "none" ? "Aa" : c === "upper" ? "AG" : "ag"}
+          </div>
+        ))}
+      </div>
+      <div className="field-label" style={{ marginTop: 8 }}>Resize</div>
+      <div className="seg">
+        {(["fixed", "auto-width", "auto-height"] as const).map((r) => (
+          <div key={r} className={(node.textResize ?? "fixed") === r ? "on" : ""} onClick={() => set({ textResize: r })} title={r}>
+            {r === "fixed" ? "Fixed" : r === "auto-width" ? "Auto W" : "Auto H"}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function PathSection({ node, set }: SectionProps) {
+  if (node.type !== "path") return null;
+  return (
+    <section className="group">
+      <div className="ghead">PATH</div>
+      <div className="seg">
+        <div className={!node.smooth ? "on" : ""} onClick={() => set({ smooth: false })}>Straight</div>
+        <div className={node.smooth ? "on" : ""} onClick={() => set({ smooth: true })}>Smooth</div>
+      </div>
+      <div className="seg" style={{ marginTop: 8 }}>
+        <div className={node.closed ? "on" : ""} onClick={() => set({ closed: true })}>Closed</div>
+        <div className={!node.closed ? "on" : ""} onClick={() => set({ closed: false })}>Open</div>
+      </div>
     </section>
   );
 }
 
 function AutoLayoutSection({ frame, set }: { frame: FrameNode; set: (p: NodePatch) => void }) {
   const al = frame.autoLayout;
+  const perSide = al && (al.paddingTop !== undefined || al.paddingRight !== undefined || al.paddingBottom !== undefined || al.paddingLeft !== undefined);
   return (
     <section className="group">
       <div className="ghead">
@@ -418,8 +532,40 @@ function AutoLayoutSection({ frame, set }: { frame: FrameNode; set: (p: NodePatc
           </div>
           <div className="grid2" style={{ marginBottom: 8 }}>
             <NumberField label="Gap" value={al.gap} min={0} onChange={(gap) => set({ autoLayout: { ...al, gap } })} />
-            <NumberField label="Pad" value={al.padding} min={0} onChange={(padding) => set({ autoLayout: { ...al, padding } })} />
+            {!perSide && (
+              <NumberField label="Pad" value={al.padding} min={0} onChange={(padding) => set({ autoLayout: { ...al, padding } })} />
+            )}
           </div>
+          {perSide && (
+            <div className="grid2" style={{ marginBottom: 8 }}>
+              <NumberField label="↑" value={al.paddingTop ?? al.padding} min={0} onChange={(v) => set({ autoLayout: { ...al, paddingTop: v } })} />
+              <NumberField label="→" value={al.paddingRight ?? al.padding} min={0} onChange={(v) => set({ autoLayout: { ...al, paddingRight: v } })} />
+              <NumberField label="↓" value={al.paddingBottom ?? al.padding} min={0} onChange={(v) => set({ autoLayout: { ...al, paddingBottom: v } })} />
+              <NumberField label="←" value={al.paddingLeft ?? al.padding} min={0} onChange={(v) => set({ autoLayout: { ...al, paddingLeft: v } })} />
+            </div>
+          )}
+          <button
+            className="prop-btn tiny"
+            style={{ marginBottom: 8 }}
+            onClick={() =>
+              set({
+                autoLayout: perSide
+                  ? { ...al, paddingTop: undefined, paddingRight: undefined, paddingBottom: undefined, paddingLeft: undefined }
+                  : { ...al, paddingTop: al.padding, paddingRight: al.padding, paddingBottom: al.padding, paddingLeft: al.padding },
+              })
+            }
+          >
+            {perSide ? "Uniform padding" : "Padding per side"}
+          </button>
+          <div className="field-label">Distribute</div>
+          <div className="seg" style={{ marginBottom: 8 }}>
+            {(["start", "center", "end", "space-between"] as const).map((j) => (
+              <div key={j} className={(al.justify ?? "start") === j ? "on" : ""} onClick={() => set({ autoLayout: { ...al, justify: j } })} title={j}>
+                {j === "space-between" ? "↔" : j}
+              </div>
+            ))}
+          </div>
+          <div className="field-label">Align</div>
           <div className="seg">
             {(["start", "center", "end"] as const).map((a) => (
               <div key={a} className={al.align === a ? "on" : ""} onClick={() => set({ autoLayout: { ...al, align: a } })}>{a}</div>
@@ -428,6 +574,73 @@ function AutoLayoutSection({ frame, set }: { frame: FrameNode; set: (p: NodePatc
         </>
       )}
     </section>
+  );
+}
+
+const DEFAULT_GRID: LayoutGrid = { type: "columns", count: 12, size: 8, gutter: 16, margin: 24, color: "#f2a33c", visible: true };
+
+function LayoutGridsSection({ frame, set }: { frame: FrameNode; set: (p: NodePatch) => void }) {
+  const grids = frame.layoutGrids ?? [];
+  const update = (next: LayoutGrid[]) => set({ layoutGrids: next.length ? next : undefined });
+  const setGrid = (i: number, g: LayoutGrid) => update(grids.map((x, idx) => (idx === i ? g : x)));
+  return (
+    <section className="group">
+      <div className="ghead">
+        LAYOUT GRID
+        <button className="ghead-add" title="Add layout grid" onClick={() => update([...grids, { ...DEFAULT_GRID }])}>+</button>
+      </div>
+      {grids.map((grid, i) => (
+        <div key={i} className="paint-row">
+          <div className="paint-head">
+            <div className="seg paint-type">
+              {(["columns", "rows", "grid"] as const).map((t) => (
+                <div key={t} className={grid.type === t ? "on" : ""} onClick={() => setGrid(i, { ...grid, type: t })}>
+                  {t === "columns" ? "Cols" : t === "rows" ? "Rows" : "Grid"}
+                </div>
+              ))}
+            </div>
+            <button className="paint-del" title="Remove grid" onClick={() => update(grids.filter((_, idx) => idx !== i))}>−</button>
+          </div>
+          {grid.type === "grid" ? (
+            <div className="grid2" style={{ marginTop: 6 }}>
+              <NumberField label="Size" value={grid.size} min={1} onChange={(size) => setGrid(i, { ...grid, size })} />
+              <ColorField label="Color" value={grid.color} onChange={(color) => setGrid(i, { ...grid, color })} />
+            </div>
+          ) : (
+            <>
+              <div className="grid2" style={{ marginTop: 6 }}>
+                <NumberField label="Count" value={grid.count} min={1} onChange={(count) => setGrid(i, { ...grid, count })} />
+                <NumberField label="Gutter" value={grid.gutter} min={0} onChange={(gutter) => setGrid(i, { ...grid, gutter })} />
+                <NumberField label="Margin" value={grid.margin} min={0} onChange={(margin) => setGrid(i, { ...grid, margin })} />
+              </div>
+              <ColorField label="Color" value={grid.color} onChange={(color) => setGrid(i, { ...grid, color })} />
+            </>
+          )}
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function SizingControl({ node, set }: { node: SceneNode; set: (p: NodePatch) => void }) {
+  const modes: SizingMode[] = ["fixed", "hug", "fill"];
+  const canHug = node.type === "frame" && Boolean(node.autoLayout);
+  const avail = (m: SizingMode) => (m === "hug" ? canHug : true);
+  return (
+    <div className="grid2" style={{ marginTop: 8 }}>
+      <label className="field" title="Horizontal sizing">
+        <span>↔</span>
+        <select value={node.sizingH ?? "fixed"} onChange={(e) => set({ sizingH: e.target.value as SizingMode })}>
+          {modes.filter(avail).map((m) => <option key={m} value={m}>{m}</option>)}
+        </select>
+      </label>
+      <label className="field" title="Vertical sizing">
+        <span>↕</span>
+        <select value={node.sizingV ?? "fixed"} onChange={(e) => set({ sizingV: e.target.value as SizingMode })}>
+          {modes.filter(avail).map((m) => <option key={m} value={m}>{m}</option>)}
+        </select>
+      </label>
+    </div>
   );
 }
 
@@ -453,6 +666,59 @@ function ConstraintsSection({ node, set }: SectionProps) {
   );
 }
 
+function DistanceReadout({ nodes, ids }: { nodes: SceneNode[]; ids: string[] }) {
+  const a = findNode(nodes, ids[0]);
+  const b = findNode(nodes, ids[1]);
+  if (!a || !b) return null;
+  const gap = measureGap(a, b);
+  return (
+    <section className="group">
+      <div className="ghead">MEASURE</div>
+      <div className="measure-grid">
+        <span>↔ {Math.round(gap.horizontal)}</span>
+        <span>↕ {Math.round(gap.vertical)}</span>
+        <span>⤢ {Math.round(gap.distance)}</span>
+      </div>
+    </section>
+  );
+}
+
+function ComponentInstanceSection({ node }: { node: SceneNode }) {
+  const components = useEditorStore((s) => s.document.components);
+  const swapInstance = useEditorStore((s) => s.swapInstance);
+  const resetInstance = useEditorStore((s) => s.resetInstance);
+  const detachInstance = useEditorStore((s) => s.detachInstance);
+
+  const main = components.find((c) => c.id === node.mainComponentId);
+  const siblings = main?.setName ? components.filter((c) => c.setName === main.setName) : [];
+
+  return (
+    <section className="group">
+      <div className="ghead">INSTANCE</div>
+      <label className="field field-stack">
+        <span>Component</span>
+        <select value={node.mainComponentId ?? ""} onChange={(e) => swapInstance(node.id, e.target.value)}>
+          {components.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+      </label>
+      {siblings.length > 1 && (
+        <label className="field field-stack" style={{ marginTop: 8 }}>
+          <span>Variant</span>
+          <select value={node.mainComponentId ?? ""} onChange={(e) => swapInstance(node.id, e.target.value)}>
+            {siblings.map((c) => (
+              <option key={c.id} value={c.id}>{variantLabel(c)}</option>
+            ))}
+          </select>
+        </label>
+      )}
+      <div className="prop-actions" style={{ marginTop: 8 }}>
+        <button className="prop-btn" onClick={() => resetInstance(node.id)}>Reset</button>
+        <button className="prop-btn" onClick={() => detachInstance(node.id)}>Detach</button>
+      </div>
+    </section>
+  );
+}
+
 function PrototypeSection({
   node,
   frames,
@@ -463,21 +729,78 @@ function PrototypeSection({
   set: (p: NodePatch) => void;
 }) {
   const targets = frames.filter((f) => f.id !== node.id);
+  // Resolve the current interaction (rich interactions, else legacy link).
+  const current: Interaction | undefined =
+    node.interactions?.[0] ??
+    (node.link ? { trigger: "click", target: node.link, transition: "instant", duration: 0, easing: "linear" } : undefined);
+
+  const setInteraction = (patch: Partial<Interaction>) => {
+    if (!current) return;
+    const next: Interaction = { ...current, ...patch };
+    set({ interactions: [next], link: undefined });
+  };
+
+  const setTarget = (target: string) => {
+    if (!target) {
+      set({ interactions: undefined, link: undefined });
+      return;
+    }
+    const base: Interaction = current ?? { target, ...DEFAULT_INTERACTION };
+    set({ interactions: [{ ...base, target }], link: undefined });
+  };
+
   return (
     <section className="group">
       <div className="ghead">PROTOTYPE</div>
       <label className="field field-stack">
-        <span>On click → go to frame</span>
-        <select
-          value={node.link ?? ""}
-          onChange={(e) => set({ link: e.target.value || undefined })}
-        >
+        <span>Navigate to frame</span>
+        <select value={current?.target ?? ""} onChange={(e) => setTarget(e.target.value)}>
           <option value="">None</option>
           {targets.map((f) => (
             <option key={f.id} value={f.id}>{f.name}</option>
           ))}
         </select>
       </label>
+      {current && (
+        <>
+          <label className="field field-stack" style={{ marginTop: 8 }}>
+            <span>Trigger</span>
+            <select value={current.trigger} onChange={(e) => setInteraction({ trigger: e.target.value as PrototypeTrigger })}>
+              <option value="click">On click</option>
+              <option value="after-delay">After delay</option>
+            </select>
+          </label>
+          {current.trigger === "after-delay" && (
+            <div className="grid2" style={{ marginTop: 8 }}>
+              <NumberField label="ms" value={current.delay ?? 1500} min={0} step={100} onChange={(delay) => setInteraction({ delay })} />
+            </div>
+          )}
+          <label className="field field-stack" style={{ marginTop: 8 }}>
+            <span>Animation</span>
+            <select value={current.transition} onChange={(e) => setInteraction({ transition: e.target.value as PrototypeTransition })}>
+              <option value="instant">Instant</option>
+              <option value="dissolve">Dissolve</option>
+              <option value="slide-left">Slide left</option>
+              <option value="slide-right">Slide right</option>
+              <option value="smart-animate">Smart animate</option>
+            </select>
+          </label>
+          {current.transition !== "instant" && (
+            <div className="grid2" style={{ marginTop: 8 }}>
+              <NumberField label="ms" value={current.duration} min={0} step={50} onChange={(duration) => setInteraction({ duration })} />
+              <label className="field" title="Easing">
+                <span>Ease</span>
+                <select value={current.easing} onChange={(e) => setInteraction({ easing: e.target.value as PrototypeEasing })}>
+                  <option value="linear">linear</option>
+                  <option value="ease-in">ease-in</option>
+                  <option value="ease-out">ease-out</option>
+                  <option value="ease-in-out">ease-in-out</option>
+                </select>
+              </label>
+            </div>
+          )}
+        </>
+      )}
     </section>
   );
 }
@@ -508,6 +831,9 @@ interface FillsSectionProps {
 }
 
 function FillsSection({ node, label, set, colorStyles, addColorStyle }: FillsSectionProps) {
+  const variables = useEditorStore((s) => s.document.variables);
+  const bindFillVariable = useEditorStore((s) => s.bindFillVariable);
+  const colorVars = variables?.variables.filter((v) => v.type === "color") ?? [];
   const fills: Paint[] = node.fills && node.fills.length ? node.fills : fillsFor(node);
   const update = (next: Paint[]) => set({ fills: next });
   const setPaint = (i: number, p: Paint) => update(fills.map((f, idx) => (idx === i ? p : f)));
@@ -553,6 +879,15 @@ function FillsSection({ node, label, set, colorStyles, addColorStyle }: FillsSec
           Save style
         </button>
       </div>
+      {colorVars.length > 0 && (
+        <label className="field" style={{ marginTop: 8 }} title="Bind fill to a variable">
+          <span>Var</span>
+          <select value={node.fillVarId ?? ""} onChange={(e) => bindFillVariable(node.id, e.target.value || undefined)}>
+            <option value="">Unbound</option>
+            {colorVars.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
+          </select>
+        </label>
+      )}
     </section>
   );
 }
@@ -765,8 +1100,63 @@ function CanvasProperties() {
         </div>
         <ColorField label="Background" value={canvas.background} onChange={(background) => updateCanvas({ background })} />
       </section>
+      <VariablesSection />
       <p className="prop-hint">Select a layer to edit its properties.</p>
     </aside>
+  );
+}
+
+function VariablesSection() {
+  const variables = useEditorStore((s) => s.document.variables);
+  const addColorVariable = useEditorStore((s) => s.addColorVariable);
+  const setVariableValue = useEditorStore((s) => s.setVariableValue);
+  const deleteVariable = useEditorStore((s) => s.deleteVariable);
+  const addVariableMode = useEditorStore((s) => s.addVariableMode);
+  const setActiveMode = useEditorStore((s) => s.setActiveMode);
+
+  const modes = variables?.modes ?? [];
+  const active = variables?.activeModeId;
+
+  return (
+    <section className="group">
+      <div className="ghead">
+        VARIABLES
+        <button
+          className="ghead-add"
+          title="Add color variable"
+          onClick={() => addColorVariable(`Color ${(variables?.variables.length ?? 0) + 1}`, "#f2a33c")}
+        >
+          +
+        </button>
+      </div>
+      {modes.length > 0 && (
+        <div className="field-row" style={{ marginBottom: 8 }}>
+          <label className="field" title="Active mode" style={{ flex: 1 }}>
+            <span>Mode</span>
+            <select value={active} onChange={(e) => setActiveMode(e.target.value)}>
+              {modes.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
+            </select>
+          </label>
+          <button className="prop-btn tiny" title="Add mode" onClick={() => addVariableMode(`Mode ${modes.length + 1}`)}>+ Mode</button>
+        </div>
+      )}
+      {variables?.variables.map((v) => (
+        <div key={v.id} className="var-row">
+          <input
+            type="color"
+            className="color-dot"
+            value={typeof v.valuesByMode[active ?? ""] === "string" ? (v.valuesByMode[active ?? ""] as string) : "#000000"}
+            onChange={(e) => active && setVariableValue(v.id, active, e.target.value)}
+            aria-label={`${v.name} value`}
+          />
+          <span className="var-name">{v.name}</span>
+          <button className="paint-del" title="Delete variable" onClick={() => deleteVariable(v.id)}>−</button>
+        </div>
+      ))}
+      {(!variables || variables.variables.length === 0) && (
+        <p className="prop-hint" style={{ margin: 0 }}>Add a variable to theme fills across modes.</p>
+      )}
+    </section>
   );
 }
 

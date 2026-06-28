@@ -125,26 +125,61 @@ function AssetsTab() {
   const texts = useEditorStore((s) => s.document.styles.texts);
   const insertInstance = useEditorStore((s) => s.insertInstance);
   const deleteComponent = useEditorStore((s) => s.deleteComponent);
+  const combineAsVariants = useEditorStore((s) => s.combineAsVariants);
   const deleteColorStyle = useEditorStore((s) => s.deleteColorStyle);
   const deleteTextStyle = useEditorStore((s) => s.deleteTextStyle);
   const updateNode = useEditorStore((s) => s.updateNode);
   const selectedIds = useEditorStore((s) => s.selectedIds);
+  const [picked, setPicked] = useState<Set<string>>(new Set());
 
   function applyColor(value: string) {
     for (const id of selectedIds) updateNode(id, { fill: value });
   }
 
+  function togglePick(id: string) {
+    setPicked((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function combine() {
+    if (picked.size < 2) return;
+    combineAsVariants([...picked], `Set ${Date.now().toString(36).slice(-4)}`);
+    setPicked(new Set());
+  }
+
   return (
     <div className="assets scroll">
-      <div className="sec-label">COMPONENTS</div>
+      <div className="sec-label">
+        COMPONENTS
+        {picked.size >= 2 && (
+          <button className="prop-btn tiny" style={{ marginLeft: "auto" }} onClick={combine}>Combine variants</button>
+        )}
+      </div>
       {components.length === 0 ? (
         <p className="layers-empty">Select a layer and choose “Make component”.</p>
       ) : (
         <div className="asset-grid">
           {components.map((c) => (
-            <div key={c.id} className="asset-chip" onClick={() => insertInstance(c.id)} title={`Insert ${c.name}`}>
-              <span className="asset-glyph">◈</span>
-              <span className="asset-name">{c.name}</span>
+            <div
+              key={c.id}
+              className={`asset-chip${picked.has(c.id) ? " picked" : ""}`}
+              onClick={() => insertInstance(c.id)}
+              title={`Insert ${c.name}`}
+            >
+              <input
+                type="checkbox"
+                className="asset-pick"
+                checked={picked.has(c.id)}
+                onClick={(e) => e.stopPropagation()}
+                onChange={() => togglePick(c.id)}
+                aria-label={`Select ${c.name} for variants`}
+              />
+              <span className="asset-glyph">{c.setName ? "◆" : "◈"}</span>
+              <span className="asset-name">{c.name}{c.setName ? ` · ${c.setName}` : ""}</span>
               <button className="asset-del" aria-label={`Delete ${c.name}`} onClick={(e) => { e.stopPropagation(); deleteComponent(c.id); }}>×</button>
             </div>
           ))}

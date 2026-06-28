@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useUiStore } from "@/store/uiStore";
 import { useEditorStore } from "@/store/editorStore";
-import { activePage, isFrame } from "@/types/document";
+import { activePage, isFrame, type Interaction } from "@/types/document";
 import { nodeToSvgDocument } from "@/lib/export/exportSvg";
+import { clickInteraction, delayInteraction, cssEasing, transitionAnimation } from "@/lib/prototype";
 import "./present.css";
 
 /**
@@ -15,20 +16,50 @@ export function PresentMode() {
   const document = useEditorStore((s) => s.document);
   const frames = activePage(document).nodes.filter(isFrame);
   const [index, setIndex] = useState(0);
+  // Bumped on every navigation to retrigger the CSS transition animation.
+  const [anim, setAnim] = useState<{ key: number; interaction?: Interaction }>({ key: 0 });
 
   useEffect(() => {
-    if (open) setIndex(0);
+    if (open) {
+      setIndex(0);
+      setAnim({ key: 0 });
+    }
   }, [open]);
 
   useEffect(() => {
     if (!open) return;
     function onKey(e: KeyboardEvent) {
-      if (e.key === "ArrowRight" || e.key === " ") setIndex((i) => Math.min(i + 1, frames.length - 1));
-      else if (e.key === "ArrowLeft") setIndex((i) => Math.max(i - 1, 0));
+      if (e.key === "ArrowRight" || e.key === " ") step(1);
+      else if (e.key === "ArrowLeft") step(-1);
+      else if (e.key === "Escape") setPresentMode(false);
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, frames.length]);
+
+  // Auto-advance frames that carry an "after-delay" interaction.
+  useEffect(() => {
+    if (!open) return;
+    const current = frames[index];
+    const delayed = current && delayInteraction(current);
+    if (!delayed) return;
+    const id = window.setTimeout(() => navigate(delayed), delayed.delay ?? 1500);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, index]);
+
+  function step(dir: number) {
+    setIndex((i) => Math.max(0, Math.min(i + dir, frames.length - 1)));
+    setAnim((a) => ({ key: a.key + 1, interaction: undefined }));
+  }
+
+  function navigate(interaction: Interaction) {
+    const target = frames.findIndex((f) => f.id === interaction.target);
+    if (target < 0) return;
+    setIndex(target);
+    setAnim((a) => ({ key: a.key + 1, interaction }));
+  }
 
   if (!open) return null;
 
@@ -49,10 +80,12 @@ export function PresentMode() {
     1.5,
   );
 
-  function goToFrame(linkId: string) {
-    const target = frames.findIndex((f) => f.id === linkId);
-    if (target >= 0) setIndex(target);
-  }
+  const anchorAnim = anim.interaction ? transitionAnimation(anim.interaction.transition) : null;
+  const animStyle = anchorAnim
+    ? {
+        animation: `${anchorAnim} ${anim.interaction?.duration ?? 300}ms ${cssEasing(anim.interaction?.easing ?? "ease-out")} both`,
+      }
+    : undefined;
 
   return (
     <div className="present">
@@ -61,13 +94,15 @@ export function PresentMode() {
         style={{ width: frame.width * scale, height: frame.height * scale }}
       >
         <div
+          key={anim.key}
           className="present-svg"
-          style={{ width: frame.width, height: frame.height, transform: `scale(${scale})` }}
+          style={{ width: frame.width, height: frame.height, transform: `scale(${scale})`, ["--present-scale" as string]: scale, ...animStyle }}
           dangerouslySetInnerHTML={{ __html: nodeToSvgDocument(frame) }}
         />
-        {frame.children
-          .filter((c) => c.link)
-          .map((c) => (
+        {frame.children.map((c) => {
+          const click = clickInteraction(c);
+          if (!click) return null;
+          return (
             <button
               key={c.id}
               className="present-hotspot"
@@ -77,16 +112,17 @@ export function PresentMode() {
                 width: c.width * scale,
                 height: c.height * scale,
               }}
-              onClick={() => c.link && goToFrame(c.link)}
-              aria-label={`Go to ${c.name}`}
+              onClick={() => navigate(click)}
+              aria-label={`Go to frame`}
             />
-          ))}
+          );
+        })}
       </div>
 
       <div className="present-bar">
-        <button className="present-nav" disabled={index === 0} onClick={() => setIndex((i) => Math.max(i - 1, 0))}>‹</button>
+        <button className="present-nav" disabled={index === 0} onClick={() => step(-1)}>‹</button>
         <span className="present-count">{index + 1} / {frames.length} · {frame.name}</span>
-        <button className="present-nav" disabled={index >= frames.length - 1} onClick={() => setIndex((i) => Math.min(i + 1, frames.length - 1))}>›</button>
+        <button className="present-nav" disabled={index >= frames.length - 1} onClick={() => step(1)}>›</button>
       </div>
       <button className="present-exit" onClick={() => setPresentMode(false)}>Exit ✕</button>
     </div>

@@ -29,6 +29,45 @@ export interface Shadow {
   offsetY: number;
 }
 
+/** Compositing mode for a layer against what's behind it. */
+export type BlendMode =
+  | "normal"
+  | "multiply"
+  | "screen"
+  | "overlay"
+  | "darken"
+  | "lighten"
+  | "color-dodge"
+  | "color-burn"
+  | "soft-light"
+  | "hard-light"
+  | "difference"
+  | "exclusion";
+
+export interface DropShadowEffect {
+  type: "drop-shadow";
+  color: string;
+  blur: number;
+  offsetX: number;
+  offsetY: number;
+}
+
+export interface InnerShadowEffect {
+  type: "inner-shadow";
+  color: string;
+  blur: number;
+  offsetX: number;
+  offsetY: number;
+}
+
+export interface BlurEffect {
+  type: "layer-blur";
+  radius: number;
+}
+
+/** A stacked visual effect on a node. */
+export type Effect = DropShadowEffect | InnerShadowEffect | BlurEffect;
+
 /** Bitmap fill — `src` is a data URL stored on-device (never uploaded). */
 export interface ImageFill {
   src: string;
@@ -70,6 +109,25 @@ export type Paint = SolidPaint | LinearPaint | RadialPaint;
 /** How a child reacts when its parent frame is resized. */
 export type Constraint = "min" | "max" | "center" | "stretch" | "scale";
 
+/** What kicks off a prototype interaction. */
+export type PrototypeTrigger = "click" | "after-delay";
+/** How the target frame animates in. */
+export type PrototypeTransition = "instant" | "dissolve" | "slide-left" | "slide-right" | "smart-animate";
+export type PrototypeEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
+
+/** A prototype interaction: a trigger that navigates to a target frame. */
+export interface Interaction {
+  trigger: PrototypeTrigger;
+  /** Target frame id. */
+  target: string;
+  transition: PrototypeTransition;
+  /** Transition duration in ms. */
+  duration: number;
+  easing: PrototypeEasing;
+  /** Delay in ms for the "after-delay" trigger. */
+  delay?: number;
+}
+
 /** Boolean operation used to combine shapes into one outline. */
 export type BooleanOp = "union" | "subtract" | "intersect" | "exclude";
 
@@ -77,8 +135,33 @@ export type BooleanOp = "union" | "subtract" | "intersect" | "exclude";
 export interface AutoLayout {
   direction: "row" | "column";
   gap: number;
+  /** Uniform padding fallback when per-side values are absent. */
   padding: number;
+  /** Per-side padding; each overrides `padding` when present. */
+  paddingTop?: number;
+  paddingRight?: number;
+  paddingBottom?: number;
+  paddingLeft?: number;
+  /** Cross-axis alignment of children. */
   align: "start" | "center" | "end";
+  /** Primary-axis distribution. Defaults to "start". */
+  justify?: "start" | "center" | "end" | "space-between";
+}
+
+/** How a node sizes itself: a fixed box, hug its content, or fill its parent. */
+export type SizingMode = "fixed" | "hug" | "fill";
+
+/** A layout grid overlaid on a frame (columns, rows, or a uniform square grid). */
+export interface LayoutGrid {
+  type: "columns" | "rows" | "grid";
+  /** Number of columns/rows (ignored for "grid"). */
+  count: number;
+  /** Track thickness for "grid" (square size) or column/row size when not stretching. */
+  size: number;
+  gutter: number;
+  margin: number;
+  color: string;
+  visible: boolean;
 }
 
 export interface BaseNode {
@@ -99,15 +182,28 @@ export interface BaseNode {
   locked: boolean;
   /** Optional outline. */
   stroke?: Stroke;
-  /** Optional drop shadow. */
+  /** Optional drop shadow (legacy single-shadow field; superseded by `effects`). */
   shadow?: Shadow;
+  /** Stacked effects (drop/inner shadow, blur). Overrides `shadow` when present. */
+  effects?: Effect[];
+  /** Layer blend mode. Defaults to "normal". */
+  blendMode?: BlendMode;
   /** Resize behaviour inside a parent frame. */
   constraintH?: Constraint;
   constraintV?: Constraint;
+  /** Auto-layout sizing on each axis. Defaults to "fixed". */
+  sizingH?: SizingMode;
+  sizingV?: SizingMode;
   /** Prototype link: id of the frame to navigate to on click in present mode. */
   link?: string;
+  /** Rich prototype interactions (triggers + transitions). Supersedes `link`. */
+  interactions?: Interaction[];
   /** Reference to a shared color style. */
   fillStyleId?: string;
+  /** Binds the fill color to a color variable (resolved per active mode). */
+  fillVarId?: string;
+  /** When set, this node is an instance of the given component master. */
+  mainComponentId?: string;
 }
 
 export interface RectNode extends BaseNode {
@@ -141,6 +237,12 @@ export interface TextNode extends BaseNode {
   letterSpacing?: number;
   /** Reference to a shared text style. */
   textStyleId?: string;
+  /** Underline / strikethrough decoration. Defaults to "none". */
+  textDecoration?: "none" | "underline" | "line-through";
+  /** Letter-case transform applied at render/export. Defaults to "none". */
+  textCase?: "none" | "upper" | "lower";
+  /** Box behaviour: fixed box, grow with text width, or grow with text height. */
+  textResize?: "fixed" | "auto-width" | "auto-height";
 }
 
 /** One contour of a (possibly compound) path. */
@@ -158,6 +260,8 @@ export interface PathNode extends BaseNode {
   closed: boolean;
   /** When present, the path is a compound shape rendered with the even-odd rule. */
   subpaths?: SubPath[];
+  /** When true, anchors are interpreted as a smooth (Catmull-Rom → Bézier) curve. */
+  smooth?: boolean;
 }
 
 /** A frame / artboard — a container whose children are positioned relative to it. */
@@ -169,6 +273,8 @@ export interface FrameNode extends BaseNode {
   cornerRadius?: number;
   /** When set, children are arranged automatically (flex). */
   autoLayout?: AutoLayout;
+  /** Layout grids overlaid on the frame (visual guides + snapping). */
+  layoutGrids?: LayoutGrid[];
 }
 
 /** A group — a container with no background/clip/label; resizing scales its children. */
@@ -249,11 +355,46 @@ export interface Component {
   name: string;
   /** The master node subtree (positioned from its own 0,0 origin). */
   node: SceneNode;
+  /** When part of a component set (variants), the set's shared name. */
+  setName?: string;
+  /** Variant property values for this member of a set (e.g. { State: "Hover" }). */
+  variantProps?: Record<string, string>;
+}
+
+/** A named, shared effect set (a reusable elevation/shadow token). */
+export interface EffectStyle {
+  id: string;
+  name: string;
+  effects: Effect[];
 }
 
 export interface DocumentStyles {
   colors: ColorStyle[];
   texts: TextStyle[];
+  effects?: EffectStyle[];
+}
+
+export type VariableType = "color" | "number";
+
+/** A design variable whose value can differ per mode (e.g. light / dark). */
+export interface Variable {
+  id: string;
+  name: string;
+  type: VariableType;
+  /** Value keyed by mode id. */
+  valuesByMode: Record<string, string | number>;
+}
+
+export interface VariableMode {
+  id: string;
+  name: string;
+}
+
+/** The document's variables and the modes they vary across. */
+export interface VariableCollection {
+  modes: VariableMode[];
+  activeModeId: string;
+  variables: Variable[];
 }
 
 /** A pinned local note on the canvas (never leaves the device). */
@@ -290,6 +431,8 @@ export interface GroundworkDocument {
   activePageId: string;
   styles: DocumentStyles;
   components: Component[];
+  /** Optional design variables with modes. */
+  variables?: VariableCollection;
 }
 
 let pageCounter = 0;

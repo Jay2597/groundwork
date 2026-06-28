@@ -1,4 +1,5 @@
-import type { PointerEvent as ReactPointerEvent } from "react";
+import { useState, type PointerEvent as ReactPointerEvent } from "react";
+import { evalMath } from "@/lib/mathEval";
 
 /**
  * Drag-to-scrub on a field label: horizontal drag adjusts the
@@ -41,17 +42,37 @@ interface NumberFieldProps {
 }
 
 export function NumberField({ label, value, step = 1, min, onChange }: NumberFieldProps) {
+  const rounded = Math.round(value * 100) / 100;
+  // Local draft so users can type an expression ("120/2") before committing.
+  const [draft, setDraft] = useState<string | null>(null);
+
+  function commit() {
+    if (draft === null) return;
+    const result = evalMath(draft);
+    if (result !== null) {
+      const clamped = min !== undefined ? Math.max(min, result) : result;
+      onChange(clamped);
+    }
+    setDraft(null);
+  }
+
   return (
     <label className="field">
       <span className="field-scrub" onPointerDown={makeScrub(value, step, onChange, min)}>{label}</span>
       <input
-        type="number"
-        value={Math.round(value * 100) / 100}
-        step={step}
-        min={min}
-        onChange={(e) => {
-          const next = Number(e.target.value);
-          if (!Number.isNaN(next)) onChange(next);
+        type="text"
+        inputMode="decimal"
+        value={draft ?? String(rounded)}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            commit();
+            (e.target as HTMLInputElement).blur();
+          } else if (e.key === "Escape") {
+            setDraft(null);
+            (e.target as HTMLInputElement).blur();
+          }
         }}
       />
     </label>
@@ -65,6 +86,18 @@ interface ColorFieldProps {
 }
 
 export function ColorField({ label, value, onChange }: ColorFieldProps) {
+  const hasEyeDropper = typeof window !== "undefined" && "EyeDropper" in window;
+
+  async function pick() {
+    try {
+      const Dropper = (window as unknown as { EyeDropper: new () => { open: () => Promise<{ sRGBHex: string }> } }).EyeDropper;
+      const result = await new Dropper().open();
+      if (result?.sRGBHex) onChange(result.sRGBHex);
+    } catch {
+      // user cancelled — ignore
+    }
+  }
+
   return (
     <div className="color-field">
       <input
@@ -78,6 +111,11 @@ export function ColorField({ label, value, onChange }: ColorFieldProps) {
         <span>{label === "Fill" || label === "Background" ? "#" : label}</span>
         <input type="text" value={value} onChange={(e) => onChange(e.target.value)} />
       </label>
+      {hasEyeDropper && (
+        <button type="button" className="eyedropper" title="Pick a color from the screen" aria-label="Eyedropper" onClick={pick}>
+          ⊙
+        </button>
+      )}
     </div>
   );
 }
