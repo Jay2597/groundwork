@@ -26,6 +26,7 @@ import { fileToPlacedImage } from "@/lib/image";
 import { placeImageAt } from "@/lib/placeImage";
 import { applyVariables } from "@/lib/variables";
 import { applyInstanceProps } from "@/lib/componentProps";
+import { cullNodes, visibleDocRect } from "@/lib/culling";
 import { parseSvg, groupImported } from "@/lib/import/importSvg";
 import { useUiStore } from "@/store/uiStore";
 import { usePrefsStore } from "@/store/prefsStore";
@@ -47,6 +48,7 @@ const MAX_SCALE = 16;
 const ZOOM_STEP = 1.04;
 const DEFAULT_SIZE = 120;
 const FRAME_DEFAULT = { width: 400, height: 300 };
+const CULL_MARGIN = 200;
 const PEN_CLOSE_PX = 10;
 
 interface Box {
@@ -70,7 +72,7 @@ export function CanvasStage() {
 
   const document = useEditorStore((s) => s.document);
   const nodes = activePage(document).nodes;
-  const renderNodes = applyInstanceProps(applyVariables(nodes, document.variables));
+  const resolvedNodes = applyInstanceProps(applyVariables(nodes, document.variables));
   const selectedIds = useEditorStore((s) => s.selectedIds);
   const tool = useEditorStore((s) => s.tool);
   const viewport = useEditorStore((s) => s.viewport);
@@ -95,6 +97,12 @@ export function CanvasStage() {
   const gridSize = usePrefsStore((s) => s.gridSize);
 
   const isDrawTool = tool === "rect" || tool === "ellipse" || tool === "frame" || tool === "slice";
+
+  // Cull off-screen top-level nodes on large pages (current selection always kept).
+  const renderNodes =
+    width && height
+      ? cullNodes(resolvedNodes, visibleDocRect(viewport, width, height, CULL_MARGIN), new Set(selectedIds))
+      : resolvedNodes;
   const slices = activePage(document).slices ?? [];
 
   useEffect(() => {
