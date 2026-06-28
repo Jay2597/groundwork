@@ -71,7 +71,11 @@ export type Effect = DropShadowEffect | InnerShadowEffect | BlurEffect;
 /** Bitmap fill — `src` is a data URL stored on-device (never uploaded). */
 export interface ImageFill {
   src: string;
-  fit: "cover" | "contain" | "fill";
+  fit: "cover" | "contain" | "fill" | "tile";
+  /** Crop rectangle in normalized image coords [x, y, w, h] (0–1). */
+  crop?: [number, number, number, number];
+  /** Tile scale (fraction of natural size) when `fit` is "tile". Defaults to 1. */
+  scale?: number;
 }
 
 /** A color stop in a gradient (position 0–1). */
@@ -115,10 +119,15 @@ export type PrototypeTrigger = "click" | "after-delay";
 export type PrototypeTransition = "instant" | "dissolve" | "slide-left" | "slide-right" | "smart-animate";
 export type PrototypeEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
 
-/** A prototype interaction: a trigger that navigates to a target frame. */
+/** What an interaction does when fired. */
+export type PrototypeAction = "navigate" | "open-overlay" | "close-overlay";
+
+/** A prototype interaction: a trigger that navigates to / overlays a target frame. */
 export interface Interaction {
   trigger: PrototypeTrigger;
-  /** Target frame id. */
+  /** What to do. Defaults to "navigate". */
+  action?: PrototypeAction;
+  /** Target frame id (ignored for close-overlay). */
   target: string;
   transition: PrototypeTransition;
   /** Transition duration in ms. */
@@ -204,6 +213,14 @@ export interface BaseNode {
   fillVarId?: string;
   /** When set, this node is an instance of the given component master. */
   mainComponentId?: string;
+  /**
+   * Per-instance property overrides, keyed by descendant node name. A string
+   * value overrides a text node's text; a boolean overrides a node's visibility.
+   * Stored on the instance so they survive a reset-from-master.
+   */
+  props?: Record<string, string | boolean>;
+  /** When true, this node clips its container's other children to its shape. */
+  isMask?: boolean;
 }
 
 export interface RectNode extends BaseNode {
@@ -414,6 +431,16 @@ export interface PageGuide {
   pos: number;
 }
 
+/** A named export region (a slice). Independent of the node tree. */
+export interface SliceRegion {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 /** A page — its own canvas + node tree. Documents hold one or more. */
 export interface Page {
   id: string;
@@ -422,6 +449,7 @@ export interface Page {
   nodes: SceneNode[];
   comments: Comment[];
   guides: PageGuide[];
+  slices?: SliceRegion[];
 }
 
 export interface GroundworkDocument {

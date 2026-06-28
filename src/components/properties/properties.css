@@ -27,6 +27,8 @@
 .var-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
 .var-name { flex: 1; font-size: 12px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .measure-grid { display: flex; gap: 12px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.check-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text); cursor: pointer; }
+.check-row input { accent-color: var(--amber); cursor: pointer; }
 .eyedropper { background: var(--raised); border: 1px solid var(--border); border-radius: var(--r-sm, 5px); color: var(--muted); cursor: pointer; width: 28px; font-size: 14px; line-height: 1; }
 .eyedropper:hover { color: var(--amber); border-color: var(--amber); }
 .field-textarea {

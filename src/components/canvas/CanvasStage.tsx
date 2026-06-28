@@ -25,6 +25,7 @@ import { activePage, isContainer, isFrame, isGroup } from "@/types/document";
 import { fileToPlacedImage } from "@/lib/image";
 import { placeImageAt } from "@/lib/placeImage";
 import { applyVariables } from "@/lib/variables";
+import { applyInstanceProps } from "@/lib/componentProps";
 import { parseSvg, groupImported } from "@/lib/import/importSvg";
 import { useUiStore } from "@/store/uiStore";
 import { usePrefsStore } from "@/store/prefsStore";
@@ -68,7 +69,7 @@ export function CanvasStage() {
 
   const document = useEditorStore((s) => s.document);
   const nodes = activePage(document).nodes;
-  const renderNodes = applyVariables(nodes, document.variables);
+  const renderNodes = applyInstanceProps(applyVariables(nodes, document.variables));
   const selectedIds = useEditorStore((s) => s.selectedIds);
   const tool = useEditorStore((s) => s.tool);
   const viewport = useEditorStore((s) => s.viewport);
@@ -85,11 +86,13 @@ export function CanvasStage() {
   const commentMode = useUiStore((s) => s.commentMode);
   const setEditingTextId = useUiStore((s) => s.setEditingTextId);
   const addComment = useEditorStore((s) => s.addComment);
+  const addSlice = useEditorStore((s) => s.addSlice);
   const snapping = usePrefsStore((s) => s.snapping);
   const showGrid = usePrefsStore((s) => s.showGrid);
   const gridSize = usePrefsStore((s) => s.gridSize);
 
-  const isDrawTool = tool === "rect" || tool === "ellipse" || tool === "frame";
+  const isDrawTool = tool === "rect" || tool === "ellipse" || tool === "frame" || tool === "slice";
+  const slices = activePage(document).slices ?? [];
 
   useEffect(() => {
     registerStage(stageRef.current);
@@ -239,6 +242,10 @@ export function CanvasStage() {
 
   function commitDraft(type: DraftShape["type"], box: Box) {
     const count = countNodes(nodes) + 1;
+    if (type === "slice") {
+      addSlice(box);
+      return;
+    }
     if (type === "frame") {
       const frame = createFrame(box, count);
       addNode(frame);
@@ -560,6 +567,27 @@ export function CanvasStage() {
               onChange={(patch) => updateNode(radiusTarget.id, patch)}
             />
           )}
+          {slices.map((s) => (
+            <Group key={s.id} listening={false}>
+              <Rect
+                x={s.x}
+                y={s.y}
+                width={s.width}
+                height={s.height}
+                stroke="#ff5da2"
+                strokeWidth={1 / viewport.scale}
+                dash={[6 / viewport.scale, 4 / viewport.scale]}
+              />
+              <Text
+                x={s.x}
+                y={s.y - 16 / viewport.scale}
+                text={s.name}
+                fontSize={11 / viewport.scale}
+                fontFamily="IBM Plex Mono, monospace"
+                fill="#ff5da2"
+              />
+            </Group>
+          ))}
           {draft && <DraftPreview draft={draft} />}
           {penPoints && <PenPreview points={penPoints} cursor={penCursor} scale={viewport.scale} />}
           {marquee && <MarqueeBox box={marquee} scale={viewport.scale} />}

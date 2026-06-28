@@ -9,10 +9,13 @@ import {
   type ColorStyle,
   type Comment,
   type Component,
+  type Effect,
+  type EffectStyle,
   type GroundworkDocument,
   type NodePatch,
   type PageGuide,
   type SceneNode,
+  type SliceRegion,
   type TextStyle,
 } from "@/types/document";
 import type { BooleanOp } from "@/types/document";
@@ -102,6 +105,9 @@ interface EditorState {
   deleteColorStyle: (id: string) => void;
   addTextStyle: (name: string, base: Omit<TextStyle, "id" | "name">) => void;
   deleteTextStyle: (id: string) => void;
+  addEffectStyle: (name: string, effects: Effect[]) => void;
+  applyEffectStyle: (id: string) => void;
+  deleteEffectStyle: (id: string) => void;
 
   // variables / modes
   addColorVariable: (name: string, value: string) => void;
@@ -121,6 +127,7 @@ interface EditorState {
   resetInstance: (nodeId: string) => void;
   detachInstance: (nodeId: string) => void;
   combineAsVariants: (componentIds: string[], setName: string) => void;
+  setInstanceProp: (nodeId: string, key: string, value: string | boolean | undefined) => void;
 
   // comments
   addComment: (x: number, y: number) => string;
@@ -131,6 +138,11 @@ interface EditorState {
   addGuide: (axis: "x" | "y", pos: number) => void;
   updateGuide: (id: string, pos: number) => void;
   removeGuide: (id: string) => void;
+
+  // slices (export regions)
+  addSlice: (rect: { x: number; y: number; width: number; height: number }) => void;
+  renameSlice: (id: string, name: string) => void;
+  removeSlice: (id: string) => void;
 
   // history
   undo: () => void;
@@ -173,6 +185,19 @@ function withGuides(
     ...doc,
     pages: doc.pages.map((p) =>
       p.id === doc.activePageId ? { ...p, guides: fn(p.guides) } : p,
+    ),
+  };
+}
+
+/** Update the active page's slices immutably. */
+function withSlices(
+  doc: GroundworkDocument,
+  fn: (slices: SliceRegion[]) => SliceRegion[],
+): GroundworkDocument {
+  return {
+    ...doc,
+    pages: doc.pages.map((p) =>
+      p.id === doc.activePageId ? { ...p, slices: fn(p.slices ?? []) } : p,
     ),
   };
 }
@@ -581,6 +606,35 @@ export const useEditorStore = create<EditorState>((set, get) => {
         }),
       ),
 
+    addEffectStyle: (name, effects) =>
+      set((state) => {
+        const style: EffectStyle = { id: `es-${Date.now().toString(36)}`, name, effects };
+        const styles = state.document.styles;
+        return withHistory(state, {
+          ...state.document,
+          styles: { ...styles, effects: [...(styles.effects ?? []), style] },
+        });
+      }),
+
+    applyEffectStyle: (id) =>
+      set((state) => {
+        const style = state.document.styles.effects?.find((e) => e.id === id);
+        if (!style || state.selectedIds.length === 0) return {};
+        let nodes = currentNodes(state);
+        for (const sid of state.selectedIds) {
+          nodes = updateNodeById(nodes, sid, { effects: style.effects.map((e) => ({ ...e })), shadow: undefined });
+        }
+        return commitNodes(state, nodes);
+      }),
+
+    deleteEffectStyle: (id) =>
+      set((state) =>
+        withHistory(state, {
+          ...state.document,
+          styles: { ...state.document.styles, effects: (state.document.styles.effects ?? []).filter((e) => e.id !== id) },
+        }),
+      ),
+
     addColorVariable: (name, value) =>
       set((state) => {
         const coll = state.document.variables ?? createVariableCollection();
@@ -735,6 +789,17 @@ export const useEditorStore = create<EditorState>((set, get) => {
         return commitNodes(state, updateNodeById(currentNodes(state), nodeId, { mainComponentId: undefined }));
       }),
 
+    setInstanceProp: (nodeId, key, value) =>
+      set((state) => {
+        const node = findNode(currentNodes(state), nodeId);
+        if (!node) return {};
+        const props = { ...(node.props ?? {}) };
+        if (value === undefined) delete props[key];
+        else props[key] = value;
+        const nextProps = Object.keys(props).length ? props : undefined;
+        return commitNodes(state, updateNodeById(currentNodes(state), nodeId, { props: nextProps }));
+      }),
+
     combineAsVariants: (componentIds, setName) =>
       set((state) => {
         const ids = new Set(componentIds);
@@ -786,6 +851,30 @@ export const useEditorStore = create<EditorState>((set, get) => {
     removeGuide: (id) =>
       set((state) => ({
         document: withGuides(state.document, (g) => g.filter((gd) => gd.id !== id)),
+      })),
+
+    addSlice: (rect) =>
+      set((state) => {
+        const count = (activePage(state.document).slices?.length ?? 0) + 1;
+        const slice: SliceRegion = {
+          id: `sl-${Date.now().toString(36)}`,
+          name: `Slice ${count}`,
+          x: Math.round(rect.x),
+          y: Math.round(rect.y),
+          width: Math.max(1, Math.round(rect.width)),
+          height: Math.max(1, Math.round(rect.height)),
+        };
+        return { document: withSlices(state.document, (s) => [...s, slice]) };
+      }),
+
+    renameSlice: (id, name) =>
+      set((state) => ({
+        document: withSlices(state.document, (s) => s.map((sl) => (sl.id === id ? { ...sl, name } : sl))),
+      })),
+
+    removeSlice: (id) =>
+      set((state) => ({
+        document: withSlices(state.document, (s) => s.filter((sl) => sl.id !== id)),
       })),
 
     undo: () =>

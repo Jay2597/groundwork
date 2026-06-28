@@ -1,6 +1,6 @@
 // Editor-only state shapes (not persisted with the document).
 
-export type Tool = "select" | "hand" | "frame" | "rect" | "ellipse" | "text" | "pen";
+export type Tool = "select" | "hand" | "frame" | "rect" | "ellipse" | "text" | "pen" | "slice";
 
 export interface Viewport {
   scale: number;
@@ -9,7 +9,7 @@ export interface Viewport {
 }
 
 export interface DraftShape {
-  type: "frame" | "rect" | "ellipse";
+  type: "frame" | "rect" | "ellipse" | "slice";
   x: number;
   y: number;
   width: number;
