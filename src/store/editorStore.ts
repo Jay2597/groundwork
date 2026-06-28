@@ -115,6 +115,8 @@ interface EditorState {
 
   // variables / modes
   addColorVariable: (name: string, value: string) => void;
+  addNumberVariable: (name: string, value: number) => void;
+  bindNodeVar: (nodeId: string, prop: string, varId: string | undefined) => void;
   setVariableValue: (varId: string, modeId: string, value: string | number) => void;
   renameVariable: (varId: string, name: string) => void;
   deleteVariable: (varId: string) => void;
@@ -673,6 +675,27 @@ export const useEditorStore = create<EditorState>((set, get) => {
           ...state.document,
           variables: { ...coll, variables: [...coll.variables, variable] },
         });
+      }),
+
+    addNumberVariable: (name, value) =>
+      set((state) => {
+        const coll = state.document.variables ?? createVariableCollection();
+        const variable = newVariable("number", name, coll.modes.map((m) => m.id), value);
+        return withHistory(state, {
+          ...state.document,
+          variables: { ...coll, variables: [...coll.variables, variable] },
+        });
+      }),
+
+    bindNodeVar: (nodeId, prop, varId) =>
+      set((state) => {
+        const node = findNode(currentNodes(state), nodeId);
+        if (!node) return {};
+        const bindings = { ...(node.varBindings ?? {}) };
+        if (varId) bindings[prop] = varId;
+        else delete bindings[prop];
+        const next = Object.keys(bindings).length ? bindings : undefined;
+        return commitNodes(state, updateNodeById(currentNodes(state), nodeId, { varBindings: next }));
       }),
 
     setVariableValue: (varId, modeId, value) =>

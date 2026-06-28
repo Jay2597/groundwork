@@ -5,6 +5,7 @@ import { useUiStore } from "@/store/uiStore";
 import { insertImageFromPicker } from "@/lib/placeImage";
 import { exportStageAsImage } from "@/lib/export/exportImage";
 import { downloadSvg } from "@/lib/export/exportSvg";
+import { downloadTokens } from "@/lib/export/exportTokens";
 import { getStage } from "@/lib/stageRegistry";
 import "./palette.css";
 
@@ -64,6 +65,7 @@ export function CommandPalette() {
       { id: "page-add", group: "Pages", label: "New page", run: wrap(s.addPage) },
       { id: "export-png", group: "Export", label: "Export PNG", run: wrap(() => { const st = getStage(); if (st) exportStageAsImage(st, { fileName: s.document.name }); }) },
       { id: "export-svg", group: "Export", label: "Export SVG", run: wrap(() => downloadSvg(s.document)) },
+      { id: "export-tokens", group: "Export", label: "Export design tokens (JSON)", run: wrap(() => downloadTokens(s.document)) },
       { id: "export-panel", group: "Export", label: "Open export panel…", run: wrap(() => setExportOpen(true)) },
       { id: "export-code", group: "Export", label: "View code (HTML/CSS)…", run: wrap(() => setCodeOpen(true)) },
       { id: "review", group: "View", label: "Review (accessibility & lint)…", run: wrap(() => setLintOpen(true)) },

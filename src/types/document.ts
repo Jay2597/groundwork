@@ -211,6 +211,11 @@ export interface BaseNode {
   fillStyleId?: string;
   /** Binds the fill color to a color variable (resolved per active mode). */
   fillVarId?: string;
+  /**
+   * Binds numeric properties to number variables, keyed by property name
+   * (e.g. { cornerRadius: "var-x", opacity: "var-y" }). Resolved per active mode.
+   */
+  varBindings?: Record<string, string>;
   /** When set, this node is an instance of the given component master. */
   mainComponentId?: string;
   /**

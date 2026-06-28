@@ -3,6 +3,7 @@ import { useEditorStore } from "@/store/editorStore";
 import { activePage, isFrame, type FrameNode } from "@/types/document";
 import { exportRegionAsImage, exportStageAsImage } from "@/lib/export/exportImage";
 import { downloadNodeSvg, downloadSvg, downloadRegionSvg } from "@/lib/export/exportSvg";
+import { downloadTokens } from "@/lib/export/exportTokens";
 import { getStage } from "@/lib/stageRegistry";
 import { trackEvent } from "@/lib/analytics";
 import "./export.css";
@@ -69,6 +70,13 @@ export function ExportPanel() {
             <div className="exp-actions">
               <button className="btn" onClick={() => { pagePng(); trackEvent("export"); }}>PNG (2×)</button>
               <button className="btn" onClick={() => { downloadSvg(document); trackEvent("export"); }}>SVG</button>
+            </div>
+          </section>
+
+          <section className="exp-section">
+            <div className="exp-title">Design tokens</div>
+            <div className="exp-actions">
+              <button className="btn" onClick={() => { downloadTokens(document); trackEvent("export"); }}>W3C tokens (JSON)</button>
             </div>
           </section>
 
