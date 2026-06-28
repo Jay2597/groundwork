@@ -70,6 +70,7 @@ export function PropertiesPanel() {
   const frameSelection = useEditorStore((s) => s.frameSelection);
   const flattenSelected = useEditorStore((s) => s.flattenSelected);
   const booleanSelected = useEditorStore((s) => s.booleanSelected);
+  const trueBooleanSelected = useEditorStore((s) => s.trueBooleanSelected);
   const alignSelected = useEditorStore((s) => s.alignSelected);
   const distributeSelected = useEditorStore((s) => s.distributeSelected);
   const reorderSelected = useEditorStore((s) => s.reorderSelected);
@@ -98,6 +99,8 @@ export function PropertiesPanel() {
         <section className="group">
           <div className="ghead">BOOLEAN</div>
           <BooleanToolbar onOp={booleanSelected} />
+          <div className="field-label" style={{ marginTop: 8 }}>True geometry (editable path)</div>
+          <BooleanToolbar onOp={trueBooleanSelected} />
         </section>
 
         <section className="group">
@@ -540,7 +543,10 @@ function TypographySection({ node, set }: SectionProps) {
 }
 
 function PathSection({ node, set }: SectionProps) {
+  const setEditingPathId = useUiStore((s) => s.setEditingPathId);
+  const editingPathId = useUiStore((s) => s.editingPathId);
   if (node.type !== "path") return null;
+  const editing = editingPathId === node.id;
   return (
     <section className="group">
       <div className="ghead">PATH</div>
@@ -552,6 +558,16 @@ function PathSection({ node, set }: SectionProps) {
         <div className={node.closed ? "on" : ""} onClick={() => set({ closed: true })}>Closed</div>
         <div className={!node.closed ? "on" : ""} onClick={() => set({ closed: false })}>Open</div>
       </div>
+      <button
+        className="prop-btn"
+        style={{ marginTop: 8, width: "100%" }}
+        onClick={() => setEditingPathId(editing ? null : node.id)}
+      >
+        {editing ? "Done editing" : "Edit points"}
+      </button>
+      <p className="prop-hint" style={{ margin: "6px 0 0", fontSize: 10 }}>
+        Double-click a path to edit · drag anchors · click midpoints to add · alt/right-click to remove
+      </p>
     </section>
   );
 }

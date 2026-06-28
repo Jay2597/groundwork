@@ -30,6 +30,7 @@ import {
 } from "@/lib/nodeFactory";
 import { flattenNodes } from "@/lib/flatten";
 import { reflowHug } from "@/lib/autolayout";
+import { trueBooleanPath } from "@/lib/trueBoolean";
 import { createVariableCollection, newVariable } from "@/lib/variables";
 import { rebuildInstance } from "@/lib/components";
 import {
@@ -83,6 +84,7 @@ interface EditorState {
   frameSelection: () => void;
   booleanSelected: (op: BooleanOp) => void;
   flattenSelected: () => void;
+  trueBooleanSelected: (op: BooleanOp) => void;
   reorderSelected: (direction: "front" | "back" | "forward" | "backward") => void;
   alignSelected: (mode: AlignMode) => void;
   distributeSelected: (axis: "h" | "v") => void;
@@ -405,6 +407,18 @@ export const useEditorStore = create<EditorState>((set, get) => {
         const picked = nodes.filter((n) => sel.has(n.id));
         if (picked.length < 2) return {};
         const node = booleanNodes(picked, op, countNodes(nodes) + 1);
+        const rest = nodes.filter((n) => !sel.has(n.id));
+        return { ...commitNodes(state, [...rest, node]), selectedIds: [node.id] };
+      }),
+
+    trueBooleanSelected: (op) =>
+      set((state) => {
+        const sel = new Set(state.selectedIds);
+        const nodes = currentNodes(state);
+        const picked = nodes.filter((n) => sel.has(n.id));
+        if (picked.length < 2) return {};
+        // Real polygon geometry; fall back to the composited boolean if degenerate.
+        const node = trueBooleanPath(picked, op, countNodes(nodes) + 1) ?? booleanNodes(picked, op, countNodes(nodes) + 1);
         const rest = nodes.filter((n) => !sel.has(n.id));
         return { ...commitNodes(state, [...rest, node]), selectedIds: [node.id] };
       }),

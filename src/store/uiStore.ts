@@ -22,6 +22,8 @@ interface UiState {
   helpOpen: boolean;
   /** Id of the text node currently being edited inline on the canvas. */
   editingTextId: string | null;
+  /** Id of the path node currently in vector edit-points mode. */
+  editingPathId: string | null;
   leftOpen: boolean;
   rightOpen: boolean;
 
@@ -36,6 +38,7 @@ interface UiState {
   toggleCommentMode: () => void;
   setHelpOpen: (open: boolean) => void;
   setEditingTextId: (id: string | null) => void;
+  setEditingPathId: (id: string | null) => void;
   toggleLeft: () => void;
   toggleRight: () => void;
 }
@@ -50,6 +53,7 @@ export const useUiStore = create<UiState>((set, get) => ({
   commentMode: false,
   helpOpen: false,
   editingTextId: null,
+  editingPathId: null,
   leftOpen: true,
   rightOpen: true,
 
@@ -65,6 +69,7 @@ export const useUiStore = create<UiState>((set, get) => ({
   toggleCommentMode: () => set({ commentMode: !get().commentMode }),
   setHelpOpen: (open) => set({ helpOpen: open }),
   setEditingTextId: (id) => set({ editingTextId: id }),
+  setEditingPathId: (id) => set({ editingPathId: id }),
   toggleLeft: () => set({ leftOpen: !get().leftOpen }),
   toggleRight: () => set({ rightOpen: !get().rightOpen }),
 }));

@@ -39,6 +39,7 @@ import { FrameView } from "./FrameView";
 import { GroupView } from "./GroupView";
 import { BooleanView } from "./BooleanView";
 import { SelectionTransformer } from "./SelectionTransformer";
+import { PathEditor } from "./PathEditor";
 import { useStageSize } from "./useStageSize";
 
 const MIN_SCALE = 0.05;
@@ -85,6 +86,8 @@ export function CanvasStage() {
   const openContextMenu = useUiStore((s) => s.openContextMenu);
   const commentMode = useUiStore((s) => s.commentMode);
   const setEditingTextId = useUiStore((s) => s.setEditingTextId);
+  const editingPathId = useUiStore((s) => s.editingPathId);
+  const setEditingPathId = useUiStore((s) => s.setEditingPathId);
   const addComment = useEditorStore((s) => s.addComment);
   const addSlice = useEditorStore((s) => s.addSlice);
   const snapping = usePrefsStore((s) => s.snapping);
@@ -444,6 +447,23 @@ export function CanvasStage() {
 
   const selectDraggable = tool === "select";
 
+  // Vector edit-points mode targets a selected, still-present path.
+  const editingPath =
+    editingPathId && selectedIds.includes(editingPathId)
+      ? nodes.find((n) => n.id === editingPathId && n.type === "path")
+      : undefined;
+  useEffect(() => {
+    if (editingPathId && !editingPath) setEditingPathId(null);
+  }, [editingPathId, editingPath, setEditingPathId]);
+  useEffect(() => {
+    if (!editingPath) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setEditingPathId(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [editingPath, setEditingPathId]);
+
   // Single top-level rect/frame (unrotated) gets on-canvas corner-radius handles.
   const radiusTarget =
     tool === "select" && selectedIds.length === 1
@@ -495,6 +515,9 @@ export function CanvasStage() {
             if (model?.type === "text" && !model.locked) {
               select([model.id]);
               setEditingTextId(model.id);
+            } else if (model?.type === "path" && !model.locked) {
+              select([model.id]);
+              setEditingPathId(model.id);
             }
           }
         }}
@@ -552,14 +575,19 @@ export function CanvasStage() {
             />
           ))}
 
-          <SelectionTransformer
-            stage={stageRef.current}
-            selectedIds={selectedIds}
-            nodes={nodes}
-            viewport={viewport}
-            snapping={snapping}
-            onGuides={setGuides}
-          />
+          {!editingPath && (
+            <SelectionTransformer
+              stage={stageRef.current}
+              selectedIds={selectedIds}
+              nodes={nodes}
+              viewport={viewport}
+              snapping={snapping}
+              onGuides={setGuides}
+            />
+          )}
+          {editingPath && editingPath.type === "path" && (
+            <PathEditor node={editingPath} scale={viewport.scale} />
+          )}
           {showRadiusHandles && radiusTarget && (
             <CornerRadiusHandles
               node={radiusTarget as Extract<typeof radiusTarget, { type: "rect" | "frame" }>}
